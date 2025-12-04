@@ -27,7 +27,6 @@ COPY ndi_2025/ ./
 
 # 6. Installer les dépendances PHP
 RUN composer install --no-dev --optimize-autoloader
-RUN php artisan key:generate
 
 # 7. Permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
@@ -36,4 +35,4 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 EXPOSE 80
 
 # 9. Lancer Laravel
-CMD ["sh", "-c", "php artisan key:generate --force && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=80"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"]
