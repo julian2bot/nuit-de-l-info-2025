@@ -27,6 +27,7 @@ COPY ndi_2025/ ./
 
 # 6. Installer les dépendances PHP
 RUN composer install --no-dev --optimize-autoloader
+RUN php artisan key:generate
 
 # 7. Permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
