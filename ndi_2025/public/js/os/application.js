@@ -122,32 +122,52 @@ class Application {
         }
     }
 initDrag(header) {
+    let isDragging = false;
+    let startX, startY;
     let offsetX, offsetY;
+    const dragThreshold = 5; // seuil en pixels pour considérer comme drag
 
-    header.addEventListener("pointerdown", e => {
-        // Capturer tous les mouvements de la souris pour cet élément
-        header.setPointerCapture(e.pointerId);
-
+    header.addEventListener("mousedown", (e) => {
+        startX = e.clientX;
+        startY = e.clientY;
         offsetX = e.clientX - this.el.offsetLeft;
         offsetY = e.clientY - this.el.offsetTop;
         header.style.cursor = "grabbing";
 
-        const onPointerMove = e => {
-            this.el.style.left = (e.clientX - offsetX) + "px";
-            this.el.style.top = (e.clientY - offsetY) + "px";
+        const onMouseMove = (e) => {
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+
+            if (!isDragging && Math.sqrt(dx*dx + dy*dy) > dragThreshold) {
+                // Commence le drag
+                isDragging = true;
+            }
+
+            if (isDragging) {
+                this.el.style.left = e.clientX - offsetX + "px";
+                this.el.style.top = e.clientY - offsetY + "px";
+            }
         };
 
-        const onPointerUp = e => {
-            header.releasePointerCapture(e.pointerId);
+        const onMouseUp = (e) => {
+            document.removeEventListener("mousemove", onMouseMove);
+            document.removeEventListener("mouseup", onMouseUp);
             header.style.cursor = "grab";
-            header.removeEventListener("pointermove", onPointerMove);
-            header.removeEventListener("pointerup", onPointerUp);
+
+            // Si pas de drag, c'est juste un click => bringToFront
+            if (!isDragging) {
+                this.bringToFront();
+            }
+
+            isDragging = false;
         };
 
-        header.addEventListener("pointermove", onPointerMove);
-        header.addEventListener("pointerup", onPointerUp);
+        document.addEventListener("mousemove", onMouseMove);
+        document.addEventListener("mouseup", onMouseUp);
     });
 }
+
+
 
     bringToFront() {
         topZ++;
