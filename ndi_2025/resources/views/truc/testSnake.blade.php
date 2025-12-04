@@ -7,6 +7,6 @@
 
 <script src="{{ asset('js/class/Snake.js')}}"></script>
 <script>
-    const snake = new Snake(10,10, 500)
+    const snake = new Snake(500)
     snake.start();
 </script>

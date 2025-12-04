@@ -8,25 +8,48 @@ class Snake {
     static BOMB1 = 6;
     static BOMB2 = 7;
 
-    constructor(width, height, tickrate) {
-        this.width = width;
-        this.height = height;
+    constructor(tickrate) {
         this.tick = tickrate;
 
         this.canvas = document.getElementById('game');
         this.ctx = this.canvas.getContext('2d');
-
-        this.reset();
     }
 
-    reset(){
-        this.posX = parseInt(this.width / 2);
-        this.posY = parseInt(this.height / 2);
+    setTupLevel(){
+        switch (this.level) {
+            case 1:
+                this.width = 7;
+                this.height = 7;
+                this.bombNumber = 0;
+                break;
+            
+            case 2:
+                this.width = 10;
+                this.height = 10;
+                this.bombNumber = 1;
+                break;
 
-        this.added = false;
-        this.playing = false;
+            case 3:
+                this.width = 15;
+                this.height = 15;
+                this.bombNumber = 2;
+                break;
 
-        this.direction = 'd'; // Droite, Haut, Bas, Gauche
+            case 4:
+                this.width = 20;
+                this.height = 20;
+                this.bombNumber = 4;
+                break;
+        
+            default:
+                this.width = 25;
+                this.height = 25;
+                
+                let bombN = 4 + (this.level - 4)*4;
+
+                this.bombNumber = Math.min(bombN, 50);
+                break;
+        }
 
         const plateau = Array.from({ length: this.height }, () =>
             Array.from({ length: this.width }, () => Snake.EMPTY)
@@ -36,17 +59,31 @@ class Snake {
 
         this.cellW = Math.floor(this.canvas.width / this.width);
         this.cellH = Math.floor(this.canvas.height / this.height);
+
+        this.posX = parseInt(this.width / 2);
+        this.posY = parseInt(this.height / 2);
+        this.body = [];
+        this.body.push([this.posX, this.posY]);
+        this.bombs = []; // posX, posY, timeRemaining
+        for (let index = 0; index < this.bombNumber; index++) {
+            this.addBomb();
+        }
+        this.plateau[this.posY][this.posX] = Snake.HEAD;
+        this.addItem()
+    }
+
+    reset(){
+        this.level = 5;
+
+        this.added = false;
+        this.playing = false;
+
+        this.direction = 'd'; // Droite, Haut, Bas, Gauche
+        
         this.intervalId = null;
 
-        this.body = [];
-        this.bombs = []; // posX, posY, timeRemaining
+        this.setTupLevel();
 
-        this.body.push([this.posX, this.posY]);
-        this.plateau[this.posY][this.posX] = Snake.HEAD;
-
-        this.addItem()
-        this.addBomb();
-        this.addBomb();
         this.render();
     }
 
@@ -117,6 +154,13 @@ class Snake {
         this.added = true;
         const temp = this.body[this.body.length-1];
         this.body.push([temp[0], temp[1]]);
+
+        if(this.body.length == this.width*this.height - 1){
+            this.level += 1;
+            this.setTupLevel();
+            return false;
+        }
+        return true;
     }
 
     // POSITION
@@ -149,8 +193,8 @@ class Snake {
         else{
             switch (this.plateau[this.posY][this.posX]) {
                 case Snake.APPLE:
-                    this.addBody();
-                    this.addItem()
+                    if(this.addBody())
+                        this.addItem();
                     break;
     
                 case Snake.BOMB:
@@ -171,6 +215,7 @@ class Snake {
     }
 
     move(){
+        console.log("dende");
         this.unDisplaySnake();
 
         let max = this.body.length -1;
@@ -207,10 +252,20 @@ class Snake {
     }
 
     changeDir(dir){
-        if(! ['d', 'g', 'h', 'b'].includes(dir)){
+        const opposites = {
+            'd': 'g', 
+            'g': 'd', 
+            'h': 'b',
+            'b': 'h'
+        };
+
+        if (!['d', 'g', 'h', 'b'].includes(dir)) {
             dir = 'd';
         }
-        this.direction = dir;
+
+        if (dir !== opposites[this.direction]) {
+            this.direction = dir;
+        }
     }
 
     // FIN
