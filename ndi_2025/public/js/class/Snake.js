@@ -48,12 +48,22 @@ class Snake {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
+    // ADD
+
     addItem(){
         let x = Snake.randomRange(0,this.width-1);
         let y = Snake.randomRange(0,this.height-1);
 
         this.plateau[y][x] = Snake.APPLE;
     }
+
+    addBody(){
+        this.added = true;
+        const temp = this.BODY[this.BODY.length-1];
+        this.BODY.push([temp[0], temp[1]]);
+    }
+
+    // POSITION
 
     calculateNextPose() {
         switch (this.direction) {
@@ -83,7 +93,7 @@ class Snake {
         else{
             switch (this.plateau[this.posY][this.posX]) {
                 case Snake.APPLE:
-                    this.addBODY();
+                    this.addBody();
                     this.addItem()
                     break;
     
@@ -99,12 +109,6 @@ class Snake {
         }
 
         return okay;
-    }
-
-    addBODY(){
-        this.added = true;
-        const temp = this.BODY[this.BODY.length-1];
-        this.BODY.push([temp[0], temp[1]]);
     }
 
     move(){
@@ -150,6 +154,8 @@ class Snake {
         this.direction = dir;
     }
 
+    // FIN
+
     die(){
         this.stop();
     }
@@ -158,9 +164,7 @@ class Snake {
         return this.BODY.length;
     }
 
-    getPlateau(){
-        return this.plateau;
-    }
+    // PLAY
 
     turn(){
         this.calculateNextPose();
@@ -196,6 +200,8 @@ class Snake {
         this.startInterval();
     }
 
+    // GAME MANAGEMENT
+
     startInterval(){
         this.intervalId = setInterval(() => {
             const alive = this.turn();
@@ -230,4 +236,6 @@ class Snake {
             }
         }
     }
+
+    
 }
