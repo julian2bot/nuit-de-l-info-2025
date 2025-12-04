@@ -1,58 +1,93 @@
 export default class DiscordeApp {
-    constructor(container) {
+    constructor(container, historyJson, philoJson) {
+        this.container = container;
 
-        // ========================
-        //      DONNÉES
-        // ========================
+        // Données globales issues du JSON (histoire préfaite)
+        this.historyMessages = historyJson.messages;
+        this.contactHistory = historyJson.contactMessages;
+
+        this.philo = philoJson.rep_philo;
+
+        // Messages locaux utilisateur (stockés dans localStorage)
+        this.localMessages = JSON.parse(localStorage.getItem("discorde_user_messages") || "{}");
+
+        // Messages révélés stockés localement
+        this.revealedMessages = JSON.parse(localStorage.getItem("discorde_revealed_messages") || "{}");
+
+        // Fusion avec contactHistory
+        for (const contactId in this.revealedMessages) {
+            if (!this.contactHistory[contactId]) this.contactHistory[contactId] = [];
+            this.contactHistory[contactId] = [
+                ...new Set([...this.contactHistory[contactId], ...this.revealedMessages[contactId]])
+            ];
+        }
+
+
+        // Liste des contacts
         this.contacts = [
-            { id: 1, name: "Fan2Linux", unread: 1 },
-            { id: 2, name: "JeanMichelRoot", unread: 3 },
-            { id: 3, name: "Emma", unread: 0 }
+            { id: 1, name: "Fan2Linux" },
+            { id: 2, name: "JeanMichelRoot" },
+            { id: 3, name: "Emma" },
+            { id: 4, name: "JohnIA validay" }
         ];
 
-        this.messages = {
-            1: [
-                { from: "Fan2Linux", text: "Salut t'es chaud ?" },
-                { from: "Toi", text: "Toujours prêt." }
-            ],
-            2: [
-                { from: "JeanMichelRoot", text: "J’ai recompilé mon kernel hier" }
-            ],
-            3: [
-                { from: "Emma", text: "Hey <3" },
-                { from: "Toi", text: "Coucou :3" },
-                { from: "Toi", text: "Tu veux faire une balade ?" },
-                { from: "Emma", text: "Nan" }
-            ]
-        };
+        // Contact sélectionné
+        this.activeContact = 1;
 
-        // Contact sélectionné au début
-        this.activeContact = this.contacts[0].id;
-
-        // ========================
-        //        TEMPLATE
-        // ========================
-        container.innerHTML = `
-            <div class="discorde-root">
-                <div class="discorde-contact" id="discorde-contact"></div>
-                <div class="discorde-chat" id="discorde-chat">
-                    <div class="discorde-chat-msg" id="discorde-chat-msg"></div>
-                    <input class="discorde-chat-input"></input>
-                </div>
-            </div>
-        `;
-
-        this.contactList = container.querySelector("#discorde-contact");
-        this.chatList = container.querySelector("#discorde-chat-msg");
-
-        // ========================
-        //       AFFICHAGE
-        // ========================
+        // Interface
+        this.renderTemplate();
         this.renderContacts();
         this.renderMessages();
     }
 
-    // 🔵 Liste des contacts
+    // ========================
+    //     GESTION TEMPLATE
+    // ========================
+    renderTemplate() {
+        this.container.innerHTML = `
+        <div class="discorde-root">
+            <div class="discorde-contact" id="discorde-contact"></div>
+
+            <div class="discorde-chat">
+                <div class="discorde-chat-msg" id="discorde-chat-msg"></div>
+
+                <div class="discorde-chat-inputbar">
+                    <input class="discorde-chat-input" id="discorde-chat-input" placeholder="Envoyer un message...">
+                    <button id="discorde-send-btn">Send</button>
+                </div>
+            </div>
+        </div>
+        `;
+
+        this.contactList = this.container.querySelector("#discorde-contact");
+        this.chatList = this.container.querySelector("#discorde-chat-msg");
+        this.inputField = this.container.querySelector("#discorde-chat-input");
+        this.sendBtn = this.container.querySelector("#discorde-send-btn");
+
+        this.sendBtn.addEventListener("click", () => this.sendMessage());
+        this.inputField.addEventListener("keydown", e => {
+            if (e.key === "Enter") this.sendMessage();
+        });
+    }
+
+    // ========================
+    //  CHARGEMENT DES MESSAGES
+    // ========================
+    getAllMessagesForContact(contactId) {
+        const idList = this.contactHistory[contactId] || [];
+
+        // Messages de l’histoire → résolus depuis le JSON
+        const storyMessages = idList.map(id => this.historyMessages[id]).filter(Boolean);
+
+        // Messages locaux → stockés dans localStorage
+        const userMessages = this.localMessages[contactId] || [];
+
+        return [...storyMessages, ...userMessages];
+    }
+
+    // ========================
+    //       AFFICHAGE UI
+    // ========================
     renderContacts() {
         this.contactList.innerHTML = "";
 
@@ -60,37 +95,153 @@ export default class DiscordeApp {
             const div = document.createElement("div");
             div.className = "discorde-contact-item";
 
-            // highlight du contact sélectionné
-            if (contact.id === this.activeContact) {
-                div.style.background = "#4e5058";
-            }
+            if (contact.id === this.activeContact) div.classList.add("active");
 
-            div.innerHTML = `
-                <h2>${contact.name}</h2>
-                <p>${contact.unread} message(s) en attente</p>
-            `;
+            div.innerHTML = `<h2>${contact.name}</h2>`;
 
             div.addEventListener("click", () => {
                 this.activeContact = contact.id;
-                contact.unread = 0;               // reset unread
-                this.renderContacts();            // re-render contacts
-                this.renderMessages();            // update chat
+                this.renderContacts();
+                this.renderMessages();
             });
 
             this.contactList.appendChild(div);
         });
     }
 
-    // 🟣 Messages du contact actif
     renderMessages() {
-        const msgs = this.messages[this.activeContact] || [];
-
-        this.chatList.innerHTML = msgs.map(m => `
+        const msgs = this.getAllMessagesForContact(this.activeContact);
+        this.chatList.innerHTML = msgs
+            .map(m => `
             <div class="discorde-chat-item">
-                <h3>${m.from}</h3>
+                <span class="from">${m.from}</span>
                 <p>${m.text}</p>
             </div>
-        `).join("");
+            `)
+            .join("");
 
+        this.chatList.scrollTop = this.chatList.scrollHeight;
     }
+
+    // ========================
+    //   ENVOI D’UN MESSAGE
+    // ========================
+    sendMessage() {
+        const text = this.inputField.value.trim();
+        if (!text) return;
+
+        // 1. message de l'utilisateur
+        this.addLocalMessage(this.activeContact, {
+            from: "Toi",
+            text
+        });
+
+        // 2. réponse automatique
+        if (this.activeContact !== 4) {
+            this.addLocalMessage(this.activeContact, {
+                from: this.contacts.find(c => c.id === this.activeContact).name,
+                text: "j'aime le saucisson"
+            }); 
+        }
+        else {
+            this.addLocalMessage(this.activeContact, {
+                from: this.contacts.find(c => c.id === this.activeContact).name,
+                text: this.messagePhilo(text)
+            }); 
+        }
+        
+
+        this.inputField.value = "";
+        this.renderMessages();
+    }
+
+    // ========================
+    //  STOCKAGE LOCAL
+    // ========================
+    addLocalMessage(contactId, msg) {
+        if (!this.localMessages[contactId]) this.localMessages[contactId] = [];
+        this.localMessages[contactId].push(msg);
+        localStorage.setItem("discorde_user_messages", JSON.stringify(this.localMessages));
+    }
+
+    // ========================
+    //  FONCTIONS PUBLIQUES
+    // ========================
+
+    /** Efface les messages locaux et remet l’histoire à zéro */
+    clearLocalStorage() {
+        this.localMessages = {};
+        this.revealedMessages = {};
+        localStorage.removeItem("discorde_user_messages");
+        localStorage.removeItem("discorde_revealed_messages");
+
+        // Reset contactHistory à l’état initial du JSON
+        for (const contactId in this.contactHistory) {
+            this.contactHistory[contactId] = this.contactHistory[contactId].filter(id =>
+                Object.keys(this.historyMessages).includes(id)
+            );
+        }
+
+        this.renderMessages();
+    }
+
+
+    /** Ajoute un message de l’histoire à la conversation du contact correspondant */
+    revealMessage(messageId, contactId) {
+        const msg = this.historyMessages[messageId];
+        if (!msg) return;
+
+        if (!this.contactHistory[contactId]) this.contactHistory[contactId] = [];
+        if (!this.contactHistory[contactId].includes(messageId)) {
+            this.contactHistory[contactId].push(messageId);
+
+            // Sauvegarde locale pour conserver l'avancement
+            if (!this.revealedMessages[contactId]) this.revealedMessages[contactId] = [];
+            this.revealedMessages[contactId].push(messageId);
+            localStorage.setItem("discorde_revealed_messages", JSON.stringify(this.revealedMessages));
+        }
+
+        if (contactId === this.activeContact) this.renderMessages();
+    }
+
+    messagePhilo(text) {
+        if (!this.philo || this.philo.length === 0) {
+            return null;
+        }
+        
+        let meilleurMatch = null;
+        let meilleureDistance = Infinity;
+        
+        this.philo.forEach(philo => {
+            const distance = this.calculerDistance(text, philo.contexte);
+            
+            if (distance < meilleureDistance) {
+                meilleureDistance = distance;
+                meilleurMatch = philo.reponse;
+            }
+        });
+        if (meilleureDistance <= 1) {
+            meilleurMatch = this.philo[Math.floor(Math.random() * 83)].reponse;
+        }
+        
+        return meilleurMatch;
+    }
+
+    // Distance entre 2 textes
+    calculerDistance(text1, text2) {
+        const normaliser = (str) => str.toLowerCase().trim();
+        
+        const t1 = normaliser(text1);
+        const t2 = normaliser(text2);
+        
+        // Méthode : Compter les mots communs
+        const mots1 = t1.split(/\s+/);
+        const mots2 = t2.split(/\s+/);
+        
+        const motsCommuns = mots1.filter(mot => mots2.includes(mot)).length;
+        
+        console.log(1 / (motsCommuns + 1))
+        return 1 / (motsCommuns + 1);
+    }
+
 }

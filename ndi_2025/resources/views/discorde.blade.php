@@ -12,15 +12,8 @@
 <body>
 
   <div class="stage" id="stage">
-
-    <div class="window" id="window">
-        <div class="window-topbar" id="window-topbar">
-          <p>Discorde</p>
-        </div>
-        <div class="window-content" id="window-content">
           <!-- <p>Bonjour je mange le saucisson</p> -->
-        </div>
-    </div>
+  </div>
 
   </div>
 

@@ -90,18 +90,35 @@
    envoie de msg
 ================================ */
 
-.discorde-chat-input {
-    width: 95%;
-    margin-top: auto;
-    margin-bottom: 1em;
-    margin-left: auto;
-    margin-right: auto;
-
-    padding: 12px;
-    border-radius: 12px;
-    background-color: #555;
+.discorde-chat-inputbar {
+    display: flex;
+    border-top: 1px solid #111;
+    padding: 10px;
+    background: #2c2f33;
 }
 
+.discorde-chat-input {
+    flex: 1;
+    padding: 10px;
+    background: #202225;
+    border: none;
+    color: white;
+    border-radius: 5px;
+}
+
+.discorde-chat-input:focus {
+    outline: none;
+}
+
+#discorde-send-btn {
+    margin-left: 10px;
+    padding: 10px 15px;
+    background: #5865f2;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
 /* ================================
    SCROLLBARS (clean)
 ================================ */
