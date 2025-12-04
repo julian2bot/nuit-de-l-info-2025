@@ -20,21 +20,21 @@ class Snake {
             case 1:
                 this.width = 7;
                 this.height = 7;
-                this.bombNumber = 0;
+                this.bombNumber = 1;
                 this.minFreeSpace = 0;
                 break;
             
             case 2:
                 this.width = 10;
                 this.height = 10;
-                this.bombNumber = 1;
+                this.bombNumber = 2;
                 this.minFreeSpace = 5;
                 break;
 
             case 3:
                 this.width = 15;
                 this.height = 15;
-                this.bombNumber = 2;
+                this.bombNumber = 3;
                 this.minFreeSpace = 5;
                 break;
 
@@ -107,12 +107,31 @@ class Snake {
         do {
             x = Snake.randomRange(0, this.width - 1);
             y = Snake.randomRange(0, this.height - 1);
+
         } while (this.plateau[y][x] !== Snake.EMPTY);
-        return [x, y];
+
+        return [x,y];
+    }
+
+    getFreeCoordBomb(){
+        let x;
+        let y;
+        let nearHead;
+        let head = this.body[0];
+
+        do {
+            x = Snake.randomRange(0, this.width - 1);
+            y = Snake.randomRange(0, this.height - 1);
+
+            if (this.plateau[y][x] !== Snake.EMPTY) continue;
+
+            nearHead = Math.abs(head[0] - x) <= 1 && Math.abs(head[1] - y) <= 1;
+        } while (this.plateau[y][x] !== Snake.EMPTY || nearHead);
+        return [x,y];
     }
 
     addBomb(){
-        let pos = this.getFreeCoord();
+        let pos = this.getFreeCoordBomb();
         this.plateau[pos[1]][pos[0]] = Snake.BOMB;
         this.bombs.push([pos[0], pos[1], Snake.randomRange(2,6)]);
     }
