@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import Snake from './class/Snake.js';
 
 
 // Exemple cube
@@ -9,10 +10,19 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHei
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const center = new THREE.Vector3(0, 0, 0);
 
+
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 
+window.addEventListener('resize', () => {
+    // Mise à jour de la taille du renderer
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // Mise à jour de l'aspect de la caméra
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+});
 
 // OrbitControls
 const controls = new OrbitControls(camera, renderer.domElement);

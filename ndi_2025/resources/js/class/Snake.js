@@ -1,4 +1,4 @@
-class Snake {
+export default class Snake {
     static EMPTY = 0;
     static APPLE = 1;
     static HEAD = 2;
