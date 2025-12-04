@@ -2,6 +2,8 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>NIRD - OS pas fou</title>
     <link rel="stylesheet" href="{{ asset('style/os.css')}}">
 </head>
@@ -35,6 +37,7 @@
 
     <script src="{{ asset('js/apps/apps.js')}}"></script>
     <script src="{{ asset('js/os/application.js')}}"></script>
+    <script src="{{ asset('js/os/score.js')}}"></script>
 
 <script>
     function updateClock() {

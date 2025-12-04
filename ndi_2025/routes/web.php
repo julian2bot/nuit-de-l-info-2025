@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ScoreController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -39,3 +40,8 @@ Route::get('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout
 Route::get('/me', function () {
     return Auth::user();
 })->name("eee");
+
+
+Route::post('/score', [ScoreController::class, 'store'])
+    ->middleware('auth')
+    ->name('score.store');
