@@ -51,8 +51,13 @@ class Snake {
     // ADD
 
     addItem(){
-        let x = Snake.randomRange(0,this.width-1);
-        let y = Snake.randomRange(0,this.height-1);
+        let x;
+        let y;
+
+        do {
+            x = Snake.randomRange(0, this.width - 1);
+            y = Snake.randomRange(0, this.height - 1);
+        } while (this.plateau[y][x] !== Snake.EMPTY);
 
         this.plateau[y][x] = Snake.APPLE;
     }
