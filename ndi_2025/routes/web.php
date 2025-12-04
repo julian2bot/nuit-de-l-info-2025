@@ -19,6 +19,7 @@ Route::get('/truc', function () {
     return view('truc.index');
 });
 
+
 Route::get('/truc/machine', function () {
     return view('welcome');
 })->name("trucMachine");
@@ -30,6 +31,9 @@ Route::get('/editeur-texte', function () {
     return view('editeur_texte');
 })->name("editeurTexte");
 
+Route::get('/discorde', function () {
+    return view('discorde');
+})->name('discorde');
 
 Route::post('/auth/login', [AuthController::class,'loginOrRegister'])->name("auth.loginRegister");
 Route::get('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');

@@ -1,0 +1,24 @@
+{
+    "messages": {
+        "start_1": { "from": "Fan2Linux", "text": "Salut t'es chaud ?" },
+        "start_2": { "from": "Toi", "text": "Toujours prêt." },
+
+        "linux_1": { "from": "JeanMichelRoot", "text": "J’ai recompilé mon kernel hier" },
+
+        "emma_1": { "from": "Emma", "text": "Hey <3" },
+        "emma_2": { "from": "Toi", "text": "Coucou :3" },
+        "emma_3": { "from": "Toi", "text": "Tu veux faire une balade ?" },
+        "emma_4": { "from": "Emma", "text": "Nan" },
+        "emma_5": { "from": "Emma", "text": "En vrai..." },
+        "emma_6": { "from": "Emma", "text": "Feur" },
+
+        "ia_1": { "from": "JohnIA validay", "text": "Viens parler avec moi jeune brebis"}
+    },
+
+    "contactMessages": {
+        "1": ["start_1", "start_2"],
+        "2": ["linux_1"],
+        "3": ["emma_1", "emma_2", "emma_3", "emma_4"],
+        "4": ["ia_1"]
+    }
+}

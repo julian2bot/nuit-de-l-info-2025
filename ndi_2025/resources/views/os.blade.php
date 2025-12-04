@@ -22,6 +22,11 @@
             <span class="icon-img">📁</span>
             <span class="icon-label">Explorateur de fichier</span>
         </div>
+
+         <div class="icon" id="discorde" data-name="Discorde app">
+            <span class="icon-img">📩</span>
+            <span class="icon-label">Discorde</span>
+        </div>
     </div>
 
     <div class="taskbar">

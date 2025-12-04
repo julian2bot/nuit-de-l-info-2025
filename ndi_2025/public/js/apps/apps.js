@@ -18,12 +18,12 @@ const apps = {
         reduire: true,
         resizable: true
     },
-    discord: {
+    discorde: {
         width: 900,
         height: 600,
-        title: "Discord Web",
+        title: "Discorde",
         fullScreen: false,
-        link: "https://discord.com",
+        link: "/discorde",
         reduire: true,
         resizable: true
     },
