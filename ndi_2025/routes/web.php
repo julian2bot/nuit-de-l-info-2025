@@ -19,3 +19,6 @@ Route::get('/truc/machine', function () {
 Route::get('/explorateur-fichier', function () {
     return view('explorateur_fichier');
 })->name("explorateurFichier");
+Route::get('/editeur-texte', function () {
+    return view('editeur_texte');
+})->name("editeurTexte");
