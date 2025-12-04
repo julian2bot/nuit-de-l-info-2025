@@ -121,29 +121,33 @@ class Application {
             this.el.style.top = this.prev.t;
         }
     }
+initDrag(header) {
+    let offsetX, offsetY;
 
-    initDrag(header) {
-        let isDragging = false;
-        let offsetX, offsetY;
+    header.addEventListener("pointerdown", e => {
+        // Capturer tous les mouvements de la souris pour cet élément
+        header.setPointerCapture(e.pointerId);
 
-        header.addEventListener("mousedown", (e) => {
-            isDragging = true;
-            offsetX = e.clientX - this.el.offsetLeft;
-            offsetY = e.clientY - this.el.offsetTop;
-            header.style.cursor = "grabbing";
-        });
+        offsetX = e.clientX - this.el.offsetLeft;
+        offsetY = e.clientY - this.el.offsetTop;
+        header.style.cursor = "grabbing";
 
-        document.addEventListener("mousemove", (e) => {
-            if (!isDragging) return;
-            this.el.style.left = e.clientX - offsetX + "px";
-            this.el.style.top = e.clientY - offsetY + "px";
-        });
+        const onPointerMove = e => {
+            this.el.style.left = (e.clientX - offsetX) + "px";
+            this.el.style.top = (e.clientY - offsetY) + "px";
+        };
 
-        document.addEventListener("mouseup", () => {
-            isDragging = false;
+        const onPointerUp = e => {
+            header.releasePointerCapture(e.pointerId);
             header.style.cursor = "grab";
-        });
-    }
+            header.removeEventListener("pointermove", onPointerMove);
+            header.removeEventListener("pointerup", onPointerUp);
+        };
+
+        header.addEventListener("pointermove", onPointerMove);
+        header.addEventListener("pointerup", onPointerUp);
+    });
+}
 
     bringToFront() {
         topZ++;
