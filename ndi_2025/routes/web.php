@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('os');
 });
 
 
@@ -15,3 +15,5 @@ Route::get('/truc', function () {
 Route::get('/truc/machine', function () {
     return view('welcome');
 })->name("trucMachine");
+
+

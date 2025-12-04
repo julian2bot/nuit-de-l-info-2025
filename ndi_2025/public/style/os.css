@@ -1,0 +1,111 @@
+body,
+.window,
+.window * {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+body {
+    margin: 0;
+    background: #0084ff;
+    font-family: "Segoe UI", sans-serif;
+    overflow: hidden;
+}
+
+.window {
+    position: absolute;
+    background: #f0f0f0;
+    border: 1px solid #a0a0a0;
+    box-shadow: 0 0 12px #0007;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.window-header {
+    background: linear-gradient(#e2e2e2, #cdcdcd);
+    height: 32px;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+    border-bottom: 1px solid #b0b0b0;
+    cursor: grab;
+    user-select: none;
+}
+
+.window-header .title {
+    font-weight: 600;
+}
+
+.window-buttons {
+    display: flex;
+}
+
+.window-buttons button {
+    border: none;
+    width: 40px;
+    height: 28px;
+    margin-left: 3px;
+    cursor: pointer;
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.btn-min {
+    background: #e5e5e5;
+}
+
+.btn-max {
+    background: #e5e5e5;
+}
+
+.btn-close {
+    background: #e81123;
+    color: white;
+}
+
+.btn-min:hover,
+.btn-max:hover {
+    background: #dcdcdc;
+}
+
+.btn-close:hover {
+    background: #c50f1f;
+}
+
+iframe {
+    width: 100%;
+    height: calc(100% - 32px);
+    border: none;
+}
+
+
+.window {
+    position: absolute;
+    background: #f0f0f0;
+    border: 1px solid #a0a0a0;
+    box-shadow: 0 0 12px #0007;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.window.resizable {
+    resize: both;
+    overflow: hidden;
+}
+
+.window.resizable {
+    box-sizing: border-box;
+}
+
+.window.resizable {
+    border: 1px solid #aaa;
+}
+
+.window.resizable:hover {
+    border-color: #777;
+}
