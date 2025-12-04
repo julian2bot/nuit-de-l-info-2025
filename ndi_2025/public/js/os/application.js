@@ -111,7 +111,7 @@ class Application {
             };
 
             this.el.style.width = "100vw";
-            this.el.style.height = "100vh";
+            this.el.style.height = "calc(100vh - 40px)";
             this.el.style.left = "0";
             this.el.style.top = "0";
         } else {
