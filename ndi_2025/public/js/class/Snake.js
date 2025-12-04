@@ -73,7 +73,9 @@ class Snake {
     }
 
     reset(){
-        this.level = 5;
+        this.level = 1;
+
+        this.score = 0;
 
         this.added = false;
         this.playing = false;
@@ -154,6 +156,8 @@ class Snake {
         this.added = true;
         const temp = this.body[this.body.length-1];
         this.body.push([temp[0], temp[1]]);
+
+        this.score += 1*this.level;
 
         if(this.body.length == this.width*this.height - 1){
             this.level += 1;
@@ -275,7 +279,7 @@ class Snake {
     }
 
     getScore(){
-        return this.body.length;
+        return this.score;
     }
 
     // PLAY
