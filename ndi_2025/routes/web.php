@@ -19,3 +19,8 @@ Route::get('/truc/machine', function () {
 Route::get('/truc/testSnake', function () {
     return view('truc.testSnake');
 });
+
+
+Route::get('/3d/three', function () {
+    return view('3d.three');
+})->name("threejs");
