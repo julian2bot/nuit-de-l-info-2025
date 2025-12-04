@@ -1,14 +1,29 @@
+
+import Snake from './Snake.js';
+
+window.addEventListener('DOMContentLoaded', () => {
+    console.log("Snake start !");
+    const snake = new Snake(10, 10, 500);
+    snake.play();
+
+    startThreeJS(); // ensuite seulement, lancer 3D
+})
+
+
+
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import Snake from './class/Snake.js';
 
 
 // Exemple cube
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const myCanvas = document.getElementById('canva2');
+const renderer = new THREE.WebGLRenderer({ canvas: myCanvas });
 const center = new THREE.Vector3(0, 0, 0);
+
+
 
 
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -75,6 +90,8 @@ function animate(){
     objet2.rotation.y += 0.01;
 
     objet1.rotation.y -= 0.01;
+
+    
 
     controls.update();
     renderer.render(scene, camera);
