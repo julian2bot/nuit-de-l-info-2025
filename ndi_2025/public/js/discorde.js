@@ -205,7 +205,7 @@ export default class DiscordeApp {
     }
 
     extraireMotCle(text) {
-        // Regex inchangé : cherche les mots de 5 lettres ou plus
+        // Regex : cherche les mots de 5 lettres ou plus
         const mots = text.match(/\b[a-zA-Zà-ü]{5,}\b/g);
         if (!mots || mots.length === 0) return null;
         return mots[Math.floor(Math.random() * mots.length)];
@@ -225,7 +225,7 @@ export default class DiscordeApp {
             reponseFinale = this.philo.questions[index];
         }
 
-        // 2. DÉTOURNEMENT (si pas de question OU si on préfère détourner)
+        // 2. DÉTOURNEMENT
         else {
             const motCle = this.extraireMotCle(text);
             
@@ -234,7 +234,7 @@ export default class DiscordeApp {
                 reponseFinale = this.philo.detournements[templateIndex].replace("{{mot}}", motCle);
             }
 
-            // 3. DÉLIRE TOTAL (Fallback)
+            // 3. DÉLIRE
             else {
                 const delireIndex = Math.floor(Math.random() * this.philo.delires.length);
                 let phraseDelire = this.philo.delires[delireIndex];
@@ -247,7 +247,7 @@ export default class DiscordeApp {
             }
         }
         
-        // Finalisation : Ajouter le préfixe d'humeur
+        // Ajout le préfixe d'humeur
         return prefixeHumeur + reponseFinale;
     }
     
