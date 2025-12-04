@@ -43,3 +43,8 @@ Route::get('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout
 Route::get('/me', function () {
     return Auth::user();
 })->name("eee");
+
+Route::get('/classement', function () {
+    // TODO: fetch users
+    return view('classement');
+})->name("classement");
