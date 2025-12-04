@@ -204,44 +204,52 @@ export default class DiscordeApp {
         if (contactId === this.activeContact) this.renderMessages();
     }
 
-    messagePhilo(text) {
-        if (!this.philo || this.philo.length === 0) {
-            return null;
-        }
-        
-        let meilleurMatch = null;
-        let meilleureDistance = Infinity;
-        
-        this.philo.forEach(philo => {
-            const distance = this.calculerDistance(text, philo.contexte);
-            
-            if (distance < meilleureDistance) {
-                meilleureDistance = distance;
-                meilleurMatch = philo.reponse;
-            }
-        });
-        if (meilleureDistance <= 1) {
-            meilleurMatch = this.philo[Math.floor(Math.random() * 83)].reponse;
-        }
-        
-        return meilleurMatch;
+    extraireMotCle(text) {
+        // Regex : cherche les mots de 5 lettres ou plus
+        const mots = text.match(/\b[a-zA-Zà-ü]{5,}\b/g);
+        if (!mots || mots.length === 0) return null;
+        return mots[Math.floor(Math.random() * mots.length)];
     }
 
-    // Distance entre 2 textes
-    calculerDistance(text1, text2) {
-        const normaliser = (str) => str.toLowerCase().trim();
+    messagePhilo(text) {
+        // HUMEUR
+        const moodsKeys = Object.keys(this.philo.moods);
+        const humeur = moodsKeys[Math.floor(Math.random() * moodsKeys.length)];
+        const prefixeHumeur = this.philo.moods[humeur][Math.floor(Math.random() * this.philo.moods[humeur].length)];
+
+        let reponseFinale = "";
+
+        // 1. GESTION DES QUESTIONS
+        if (text.includes("?") && Math.random() < 0.7) {
+            const index = Math.floor(Math.random() * this.philo.questions.length);
+            reponseFinale = this.philo.questions[index];
+        }
+
+        // 2. DÉTOURNEMENT
+        else {
+            const motCle = this.extraireMotCle(text);
+            
+            if (motCle && Math.random() < 0.7) {
+                const templateIndex = Math.floor(Math.random() * this.philo.detournements.length);
+                reponseFinale = this.philo.detournements[templateIndex].replace("{{mot}}", motCle);
+            }
+
+            // 3. DÉLIRE
+            else {
+                const delireIndex = Math.floor(Math.random() * this.philo.delires.length);
+                let phraseDelire = this.philo.delires[delireIndex];
+
+                if (Math.random() < 0.3) {
+                    const liaisonIndex = Math.floor(Math.random() * this.philo.liaisons.length);
+                    phraseDelire = `${this.philo.liaisons[liaisonIndex]} ${phraseDelire.toLowerCase()}`;
+                }
+                reponseFinale = phraseDelire;
+            }
+        }
         
-        const t1 = normaliser(text1);
-        const t2 = normaliser(text2);
-        
-        // Méthode : Compter les mots communs
-        const mots1 = t1.split(/\s+/);
-        const mots2 = t2.split(/\s+/);
-        
-        const motsCommuns = mots1.filter(mot => mots2.includes(mot)).length;
-        
-        console.log(1 / (motsCommuns + 1))
-        return 1 / (motsCommuns + 1);
+        // Ajout le préfixe d'humeur
+        return prefixeHumeur + reponseFinale;
     }
+    
 
 }
