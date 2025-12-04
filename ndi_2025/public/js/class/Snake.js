@@ -177,25 +177,7 @@ class Snake {
     }
 
     play(){
-        document.addEventListener('keydown', (event) => {
-            switch (event.key) {
-                case 'ArrowUp':
-                    this.changeDir('h')
-                    break;
-
-                case 'ArrowDown':
-                    this.changeDir('b')
-                    break;
-
-                case 'ArrowLeft':
-                    this.changeDir('g')
-                    break;
-
-                case 'ArrowRight':
-                    this.changeDir('d')
-                    break;
-            }
-        });
+        this.addListener();
 
         this.startInterval();
     }
@@ -237,5 +219,26 @@ class Snake {
         }
     }
 
-    
+    // AUTRE
+    addListener(){
+        document.addEventListener('keydown', (event) => {
+            switch (event.key) {
+                case 'ArrowUp':
+                    this.changeDir('h')
+                    break;
+
+                case 'ArrowDown':
+                    this.changeDir('b')
+                    break;
+
+                case 'ArrowLeft':
+                    this.changeDir('g')
+                    break;
+
+                case 'ArrowRight':
+                    this.changeDir('d')
+                    break;
+            }
+        });
+    }
 }
