@@ -4,6 +4,9 @@ class Snake {
     static HEAD = 2;
     static BODY = 3;
     static TAIL = 4;
+    static BOMB = 5;
+    static BOMB1 = 6;
+    static BOMB2 = 7;
 
     constructor(width, height, tickrate) {
         this.width = width;
@@ -35,12 +38,15 @@ class Snake {
         this.cellH = Math.floor(this.canvas.height / this.height);
         this.intervalId = null;
 
-        this.BODY = [];
+        this.body = [];
+        this.bombs = []; // posX, posY, timeRemaining
 
-        this.BODY.push([this.posX, this.posY]);
+        this.body.push([this.posX, this.posY]);
         this.plateau[this.posY][this.posX] = Snake.HEAD;
 
         this.addItem()
+        this.addBomb();
+        this.addBomb();
         this.render();
     }
 
@@ -50,7 +56,7 @@ class Snake {
 
     // ADD
 
-    addItem(){
+    getFreeCoord(){
         let x;
         let y;
 
@@ -58,14 +64,59 @@ class Snake {
             x = Snake.randomRange(0, this.width - 1);
             y = Snake.randomRange(0, this.height - 1);
         } while (this.plateau[y][x] !== Snake.EMPTY);
+        return [x, y];
+    }
 
-        this.plateau[y][x] = Snake.APPLE;
+    addBomb(){
+        let pos = this.getFreeCoord();
+        this.plateau[pos[1]][pos[0]] = Snake.BOMB;
+        this.bombs.push([pos[0], pos[1], 6])
+    }
+
+    manageBombs(){
+        const toRemove = [];
+        for (const element of this.bombs) {
+            element[2] -= 1;
+            let color = Snake.BOMB;
+            switch (element[2]) {
+                case 4:
+                case 3:
+                    color = Snake.BOMB1;
+                    break;
+
+                case 2:
+                case 1:
+                    color = Snake.BOMB2;
+                    break;
+
+                case 0:
+                    color = Snake.EMPTY;
+                    toRemove.push(element);
+                    break;
+            
+                default:
+                    color = Snake.BOMB;
+                    break;
+            }
+            this.plateau[element[1]][element[0]] = color;
+        }
+        let bombsToAdd = toRemove.length;
+        this.bombs = this.bombs.filter(item => !toRemove.includes(item));
+        for (let index = 0; index < bombsToAdd; index++) {
+            this.addBomb();            
+        }
+    }
+
+    addItem(){
+        let pos = this.getFreeCoord();
+
+        this.plateau[pos[1]][pos[0]] = Snake.APPLE;
     }
 
     addBody(){
         this.added = true;
-        const temp = this.BODY[this.BODY.length-1];
-        this.BODY.push([temp[0], temp[1]]);
+        const temp = this.body[this.body.length-1];
+        this.body.push([temp[0], temp[1]]);
     }
 
     // POSITION
@@ -91,7 +142,7 @@ class Snake {
         this.added = false;
         let okay = true;
 
-        if(this.posX < 0 || this.posY < 0 || this.posX >= this.width || this.poxY >= this.height){
+        if(this.posX < 0 || this.posY < 0 || this.posX >= this.width || this.posY >= this.height){
             this.die();
             okay = false;
         }
@@ -102,6 +153,9 @@ class Snake {
                     this.addItem()
                     break;
     
+                case Snake.BOMB:
+                case Snake.BOMB1:
+                case Snake.BOMB2:
                 case Snake.BODY:
                 case Snake.TAIL:
                     this.die();
@@ -119,35 +173,35 @@ class Snake {
     move(){
         this.unDisplaySnake();
 
-        let max = this.BODY.length -1;
+        let max = this.body.length -1;
         if(this.added){
             max -= 1; // Ne pas bouger le dernier si add
         }
         for (let index = max ; index > 0; index--) {
-            this.BODY[index] = this.BODY[index-1];
+            this.body[index] = this.body[index-1];
         }
 
-        this.BODY[0] = [this.posX, this.posY];
+        this.body[0] = [this.posX, this.posY];
 
         this.displaySnake();
     }
 
     unDisplaySnake(){
-        for (let index = 0; index < this.BODY.length; index++) {
-            const element = this.BODY[index];
+        for (let index = 0; index < this.body.length; index++) {
+            const element = this.body[index];
             this.plateau[element[1]][element[0]] = Snake.EMPTY;
         }
     }
 
     displaySnake(){
-        let head = this.BODY[0];
+        let head = this.body[0];
         this.plateau[head[1]][head[0]] = Snake.HEAD;
-        for (let index = 1; index < this.BODY.length - 1; index++) {
-            const element = this.BODY[index];
+        for (let index = 1; index < this.body.length - 1; index++) {
+            const element = this.body[index];
             this.plateau[element[1]][element[0]] = Snake.BODY;
         }
-        if(this.BODY.length>1){
-            let tail = this.BODY[this.BODY.length - 1];
+        if(this.body.length>1){
+            let tail = this.body[this.body.length - 1];
             this.plateau[tail[1]][tail[0]] = Snake.TAIL;
         }
     }
@@ -166,7 +220,7 @@ class Snake {
     }
 
     getScore(){
-        return this.BODY.length;
+        return this.body.length;
     }
 
     // PLAY
@@ -177,6 +231,7 @@ class Snake {
         if(ok){
             this.move();
         }
+        this.manageBombs();
 
         return ok;
     }
@@ -185,6 +240,11 @@ class Snake {
         this.addListener();
 
         this.startInterval();
+    }
+
+    start(){
+        this.reset();
+        this.play();
     }
 
     // GAME MANAGEMENT
@@ -216,6 +276,9 @@ class Snake {
                 else if (val === Snake.HEAD) ctx.fillStyle = '#0b6623';
                 else if (val === Snake.BODY) ctx.fillStyle = '#26a269';
                 else if (val === Snake.TAIL) ctx.fillStyle = '#1b7a4a';
+                else if (val === Snake.BOMB) ctx.fillStyle = '#1b2c7aff';
+                else if (val === Snake.BOMB1) ctx.fillStyle = '#384ba1ff';
+                else if (val === Snake.BOMB2) ctx.fillStyle = '#6e83deff';
 
                 ctx.fillRect(x * this.cellW, y * this.cellH, this.cellW, this.cellH);
                 ctx.strokeStyle = '#e6e6e6';
