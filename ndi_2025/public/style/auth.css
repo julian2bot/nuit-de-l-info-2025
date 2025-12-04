@@ -1,0 +1,151 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
+body,
+html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Fond flouté */
+#lockScreen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('/images/fond/fondEcran.png') no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: transform 1s ease;
+    cursor: pointer;
+    color: white;
+    text-align: center;
+}
+
+#lockScreen::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* backdrop-filter: blur(10px); */
+    z-index: 0;
+}
+
+#lockScreenContent {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
+}
+
+#lockScreen h1 {
+    font-size: 2em;
+    margin-top: 20px;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+/* Avatar utilisateur */
+#lockScreen img.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    object-fit: cover;
+}
+
+/* Écran de login */
+#loginScreen {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('/images/fond/fondEcran.png') no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: top 1s ease;
+    color: white;
+    flex-direction: column;
+}
+
+#loginScreen::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(5px);
+    z-index: 0;
+}
+
+#loginScreen form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 300px;
+    z-index: 999;
+}
+
+#loginScreen input {
+    padding: 12px;
+    font-size: 1em;
+    border: none;
+    border-radius: 8px;
+}
+
+#loginScreen button {
+    padding: 12px;
+    font-size: 1em;
+    border: none;
+    border-radius: 8px;
+    background: #0078D7;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#loginScreen button:hover {
+    background: #005a9e;
+}
+
+/* Écran principal */
+#mainScreen {
+    /* position: absolute; */
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://source.unsplash.com/1920x1080/?city,night') no-repeat center center/cover;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    transition: top 1s ease;
+}
+
+#time {
+    font-size: 4em;
+    margin-bottom: 20px;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+}
+
+#date {
+    font-size: 2em;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+}
