@@ -15,3 +15,7 @@ Route::get('/truc', function () {
 Route::get('/truc/machine', function () {
     return view('welcome');
 })->name("trucMachine");
+
+Route::get('/explorateur-fichier', function () {
+    return view('explorateur_fichier');
+})->name("explorateurFichier");
