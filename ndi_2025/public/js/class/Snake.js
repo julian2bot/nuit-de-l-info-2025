@@ -1,9 +1,9 @@
 class Snake {
-    static VIDE = 0;
-    static POMME = 1;
-    static TETE = 2;
-    static CORPS = 3;
-    static FINCORPS = 4;
+    static EMPTY = 0;
+    static APPLE = 1;
+    static HEAD = 2;
+    static BODY = 3;
+    static TAIL = 4;
 
     constructor(width, height, tickrate) {
         this.width = width;
@@ -26,7 +26,7 @@ class Snake {
         this.direction = 'd'; // Droite, Haut, Bas, Gauche
 
         const plateau = Array.from({ length: this.height }, () =>
-            Array.from({ length: this.width }, () => Snake.VIDE)
+            Array.from({ length: this.width }, () => Snake.EMPTY)
         );
 
         this.plateau = plateau;
@@ -35,10 +35,10 @@ class Snake {
         this.cellH = Math.floor(this.canvas.height / this.height);
         this.intervalId = null;
 
-        this.corps = [];
+        this.BODY = [];
 
-        this.corps.push([this.posX, this.posY]);
-        this.plateau[this.posY][this.posX] = Snake.TETE;
+        this.BODY.push([this.posX, this.posY]);
+        this.plateau[this.posY][this.posX] = Snake.HEAD;
 
         this.addItem()
         this.render();
@@ -52,7 +52,7 @@ class Snake {
         let x = Snake.randomRange(0,this.width-1);
         let y = Snake.randomRange(0,this.height-1);
 
-        this.plateau[y][x] = Snake.POMME;
+        this.plateau[y][x] = Snake.APPLE;
     }
 
     calculateNextPose() {
@@ -82,13 +82,13 @@ class Snake {
         }
         else{
             switch (this.plateau[this.posY][this.posX]) {
-                case Snake.POMME:
-                    this.addCorps();
+                case Snake.APPLE:
+                    this.addBODY();
                     this.addItem()
                     break;
     
-                case Snake.CORPS:
-                case Snake.FINCORPS:
+                case Snake.BODY:
+                case Snake.TAIL:
                     this.die();
                     okay = false;
                     break;
@@ -101,46 +101,45 @@ class Snake {
         return okay;
     }
 
-    addCorps(){
+    addBODY(){
         this.added = true;
-        const temp = this.corps[this.corps.length-1];
-        this.corps.push([temp[0], temp[1]]);
+        const temp = this.BODY[this.BODY.length-1];
+        this.BODY.push([temp[0], temp[1]]);
     }
 
     move(){
         this.unDisplaySnake();
 
-        let max = this.corps.length -1;
+        let max = this.BODY.length -1;
         if(this.added){
-            max = this.corps.length -2; // Ne pas bouger le dernier si add
+            max -= 1; // Ne pas bouger le dernier si add
         }
         for (let index = max ; index > 0; index--) {
-            const elem = this.corps[index];
-            this.corps[index] = this.corps[index-1];
+            this.BODY[index] = this.BODY[index-1];
         }
 
-        this.corps[0] = [this.posX, this.posY];
+        this.BODY[0] = [this.posX, this.posY];
 
         this.displaySnake();
     }
 
     unDisplaySnake(){
-        for (let index = 0; index < this.corps.length; index++) {
-            const element = this.corps[index];
-            this.plateau[element[1]][element[0]] = Snake.VIDE;
+        for (let index = 0; index < this.BODY.length; index++) {
+            const element = this.BODY[index];
+            this.plateau[element[1]][element[0]] = Snake.EMPTY;
         }
     }
 
     displaySnake(){
-        let head = this.corps[0];
-        this.plateau[head[1]][head[0]] = Snake.TETE;
-        for (let index = 1; index < this.corps.length - 1; index++) {
-            const element = this.corps[index];
-            this.plateau[element[1]][element[0]] = Snake.CORPS;
+        let head = this.BODY[0];
+        this.plateau[head[1]][head[0]] = Snake.HEAD;
+        for (let index = 1; index < this.BODY.length - 1; index++) {
+            const element = this.BODY[index];
+            this.plateau[element[1]][element[0]] = Snake.BODY;
         }
-        if(this.corps.length>1){
-            let tail = this.corps[this.corps.length - 1];
-            this.plateau[tail[1]][tail[0]] = Snake.FINCORPS;
+        if(this.BODY.length>1){
+            let tail = this.BODY[this.BODY.length - 1];
+            this.plateau[tail[1]][tail[0]] = Snake.TAIL;
         }
     }
 
@@ -156,7 +155,7 @@ class Snake {
     }
 
     getScore(){
-        return this.corps.length;
+        return this.BODY.length;
     }
 
     getPlateau(){
@@ -219,11 +218,11 @@ class Snake {
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
                 const val = this.plateau[y][x];
-                if (val === Snake.VIDE) ctx.fillStyle = '#ffffff';
-                else if (val === Snake.POMME) ctx.fillStyle = '#ff4d4d';
-                else if (val === Snake.TETE) ctx.fillStyle = '#0b6623';
-                else if (val === Snake.CORPS) ctx.fillStyle = '#26a269';
-                else if (val === Snake.FINCORPS) ctx.fillStyle = '#1b7a4a';
+                if (val === Snake.EMPTY) ctx.fillStyle = '#ffffff';
+                else if (val === Snake.APPLE) ctx.fillStyle = '#ff4d4d';
+                else if (val === Snake.HEAD) ctx.fillStyle = '#0b6623';
+                else if (val === Snake.BODY) ctx.fillStyle = '#26a269';
+                else if (val === Snake.TAIL) ctx.fillStyle = '#1b7a4a';
 
                 ctx.fillRect(x * this.cellW, y * this.cellH, this.cellW, this.cellH);
                 ctx.strokeStyle = '#e6e6e6';
