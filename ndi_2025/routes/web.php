@@ -15,3 +15,7 @@ Route::get('/truc', function () {
 Route::get('/truc/machine', function () {
     return view('welcome');
 })->name("trucMachine");
+
+Route::get('/truc/testSnake', function () {
+    return view('truc.testSnake');
+});
