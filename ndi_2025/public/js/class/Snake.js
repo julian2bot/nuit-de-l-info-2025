@@ -21,29 +21,34 @@ class Snake {
                 this.width = 7;
                 this.height = 7;
                 this.bombNumber = 0;
+                this.minFreeSpace = 0;
                 break;
             
             case 2:
                 this.width = 10;
                 this.height = 10;
                 this.bombNumber = 1;
+                this.minFreeSpace = 5;
                 break;
 
             case 3:
                 this.width = 15;
                 this.height = 15;
                 this.bombNumber = 2;
+                this.minFreeSpace = 5;
                 break;
 
             case 4:
                 this.width = 20;
                 this.height = 20;
                 this.bombNumber = 4;
+                this.minFreeSpace = 5;
                 break;
         
             default:
                 this.width = 25;
                 this.height = 25;
+                this.minFreeSpace = 5;
                 
                 let bombN = 4 + (this.level - 4)*4;
 
@@ -109,7 +114,7 @@ class Snake {
     addBomb(){
         let pos = this.getFreeCoord();
         this.plateau[pos[1]][pos[0]] = Snake.BOMB;
-        this.bombs.push([pos[0], pos[1], 6])
+        this.bombs.push([pos[0], pos[1], Snake.randomRange(2,6)]);
     }
 
     manageBombs(){
@@ -141,9 +146,12 @@ class Snake {
         }
         let bombsToAdd = toRemove.length;
         this.bombs = this.bombs.filter(item => !toRemove.includes(item));
-        for (let index = 0; index < bombsToAdd; index++) {
-            this.addBomb();            
+        if(this.body.length + this.bombs.length + 1 + this.minFreeSpace < this.width*this.height){
+            for (let index = 0; index < bombsToAdd; index++) {
+                this.addBomb();        
+            }
         }
+
     }
 
     addItem(){
