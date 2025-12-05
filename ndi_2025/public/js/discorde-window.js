@@ -26,6 +26,7 @@ window.addEventListener("message", (event) => {
             break;
         case "changeUser":
             app.activeContact = data.value;
+            app.renderContacts();
             break;
         case "sendMessage":
             app.addLocalMessage(app.activeContact, { from: "Toi", text: data.text });
