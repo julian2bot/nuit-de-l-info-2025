@@ -1,11 +1,15 @@
 let topZ = 10;
+let focusedApp = null;
+
 // ----------------------------
 //       CLASS APPLICATION
 // ----------------------------
 class Application {
     constructor(config) {
         this.config = config;
+        this.taskbarItem = null;
         this.createWindow();
+        this.createTaskbarItem();
     }
 
     createWindow() {
@@ -89,10 +93,34 @@ class Application {
 
         this.el.addEventListener("mousedown", () => this.bringToFront());
         this.initDrag(header);
+
+        this.bringToFront();
+    }
+
+    createTaskbarItem() {
+        const container = document.querySelector('#taskbar > .items-container');
+        if (!container) return;
+
+        this.taskbarItem = document.createElement('div');
+        this.taskbarItem.className = 'taskbar-item active';
+        this.taskbarItem.textContent = this.config.title || 'Application';
+        this.taskbarItem.addEventListener('click', () => {
+            if (this.el.style.display === 'none') {
+                this.el.style.display = '';
+            }
+            this.bringToFront();
+        });
+        container.appendChild(this.taskbarItem);
     }
 
     close() {
         this.el.remove();
+        if (this.taskbarItem) {
+            this.taskbarItem.remove();
+        }
+        if (focusedApp === this) {
+            focusedApp = null;
+        }
     }
 
     minimize() {
@@ -121,57 +149,65 @@ class Application {
             this.el.style.top = this.prev.t;
         }
     }
-initDrag(header) {
-    let isDragging = false;
-    let startX, startY;
-    let offsetX, offsetY;
-    const dragThreshold = 5; // seuil en pixels pour considérer comme drag
+    initDrag(header) {
+        let isDragging = false;
+        let startX, startY;
+        let offsetX, offsetY;
+        const dragThreshold = 5; // seuil en pixels pour considérer comme drag
 
-    header.addEventListener("mousedown", (e) => {
-        startX = e.clientX;
-        startY = e.clientY;
-        offsetX = e.clientX - this.el.offsetLeft;
-        offsetY = e.clientY - this.el.offsetTop;
-        header.style.cursor = "grabbing";
+        header.addEventListener("mousedown", (e) => {
+            startX = e.clientX;
+            startY = e.clientY;
+            offsetX = e.clientX - this.el.offsetLeft;
+            offsetY = e.clientY - this.el.offsetTop;
+            header.style.cursor = "grabbing";
 
-        const onMouseMove = (e) => {
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
+            const onMouseMove = (e) => {
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
 
-            if (!isDragging && Math.sqrt(dx*dx + dy*dy) > dragThreshold) {
-                // Commence le drag
-                isDragging = true;
-            }
+                if (
+                    !isDragging &&
+                    Math.sqrt(dx * dx + dy * dy) > dragThreshold
+                ) {
+                    // Commence le drag
+                    isDragging = true;
+                }
 
-            if (isDragging) {
-                this.el.style.left = e.clientX - offsetX + "px";
-                this.el.style.top = e.clientY - offsetY + "px";
-            }
-        };
+                if (isDragging) {
+                    this.el.style.left = e.clientX - offsetX + "px";
+                    this.el.style.top = e.clientY - offsetY + "px";
+                }
+            };
 
-        const onMouseUp = (e) => {
-            document.removeEventListener("mousemove", onMouseMove);
-            document.removeEventListener("mouseup", onMouseUp);
-            header.style.cursor = "grab";
+            const onMouseUp = (e) => {
+                document.removeEventListener("mousemove", onMouseMove);
+                document.removeEventListener("mouseup", onMouseUp);
+                header.style.cursor = "grab";
 
-            // Si pas de drag, c'est juste un click => bringToFront
-            if (!isDragging) {
-                this.bringToFront();
-            }
+                // Si pas de drag, c'est juste un click => bringToFront
+                if (!isDragging) {
+                    this.bringToFront();
+                }
 
-            isDragging = false;
-        };
+                isDragging = false;
+            };
 
-        document.addEventListener("mousemove", onMouseMove);
-        document.addEventListener("mouseup", onMouseUp);
-    });
-}
-
-
+            document.addEventListener("mousemove", onMouseMove);
+            document.addEventListener("mouseup", onMouseUp);
+        });
+    }
 
     bringToFront() {
+        if (focusedApp && focusedApp !== this && focusedApp.taskbarItem) {
+            focusedApp.taskbarItem.classList.remove('active');
+        }
         topZ++;
         this.el.style.zIndex = topZ;
+        focusedApp = this;
+        if (this.taskbarItem) {
+            this.taskbarItem.classList.add('active');
+        }
     }
 }
 

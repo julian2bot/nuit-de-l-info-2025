@@ -177,11 +177,15 @@ iframe {
     z-index: 100;
 }
 
+.items-container {
+    display: flex;
+}
+
 .start-btn {
     background: #0078d7;
     color: white;
     height: 100%;
-    padding: 0 15px;
+    padding: 10px;
     display: flex;
     align-items: center;
     font-weight: bold;
@@ -205,6 +209,26 @@ iframe {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.taskbar-item {
+    background: #3a3a3a;
+    color: white;
+    padding: 8px 12px;
+    align-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    border-bottom: 2px solid transparent;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.taskbar-item:hover {
+    background: #4a4a4a;
+}
+
+.taskbar-item.active {
+    background: #505050;
+    border-bottom-color: #0078d7;
 }
 
 .marquee-selection {

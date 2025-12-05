@@ -29,9 +29,11 @@
         </div>
     </div>
 
-    <div class="taskbar">
-        <div class="start-btn" onclick="alert('Start Menu functionality coming soon!')">
-            <span class="start-icon">🪟</span> Start
+    <div class="taskbar" id="taskbar">
+        <div class="items-container">
+            <div class="start-btn" onclick="alert('Start Menu functionality coming soon!')">
+                <span class="start-icon">🪟</span> Start
+            </div>
         </div>
         <div class="tray">
             <span id="clock">12:00 PM</span>
@@ -143,6 +145,6 @@
             }
         });
     }
-</script>
+ </script>
 </body>
 </html>
