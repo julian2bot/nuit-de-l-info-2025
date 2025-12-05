@@ -472,7 +472,7 @@ class Snake3D extends Snake{
         this.body3d = [];
         this.apple3d = null;
         this.bombes = null;
-        this.plateau = null;
+        this.plateaus = null;
         this.bombes3d = [];
 
         this.loadModels();
@@ -584,9 +584,9 @@ class Snake3D extends Snake{
 
         // Plateau
         this.loader.load("/model/plateau.glb", gltf => {
-          this.plateau = gltf.scene;
-            this.plateau.scale.set(0.3,0.3,0.3);
-          this.scene.add(this.plateau);
+          this.plateaus = gltf.scene;
+            this.plateaus.scale.set(0.3,0.3,0.3);
+          this.scene.add(this.plateaus);
           
         });
 
