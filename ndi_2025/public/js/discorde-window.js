@@ -1,21 +1,35 @@
 import DiscordeApp from "./discorde.js";
 
 const content = document.getElementById("stage");
-var JSON = null;
-var PHILO = null;
-
-await fetch("../data/messages.json")
-    .then(res => res.json())
-    .then(json => {
-        JSON = json
-    }
-);
-
-await fetch("../data/philo.json")
-    .then(res => res.json())
-    .then(json => {
-        PHILO = json
-    }
-);
+var JSON = await fetch("../data/messages.json").then(res => res.json());
+var PHILO = await fetch("../data/philo.json").then(res => res.json());
 
 window.app = new DiscordeApp(content, JSON, PHILO);
+
+
+if (window.parent?.onIframeAction) {
+    window.parent.onIframeAction({ type: "appReady", appId: "Discorde" });
+}
+
+
+
+window.addEventListener("message", (event) => {
+    const data = event.data;
+    if (!data?.action) return;
+
+    switch (data.action) {
+        case "reveal":
+            app.revealMessage(data.messageId, data.contactId);
+            break;
+        case "windows":
+            app.startWindowsAutoMessages();
+            break;
+        case "sendMessage":
+            app.addLocalMessage(app.activeContact, { from: "Toi", text: data.text });
+            app.renderMessages();
+            break;
+        case "clear":
+            app.clearLocalStorage();
+            break;
+    }
+});

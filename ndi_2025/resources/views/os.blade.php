@@ -143,6 +143,46 @@
             }
         });
     }
+
+
+
+    // Exemple d'utilisation
+    function onIframeAction(data) {
+        console.log("Données reçues depuis l'iframe :", data);
+
+        if(data.type === "notif") {
+            alert("Notification depuis l'iframe : " + data.content.message);
+        }
+        if(data.type === "appReady") {
+            var discord = document.getElementById("Discorde_id");
+            discord.contentWindow.postMessage({
+                action: "windows"
+            }, "*");
+        }
+    }
+
+    // Rendre la fonction accessible globalement pour l'iframe
+    window.onIframeAction = onIframeAction;
+
+
+    // function openDiscord(){
+    //     console.log("discorde is opened");
+    //     var discord = document.getElementById("Discorde_id");
+
+    //     discord.addEventListener("load", () => {
+    //         console.log("iframe Discorde chargée, envoi du message");
+    //         discord.contentWindow.postMessage({
+    //             action: "windows"
+    //         }, "*");
+    //     });
+
+    //     if (discord.contentWindow && discord.contentWindow.document.readyState === "complete") {
+    //         discord.contentWindow.postMessage({ action: "windows" }, "*");
+    //     }
+    // }
+
+    
+
 </script>
 </body>
 </html>

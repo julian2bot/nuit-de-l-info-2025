@@ -11,6 +11,15 @@ class Application {
     createWindow() {
         const cfg = this.config;
 
+        const existing = document.getElementById("Discorde_id");
+        if (existing) {
+            console.log(existing)
+            existing.parentElement.style.display = "block";
+            topZ++;
+            existing.style.zIndex = topZ;
+            return;
+        }
+
         // Créer la fenêtre
         this.el = document.createElement("div");
         this.el.className = "window";
@@ -70,6 +79,7 @@ class Application {
         // Iframe
         const iframe = document.createElement("iframe");
         iframe.src = cfg.link || "/";
+        iframe.setAttribute("id", title.textContent+"_id");
         this.el.appendChild(iframe);
 
         iframe.onload = () => {
@@ -89,10 +99,19 @@ class Application {
 
         this.el.addEventListener("mousedown", () => this.bringToFront());
         this.initDrag(header);
+
+        // var disc = document.getElementById("Discorde_id");
+        // if (disc) {
+        //     openDiscord();
+        // }
     }
 
     close() {
-        this.el.remove();
+        // console.log(this.el.lastChild.id);
+        if (this.el.lastChild.id == "Discorde_id") {
+            this.el.style.display = "none";
+        }
+        else {this.el.remove();}
     }
 
     minimize() {
