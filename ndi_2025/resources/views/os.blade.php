@@ -2,11 +2,16 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>NIRD - OS pas fou</title>
     <link rel="stylesheet" href="{{ asset('style/os.css')}}">
+    <link rel="stylesheet" href="{{ asset('style/discordNotif.css')}}">
 </head>
 
 <body>
+    <div id="notifbar-discorde"></div>
+    
     <div class="desktop" id="desktopArea">
         <div class="icon" id="browser" data-name="Internet Browser">
             <span class="icon-img">🌐</span>
@@ -27,11 +32,23 @@
             <span class="icon-img">📩</span>
             <span class="icon-label">Discorde</span>
         </div>
+
+        <div class="icon" id="snake" data-name="Snake app">
+            <span class="icon-img">🐍</span>
+            <span class="icon-label">Snake</span>
+        </div>
+
+        <div class="icon" id="poduim" data-name="poduim app">
+            <span class="icon-img">🥉</span>
+            <span class="icon-label">Poduim</span>
+        </div>
     </div>
 
-    <div class="taskbar">
-        <div class="start-btn" onclick="alert('Start Menu functionality coming soon!')">
-            <span class="start-icon">🪟</span> Start
+    <div class="taskbar" id="taskbar">
+        <div class="items-container">
+            <div class="start-btn">
+                <span class="start-icon">🪟</span> Fenetre
+            </div>
         </div>
         <div class="tray">
             <span id="clock">12:00 PM</span>
@@ -40,6 +57,9 @@
 
     <script src="{{ asset('js/apps/apps.js')}}"></script>
     <script src="{{ asset('js/os/application.js')}}"></script>
+    <script src="{{ asset('js/os/notifDiscorde.js')}}"></script>
+    <script src="{{ asset('js/os/score.js')}}"></script>
+
 
 <script>
     function updateClock() {

@@ -18,6 +18,5 @@
   </div>
 
   <script type="module" src="{{asset('js/discorde-window.js') }}"></script>
-
 </body>
 </html>

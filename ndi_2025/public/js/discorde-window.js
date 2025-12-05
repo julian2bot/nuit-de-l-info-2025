@@ -12,7 +12,6 @@ if (window.parent?.onIframeAction) {
 }
 
 
-
 window.addEventListener("message", (event) => {
     const data = event.data;
     if (!data?.action) return;
@@ -33,3 +32,5 @@ window.addEventListener("message", (event) => {
             break;
     }
 });
+// export const app = new DiscordeApp(content, JSON, PHILO);
+// console.log(globalThis.app);

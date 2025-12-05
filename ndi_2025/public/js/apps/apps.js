@@ -1,6 +1,6 @@
 
 const apps = {
-    notepad: {
+    machin: {
         width: 500,
         height: 400,
         fullScreen: false,
@@ -44,5 +44,32 @@ const apps = {
         link: "/editeur-texte",
         reduire: true,
         resizable: true
+    },
+    snake: {
+        width: 900,
+        height: 600,
+        title: "Snake",
+        link: "/logiciels/snake",
+        reduire: true,
+        resizable: true
+    },
+    buggedSnake: {
+        width: 900,
+        height: 600,
+        title: "Snake",
+        link: "/logiciels/snake",
+        reduire: true,
+        resizable: true,
+        bugged: true
+    },
+    poduim: {
+        width: 900,
+        height: 600,
+        title: "Classement - Poduim",
+        link: "/logiciels/score",
+        reduire: true,
+        resizable: true,
+        bugged: false
     }
+
 };
