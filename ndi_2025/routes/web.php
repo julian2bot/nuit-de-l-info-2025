@@ -37,6 +37,11 @@ Route::get('/editeur-texte-mdp', function () {
 })->name("editeurTexte_mdp");
 
 
+Route::get('/editeur-texte-secret', function () {
+    return view('editeur_texte_secret');
+})->name("editeur_texte_secret");
+
+
 Route::get('/lecteur-audio', function () {
     return view('lecteur_audio');
 })->name("lecteur_audio");
