@@ -6,9 +6,12 @@
 
     <title>NIRD - OS pas fou</title>
     <link rel="stylesheet" href="{{ asset('style/os.css')}}">
+    <link rel="stylesheet" href="{{ asset('style/discordNotif.css')}}">
 </head>
 
 <body>
+    <div id="notifbar-discorde"></div>
+    
     <div class="desktop" id="desktopArea">
         <div class="icon" id="browser" data-name="Internet Browser">
             <span class="icon-img">🌐</span>
@@ -54,7 +57,9 @@
 
     <script src="{{ asset('js/apps/apps.js')}}"></script>
     <script src="{{ asset('js/os/application.js')}}"></script>
+    <script src="{{ asset('js/os/notifDiscorde.js')}}"></script>
     <script src="{{ asset('js/os/score.js')}}"></script>
+
 
 <script>
     function updateClock() {
