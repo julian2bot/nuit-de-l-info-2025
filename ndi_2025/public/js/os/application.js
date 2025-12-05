@@ -691,11 +691,12 @@ function openLogiciel(json) {
         json = { ...json, bugged: true };
         if (json.title != "Discorde") {
             var discord = document.getElementById("Discorde_id");
+            if (discord) {
             discord.contentWindow.postMessage({
                 action: "reveal",
                 messageId: "linux_"+appOpenCount,
                 contactId: 1
-            }, "*");
+            }, "*")};
         }
     }
 
