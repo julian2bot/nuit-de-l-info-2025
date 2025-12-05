@@ -40,7 +40,6 @@
 
 
 <!-- <script type="module" src="{{ asset('js/class/Snake.js')}}"></script> -->
-<script src="/js/os/score.js"></script>
 
 <script type="module">
     import Snake3D from "{{ asset('js/class/Snake.js') }}";
