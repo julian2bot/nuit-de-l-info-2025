@@ -554,6 +554,69 @@ export default class Snake3D extends Snake{
             this.loadModels();
     }
 
+    reset() {
+        // 1. Stop l'intervalle et remet les valeurs logiques à zéro
+        super.reset(); // Réinitialise plateau, score, position, niveau, etc.
+
+        // 2. Vider les objets 3D existants
+        if (this.body3d) {
+            this.body3d.forEach(seg => this.scene.remove(seg));
+            this.body3d = [];
+        }
+
+        if (this.bombes3d) {
+            this.bombes3d.forEach(b => this.scene.remove(b.mesh));
+            this.bombes3d = [];
+        }
+
+        // 3. Réinitialiser la tête et la pomme si elles existent
+        if (this.head3d) {
+            this.scene.remove(this.head3d);
+            this.head3d.position.set(this.body[0][0], 0.5, this.body[0][1]);
+            this.scene.add(this.head3d);
+        }
+
+        if (this.plateaus) {
+            // Retirer l'ancien modèle s’il existe
+            this.scene.remove(this.plateaus);
+
+            // Repositionner et ajouter à la scène
+            this.plateaus.position.set((this.width - 1)/2, 0, (this.height - 1)/2);
+            this.scene.add(this.plateaus);
+        }
+
+        if (this.apple3d) {
+            // Trouver la position de la nouvelle pomme
+            for (let y = 0; y < this.plateau.length; y++) {
+                for (let x = 0; x < this.plateau[0].length; x++) {
+                    if (this.plateau[y][x] === Snake.APPLE) {
+                        this.apple3d.position.set(x, 0.5, y);
+                    }
+                }
+            }
+            this.scene.add(this.apple3d);
+        }
+
+        // 4. Réinitialiser la caméra et les contrôles si nécessaire
+        if (this.controls) {
+            this.controls.reset();
+        }
+
+        // 5. Repositionner les cubes du plateau
+        if (this.cases) {
+            for (let y = 0; y < this.height; y++) {
+                for (let x = 0; x < this.width; x++) {
+                    const idx = y * this.width + x;
+                    const cube = this.cases[idx];
+                    cube.position.set(x, 0, y);
+                }
+            }
+        }
+
+        // 6. Render initial
+        this.render();
+    }
+
     addCameraControls() {
     document.addEventListener('keydown', (event) => {
         const step = 1;
