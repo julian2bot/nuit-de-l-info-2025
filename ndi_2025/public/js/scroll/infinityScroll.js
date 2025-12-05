@@ -15,6 +15,7 @@ let searchInput;
 function resetAndLoad() {
     container.innerHTML = "";
     offset = 0;
+    podiumRendered = false;
     loadMore();
 }
 
@@ -40,8 +41,9 @@ async function loadMore() {
     });    const result = await response.json();
 
     if (result.data && result.data.length > 0) {
-        result.data.forEach(p =>createCard(p));
-    }else{
+        // result.data.forEach(p =>createCard(p));
+        renderScores(result.data);
+    } else {
         createEmpty();
     }
 

@@ -2,9 +2,7 @@
 
 @section('title', 'Dashboard')
 
-@section('styles')
-    <link rel="stylesheet" href="{{ asset('style/infinityScroll.css') }}">
-@endsection
+<link rel="stylesheet" href="{{ asset('style/infinityScroll.css') }}">
 
 
 <div class="content">
@@ -38,7 +36,8 @@
 
     <br>
 
-    <div id="container"></div>
+    <div id="podium" class="podium"></div>
+    <div id="container" class="cards-container"></div>
 
     <div id="sentinel" style="height:20px;">
         <div id="loader" style="display:none;">

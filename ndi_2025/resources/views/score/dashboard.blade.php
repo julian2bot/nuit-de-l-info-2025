@@ -7,7 +7,6 @@
 @endsection
 
 @section('sort')
-    <option value="">Aucun tri</option>
     <option value="snake">Snake</option>
     <option value="easterEgg">Easter Egg</option>
     <option value="autres">Autres soon..</option>

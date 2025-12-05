@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Score;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class ScoreController extends Controller
 {
@@ -79,49 +78,98 @@ class ScoreController extends Controller
     // }
 
 
-        public function load(Request $request)
-    {
-        $limit = (int) ($request->limit ?? 10);
-        $offset = (int) ($request->offset ?? 0);
+    //     public function load(Request $request)
+    // {
+    //     $limit = (int) ($request->limit ?? 10);
+    //     $offset = (int) ($request->offset ?? 0);
 
-        $sort = $request->get('sort', 'total');
-        $direction = $request->get('direction', 'desc');
-        $search = $request->get('search', '');
+    //     $sort = $request->get('sort', 'total');
+    //     $direction = $request->get('direction', 'desc');
+    //     $search = $request->get('search', '');
 
-        $query = Score::query()
-            ->selectRaw("
-                scores.user_id,
-                users.name,
-                scores.type,
-                SUM(scores.nbpoint) AS total_points
-            ")
-            ->join('users', 'scores.user_id', '=', 'users.id')
-            ->groupBy('scores.user_id', 'users.name', 'scores.type');
+    //     $query = Score::query()
+    //         ->selectRaw("
+    //             scores.user_id,
+    //             users.name,
+    //             scores.type,
+    //             SUM(scores.nbpoint) AS total_points
+    //         ")
+    //         ->join('users', 'scores.user_id', '=', 'users.id')
+    //         ->groupBy('scores.user_id', 'users.name', 'scores.type');
 
-        if ($search !== '') {
-            $query->where('users.name', 'like', "%{$search}%");
-        }
+    //     if ($search !== '') {
+    //         $query->where('users.name', 'like', "%{$search}%");
+    //     }
 
-        if ($sort === 'user') {
-            $query->orderBy('users.name', $direction);
-        } elseif ($sort === 'type') {
-            $query->orderBy('scores.type', $direction);
-        } else {
-            $query->orderBy('total_points', $direction);
-        }
+    //     if ($sort === 'user') {
+    //         $query->orderBy('users.name', $direction);
+    //     } elseif ($sort === 'type') {
+    //         $query->orderBy('scores.type', $direction);
+    //     } else {
+    //         $query->orderBy('total_points', $direction);
+    //     }
 
-        $total = $query->get()->count();
+    //     $total = $query->get()->count();
 
-        $data = $query
-            ->offset($offset)
-            ->limit($limit)
-            ->get();
+    //     $data = $query
+    //         ->offset($offset)
+    //         ->limit($limit)
+    //         ->get();
 
-        return response()->json([
-            'data'        => $data,
-            'next_offset' => $offset + $limit,
-            'has_more'    => ($offset + $limit) < $total,
-        ]);
+    //     return response()->json([
+    //         'data'        => $data,
+    //         'next_offset' => $offset + $limit,
+    //         'has_more'    => ($offset + $limit) < $total,
+    //     ]);
+    // }
+
+
+
+public function load(Request $request)
+{
+    $limit = (int) ($request->limit ?? 10);
+    $offset = (int) ($request->offset ?? 0);
+
+    $type = $request->get('sort', null); // on utilise sort comme type maintenant
+    $direction =  'desc';
+    $search = $request->get('search', '');
+
+    $query = Score::query()
+        ->selectRaw("
+            scores.user_id,
+            users.name,
+            SUM(scores.nbpoint) AS total_points
+        ")
+        ->join('users', 'scores.user_id', '=', 'users.id');
+
+    // Filtrer par type si spécifié
+    if ($type) {
+        $query->where('scores.type', $type);
     }
+
+    // Filtre de recherche
+    if ($search !== '') {
+        $query->where('users.name', 'like', "%{$search}%");
+    }
+
+    // Toujours grouper par utilisateur
+    $query->groupBy('scores.user_id', 'users.name');
+
+    // Tri par total_points
+    $query->orderBy('total_points', $direction);
+
+    $total = $query->get()->count();
+
+    $data = $query
+        ->offset($offset)
+        ->limit($limit)
+        ->get();
+
+    return response()->json([
+        'data'        => $data,
+        'next_offset' => $offset + $limit,
+        'has_more'    => ($offset + $limit) < $total,
+    ]);
+}
 
 }
