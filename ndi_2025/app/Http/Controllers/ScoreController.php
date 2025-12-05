@@ -10,7 +10,7 @@ class ScoreController extends Controller
 {
     public function store(Request $request)
     {
-        error_log($request->type);
+        // error_log($request->type);
 
         $request->validate([
             'type' => 'required|string',

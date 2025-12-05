@@ -231,6 +231,58 @@
                     { name: "Personal", type: "folder", children: [
                         { name: "mot_de_passe.txt", type: "file", ext: "txt", link: "/editeur-texte-mdp", nb_points: 100 }
                     ]},
+                    { name : "PRIVÉ", type:'folder', children: [
+        { name: "Shortcut to Chrome", type: "file", ext: "exe" },
+
+        {
+            name: "New Folder",
+            type: "folder",
+            children: [
+
+                { name: "dossier_pas_louche", type: "folder", children: [] },
+
+                { name: "le_vrai_dossier", type: "folder", children: [
+                    { name: "ou_pas_finalement", type: "folder", children: [] }
+                ]},
+
+                { name: "pls_ouvre_pas", type: "folder", children: [
+                    { name: "trop_tard", type: "folder", children: [
+                        { name: "encore_pire", type: "folder", children: [] }
+                    ]}
+                ]},
+
+                { name: "ratio", type: "folder", children: [] },
+
+                { name: "skibidi_folder", type: "folder", children: [
+                    { name: "ohio_lvl1", type: "folder", children: [
+                        { name: "ohio_lvl2", type: "folder", children: [
+                            { name: "ohio_lvl3", type: "folder", children: [] }
+                        ]}
+                    ]}
+                ]},
+
+                { name: "brain_time", type: "folder", children: [
+                    { name: "more_brain", type: "folder", children: [
+                        { name: "even_more_brain", type: "folder", children: [
+                            { name: "ultimate_brain", type: "folder", children: [] }
+                        ]}
+                    ]}
+                ]},
+
+                { name: "exploration_interdite", type: "folder", children: [
+                    { name: "encore_plus_interdit", type: "folder", children: [
+                        { name: "bon_tu_l_auras_voulu", type: "folder", children: [
+                            { name: "fin_du_game", type: "folder", children: [
+                                { name: "message_final.txt", type: "file", ext: "txt", link: "/editeur-texte-secret", nb_points: 200 }
+                            ]}
+                        ]}
+                    ]}
+                ]}
+
+            ]
+        }
+    ]
+}
                 ]
             },
             "Bureau": {
