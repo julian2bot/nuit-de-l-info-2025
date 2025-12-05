@@ -52,5 +52,13 @@ const apps = {
         link: "/logiciels/snake",
         reduire: true,
         resizable: true
+    },
+    buggedSnake: {
+        width: 900,
+        height: 600,
+        title: "Snake",
+        link: "/logiciels/buggedSnake",
+        reduire: true,
+        resizable: true
     }
 };
