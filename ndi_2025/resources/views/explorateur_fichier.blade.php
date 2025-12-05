@@ -222,13 +222,14 @@
         </div>
     </div>
 
+    <script src="/js/os/score.js"></script>
     <script>
         const fileSystem = {
             "Documents": {
                 type: "folder",
                 children: [
                     { name: "Personal", type: "folder", children: [
-                        { name: "mot_de_passe.txt", type: "file", ext: "txt", link: "/editeur-texte-mdp" }
+                        { name: "mot_de_passe.txt", type: "file", ext: "txt", link: "/editeur-texte-mdp", nb_points: 100 }
                     ]},
                 ]
             },
@@ -245,11 +246,11 @@
             "Pictures": {
                 type: "folder",
                 children: [
-                    { name: "photo-de-nous.png", type: "file", ext: "img", link: "/images/photo_nous.png" },
+                    { name: "photo-de-nous.png", type: "file", ext: "img", link: "/images/photo_nous.png", nb_points: 100 },
                 ]
             },
             "Music": { type: "folder", children: [
-                { name: "banger.mp4", type: "file", ext: "mp4", link: "/lecteur-audio" }
+                { name: "banger.mp4", type: "file", ext: "mp4", link: "/lecteur-audio", nb_points: 100 }
             ] }
         };
 
@@ -286,15 +287,30 @@
                 if (item.type === "folder") {
                     el.ondblclick = () => enterFolder(item);
                 } else if (item.link) {
-                    el.ondblclick = () => window.parent.openLogiciel({
-                        width: 700,
-                        height: 400,
-                        fullScreen: false,
-                        title: item.name,
-                        link: item.link,
-                        reduire: true,
-                        resizable: true
-                    });
+                    if (item.nb_points) {
+                         el.ondblclick = () => {
+                            window.parent.openLogiciel({
+                                width: 700,
+                                height: 400,
+                                fullScreen: false,
+                                title: item.name,
+                                link: item.link,
+                                reduire: true,
+                                resizable: true
+                            });
+                           sendScore('easterEgg', item.name, item.nb_points);
+                         };
+                    } else {
+                        el.ondblclick = () => window.parent.openLogiciel({
+                            width: 700,
+                            height: 400,
+                            fullScreen: false,
+                            title: item.name,
+                            link: item.link,
+                            reduire: true,
+                            resizable: true
+                        });
+                    }
                 } else {
                     el.ondblclick = item.action;
                 }
