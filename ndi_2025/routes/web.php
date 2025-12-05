@@ -34,9 +34,6 @@ Route::get('/editeur-texte', function () {
 Route::get('/logiciels/snake', function () {
     return view('logiciels.snake');
 });
-Route::get('/logiciels/buggedSnake', function () {
-    return view('logiciels.buggedSnake');
-});
 Route::get('/discorde', function () {
     return view('discorde');
 })->name('discorde');
