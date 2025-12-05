@@ -83,4 +83,26 @@ Route::post('/score/load', [ScoreController::class, 'load'])
 
 Route::get('/logiciels/score', function () {
     return view('score.dashboard');
+  })->name("score.dashboard");
+
 })->name("score.dashboard");
+
+Route::get('/logiciels/nird/nird', function () {
+    return view('logiciels.nird.nird');
+})->name("logiciels.nird.nird");
+
+Route::get('/logiciels/nird/linux', function () {
+    return view('logiciels.nird.linux');
+})->name("logiciels.nird.linux");
+
+Route::get('/logiciels/nird/libres', function () {
+    return view('logiciels.nird.libres');
+})->name("logiciels.nird.libres");
+
+Route::get('/logiciels/nird/recondition', function () {
+    return view('logiciels.nird.recondition');
+})->name("logiciels.nird.recondition");
+
+Route::get('/logiciels/nird/serveur', function () {
+    return view('logiciels.nird.serveur');
+})->name("logiciels.nird.serveur");
