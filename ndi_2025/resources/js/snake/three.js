@@ -83,7 +83,27 @@ class Snake {
         }
         this.plateau[this.posY][this.posX] = Snake.HEAD;
         this.addItem()
-        this.render2d();
+
+        this.renderLevel();
+        this.renderScore();
+    }
+
+    reset(){
+        this.nexDir = ' ';
+        this.level = 1;
+
+        this.score = 0;
+
+        this.added = false;
+        this.playing = false;
+
+        this.direction = 'd'; // Droite, Haut, Bas, Gauche
+        
+        this.intervalId = null;
+
+        this.setTupLevel();
+
+        this.render();
     }
 
     static randomRange(min, max) {
@@ -347,8 +367,7 @@ class Snake {
     startInterval(){
         this.intervalId = setInterval(() => {
             const alive = this.turn();
-            this.render2d();
-            this.render3d();
+            this.render();
             if (!alive) {
                 clearInterval(this.intervalId);
             }
@@ -360,10 +379,9 @@ class Snake {
         this.intervalId = null;
     }
 
-    render2d() {
+    render() {
         const ctx = this.ctx;
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        console.log("help")
 
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
@@ -384,21 +402,67 @@ class Snake {
         }
     }
 
+    renderScore(){
+        if(this.scoreP == null){
+            this.scoreP = document.getElementById("scoreValue");
+        }
+        if(this.scoreP){
+            this.scoreP.innerHTML = this.score;
+        }
 
-    render3d() {}
-     
+        this.renderMaxScore();
+    }
+
+    renderMaxScore(){
+        if(this.score>this.maxScore){
+            this.maxScore = this.score;
+            if(this.maxScoreP == null){
+                this.maxScoreP = document.getElementById("scoreMaxValue");
+            }
+            if(this.maxScoreP){
+                this.maxScoreP.innerHTML = this.maxScore;
+            }
+        }
+    }
+
+    renderLevel(){
+        if(this.levelP == null){
+            this.levelP = document.getElementById("levelValue");
+        }
+        if(this.levelP){
+            this.levelP.innerHTML = this.level;
+        }
+    }
+
+    // AUTRE
+    addListener(){
+        document.addEventListener('keydown', (event) => {
+            switch (event.key) {
+                case 'ArrowUp':
+                    this.nexDir = 'h';
+                    break;
+
+                case 'ArrowDown':
+                    this.nexDir = 'b';
+                    break;
+
+                case 'ArrowLeft':
+                    this.nexDir = 'g';
+                    break;
+
+                case 'ArrowRight':
+                    this.nexDir = 'd';
+                    break;
+            }
+        });
+    }
 }
 
 
+class Snake3D extends Snake{
+    constructor(ticks, onDeathFunction) {
+        super(ticks, onDeathFunction);
 
-
-
-
-
-class Snake3D {
-    constructor(width, height) {
-        this.width = width;
-        this.height = height;
         this.body3d = [];
 
         this.scene = new THREE.Scene();
@@ -409,8 +473,8 @@ class Snake3D {
 
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
-        this.camera.position.set(width/2, 10, height/2);
-        this.camera.lookAt(new THREE.Vector3(width/2, 0, height/2));
+        this.camera.position.set(this.width/2, 10, this.height/2);
+        this.camera.lookAt(new THREE.Vector3(this.width/2, 0, this.height/2));
 
         const light = new THREE.DirectionalLight(0xffffff, 1);
         light.position.set(5,5,5);
@@ -422,11 +486,11 @@ class Snake3D {
         this.body3d = [];
         this.apple3d = null;
 
-        this.initPlateau();
         this.loadModels();
 
-        this.animate();
+        // this.animate();
     }
+    
 
     initPlateau() {
         const geometry = new THREE.BoxGeometry(1, 0.1, 1);
@@ -442,6 +506,11 @@ class Snake3D {
                 this.cases.push(cube);
             }
         }
+    }
+
+    setTupLevel(){
+        super.setTupLevel();
+        this.initPlateau();
     }
 
     loadModels() {
@@ -463,21 +532,21 @@ class Snake3D {
         });
     }
 
-    update(plateau, body) {
+    render() {
         if (!this.head3d || !this.bodyTemplate) return;
         
         
         if (this.apple3d) {
-            for (let y=0; y<plateau.length; y++) {
-                for (let x=0; x<plateau[0].length; x++) {
-                    if (plateau[y][x] === Snake.APPLE) {
+            for (let y=0; y<this.plateau.length; y++) {
+                for (let x=0; x<this.plateau[0].length; x++) {
+                    if (this.plateau[y][x] === Snake.APPLE) {
                         this.apple3d.position.set(x, 0.5, y);
                     }
                 }
             }
         }
 
-        while (this.body3d.length < body.length - 1) {
+        while (this.body3d.length < this.body.length - 1) {
           const segment = this.bodyTemplate.clone(true);
           segment.scale.set(0.2, 0.2, 0.2);
           this.scene.add(segment);
@@ -485,11 +554,11 @@ class Snake3D {
         }
 
         if (this.head3d) {
-            const [hx, hy] = body[0];
+            const [hx, hy] = this.body[0];
             this.head3d.position.set(hx, 0.5, hy);
         }
-        for (let i = 1; i < body.length; i++) {
-            const [x, y] = body[i];
+        for (let i = 1; i < this.body.length; i++) {
+            const [x, y] = this.body[i];
             this.body3d[i - 1].position.set(x, 0.5, y);
         }
     }
@@ -499,15 +568,23 @@ class Snake3D {
         this.controls.update();
         this.renderer.render(this.scene, this.camera);
     }
+
+    play(){
+        super.play();
+        this.animate();
+    }
 }
 
 
-console.log("Snake start !");
-const snake = new Snake(10, 10, 150);
-const snake3d = new Snake3D(10, 10);
+    // console.log("Snake start !");
+    // const snake = new Snake(500);
+    // const snake3d = new Snake3D(10, 10);
+    const snake3d = new Snake3D(500,gg);
+    snake3d.start();
+    // snake.render3d = function() {
+    //     snake3d.update(this.plateau, this.BODY);
+    // };
 
-snake.render3d = function() {
-    snake3d.update(this.plateau, this.BODY);
-};
+    function gg(){
 
-snake.play();
+    }
