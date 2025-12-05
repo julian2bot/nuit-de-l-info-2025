@@ -471,6 +471,9 @@ class Snake3D extends Snake{
         this.head3d = null;
         this.body3d = [];
         this.apple3d = null;
+        this.bombes = null;
+        this.plateau = null;
+        this.bombes3d = [];
 
         this.loadModels();
 
@@ -500,19 +503,32 @@ class Snake3D extends Snake{
         this.scene = new THREE.Scene();
         let canvas = document.getElementById('canva2');
 
-        // Configuration caméra orthographique pour vue top-down
+            
+        // Centre du plateau
+        const centerX = (this.width - 1) / 2;
+        const centerZ = (this.height - 1) / 2;
+
+        // Taille du frustum
+        const aspect = canvas.clientWidth / canvas.clientHeight;
+        const maxDim = Math.max(this.width+6, this.height+6);
+        const frustumSize = maxDim * 1.2;
+
+        // Créer caméra orthographique
         this.camera = new THREE.OrthographicCamera(
-            0,              // left
-            this.width,     // right
-            0,              // top
-            this.height,    // bottom
-            0.1,
-            1000
+            -frustumSize / 2 * aspect, frustumSize / 2 * aspect, // left, right
+            frustumSize / 2, -frustumSize / 2,                 // top, bottom
+            0.1, 1000
         );
 
-        // Positionner la caméra directement au-dessus, regardant vers le bas
-        this.camera.position.set(this.width/2, 50, this.height/2);
-        this.camera.lookAt(this.width/2, 0, this.height/2);
+        // Positionner la caméra au-dessus du plateau
+        const cameraHeight = 100; 
+        this.camera.position.set(centerX, cameraHeight, centerZ);
+
+        // Regarder le centre du plateau
+        this.camera.lookAt(centerX, 0, centerZ * -1);
+        this.camera.updateProjectionMatrix();
+
+        this.scene.rotation.y = Math.PI/4;
         
         // Désactiver les contrôles pour garder la vue fixe
         this.renderer = new THREE.WebGLRenderer({ canvas });
@@ -537,8 +553,9 @@ class Snake3D extends Snake{
     
     loadModels() {
         // HEAD
-        this.loader.load("/model/boite.glb", gltf => {
+        this.loader.load("../model/boite.glb", gltf => {
             this.head3d = gltf.scene;
+            this.head3d.scale.set(0.5,0.5,0.5);
             this.scene.add(this.head3d);
         });
 
@@ -552,41 +569,76 @@ class Snake3D extends Snake{
             this.apple3d.scale.set(0.5,0.5,0.5);
             this.scene.add(this.apple3d);
         });
+
+        // Bombes
+        this.loader.load("/model/bombes.gltf", gltf => {
+            this.bombes = gltf.scene;
+            this.bombes.scale.set(0.5,0.5,0.5);
+        });
+
+
+
     }
 
-    // render() {
-    //     super.render();
-    //     console.log("debut");
-    //     if (!this.head3d || !this.bodyTemplate) return;
-        
-    //     console.log("debut1");
-        
-    //     if (this.apple3d) {
-    //         for (let y=0; y<this.plateau.length; y++) {
-    //             for (let x=0; x<this.plateau[0].length; x++) {
-    //                 if (this.plateau[y][x] === Snake.APPLE) {
-    //                     this.apple3d.position.set(x, 0.5, y);
-    //                 }
-    //             }
-    //         }
-    //     }
+    render() {
+        if (!this.head3d || !this.bodyTemplate) return;
 
-    //     while (this.body3d.length < this.body.length - 1) {
-    //       const segment = this.bodyTemplate.clone(true);
-    //       segment.scale.set(0.2, 0.2, 0.2);
-    //       this.scene.add(segment);
-    //       this.body3d.push(segment);
-    //     }
+        // Ajouter de nouveaux segments si besoin
+        while (this.body3d.length < this.body.length - 1) {
+            const segment = this.bodyTemplate.clone(true);
+            segment.scale.set(0.2, 0.2, 0.2);
+            this.scene.add(segment);
+            this.body3d.push(segment);
+        }
 
-    //     if (this.head3d) {
-    //         const [hx, hy] = this.body[0];
-    //         this.head3d.position.set(hx, 0.5, hy);
-    //     }
-    //     for (let i = 1; i < this.body.length; i++) {
-    //         const [x, y] = this.body[i];
-    //         this.body3d[i - 1].position.set(x, 0.5, y);
-    //     }
-    // }
+        // Positionner la tête
+        const [hx, hy] = this.body[0];
+        this.head3d.position.set(hx, 0.5, hy);
+
+        // Positionner le corps
+        for (let i = 1; i < this.body.length; i++) {
+            const [x, y] = this.body[i];
+            this.body3d[i - 1].position.set(x, 0.5, y);
+        }
+
+        // Positionner la pomme
+        if (this.apple3d) {
+            for (let y = 0; y < this.plateau.length; y++) {
+                for (let x = 0; x < this.plateau[0].length; x++) {
+                    if (this.plateau[y][x] === Snake.APPLE) {
+                        this.apple3d.position.set(x, 0.5, y);
+                    }
+                }
+            }
+        }
+        if (this.bombes) {
+            // Supprimer les bombes disparues
+            this.bombes3d = this.bombes3d.filter(b => {
+                const val = this.plateau[b.y][b.x];
+                if (![Snake.BOMB, Snake.BOMB1, Snake.BOMB2].includes(val)) {
+                    this.scene.remove(b.mesh);
+                    return false;
+                }
+                return true;
+            });
+
+                // Ajouter les nouvelles bombes
+                for (let y = 0; y < this.plateau.length; y++) {
+                    for (let x = 0; x < this.plateau[0].length; x++) {
+                        const val = this.plateau[y][x];
+                        if ([Snake.BOMB, Snake.BOMB1, Snake.BOMB2].includes(val)) {
+                            const exists = this.bombes3d.some(b => b.x === x && b.y === y);
+                            if (!exists) {
+                                const bomb = this.bombes.clone(true);
+                                bomb.position.set(x, 0.5, y);
+                                this.scene.add(bomb);
+                                this.bombes3d.push({ mesh: bomb, x, y });
+                            }
+                        }
+                    }
+                }
+            }
+    }
 
     animate = () => {
         requestAnimationFrame(this.animate);
@@ -599,6 +651,7 @@ class Snake3D extends Snake{
         this.animate();
     }
 }
+
 
 
 // console.log("Snake start !");
