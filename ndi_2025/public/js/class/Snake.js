@@ -15,6 +15,7 @@ class Snake {
 
         this.canvas = document.getElementById('game');
         this.ctx = this.canvas.getContext('2d');
+        this.nexDir = '';
     }
 
     setTupLevel(){
@@ -83,6 +84,7 @@ class Snake {
     }
 
     reset(){
+        this.nexDir = ' ';
         this.level = 1;
 
         this.score = 0;
@@ -288,20 +290,25 @@ class Snake {
         }
     }
 
-    changeDir(dir){
-        const opposites = {
-            'd': 'g', 
-            'g': 'd', 
-            'h': 'b',
-            'b': 'h'
-        };
+    changeDir(){
+        if(this.nexDir!= ' '){
+            const opposites = {
+                'd': 'g', 
+                'g': 'd', 
+                'h': 'b',
+                'b': 'h'
+            };
+    
+            if (!['d', 'g', 'h', 'b'].includes(this.nexDir)) {
+                this.nexDir = 'd';
+            }
+    
+            if (this.nexDir !== opposites[this.direction]) {
+                this.direction = this.nexDir;
+            }
+            this.nexDir = ' ';
 
-        if (!['d', 'g', 'h', 'b'].includes(dir)) {
-            dir = 'd';
-        }
-
-        if (dir !== opposites[this.direction]) {
-            this.direction = dir;
+            console.log("Change dir");
         }
     }
 
@@ -319,6 +326,7 @@ class Snake {
     // PLAY
 
     turn(){
+        this.changeDir();
         this.calculateNextPose();
         let ok = this.manageNextPose();
         if(ok){
@@ -426,19 +434,19 @@ class Snake {
         document.addEventListener('keydown', (event) => {
             switch (event.key) {
                 case 'ArrowUp':
-                    this.changeDir('h')
+                    this.nexDir = 'h';
                     break;
 
                 case 'ArrowDown':
-                    this.changeDir('b')
+                    this.nexDir = 'b';
                     break;
 
                 case 'ArrowLeft':
-                    this.changeDir('g')
+                    this.nexDir = 'g';
                     break;
 
                 case 'ArrowRight':
-                    this.changeDir('d')
+                    this.nexDir = 'd';
                     break;
             }
         });
