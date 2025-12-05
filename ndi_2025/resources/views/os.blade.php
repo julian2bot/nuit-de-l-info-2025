@@ -34,6 +34,11 @@
             <span class="icon-img">🐍</span>
             <span class="icon-label">Snake</span>
         </div>
+
+        <div class="icon" id="poduim" data-name="poduim app">
+            <span class="icon-img">🥉</span>
+            <span class="icon-label">Poduim</span>
+        </div>
     </div>
 
     <div class="taskbar" id="taskbar">

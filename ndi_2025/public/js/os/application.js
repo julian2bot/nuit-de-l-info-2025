@@ -388,6 +388,7 @@ function switchToLinuxDesktop() {
         filesystem: { emoji: "📂", label: "Fichiers" },
         discorde: { emoji: "💬", label: "Discorde" },
         snake: { emoji: "🐍", label: "Snake" },
+        poduim: { emoji: "🥇", label: "poduim" },
     };
 
     Object.keys(linuxIcons).forEach((id) => {

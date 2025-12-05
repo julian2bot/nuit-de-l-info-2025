@@ -61,5 +61,15 @@ const apps = {
         reduire: true,
         resizable: true,
         bugged: true
+    },
+    poduim: {
+        width: 900,
+        height: 600,
+        title: "Classement - Poduim",
+        link: "/logiciels/score",
+        reduire: true,
+        resizable: true,
+        bugged: false
     }
+
 };
