@@ -684,6 +684,14 @@ function openLogiciel(json) {
     // 3rd and 4th apps are frozen
     if (appOpenCount >= 3) {
         json = { ...json, bugged: true };
+        if (json.title != "Discorde") {
+            var discord = document.getElementById("Discorde_id");
+            discord.contentWindow.postMessage({
+                action: "reveal",
+                messageId: "linux_"+appOpenCount,
+                contactId: 1
+            }, "*");
+        }
     }
 
     new Application(json);
