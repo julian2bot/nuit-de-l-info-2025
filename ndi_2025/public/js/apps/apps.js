@@ -31,7 +31,7 @@ const apps = {
         width: 900,
         height: 600,
         title: "Snake",
-        link: "/truc/testSnake",
+        link: "/logiciels/snake",
         reduire: true,
         resizable: true
     }

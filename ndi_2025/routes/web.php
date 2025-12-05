@@ -23,6 +23,6 @@ Route::get('/editeur-texte', function () {
     return view('editeur_texte');
 })->name("editeurTexte");
 
-Route::get('/truc/testSnake', function () {
-    return view('truc.testSnake');
+Route::get('/logiciels/snake', function () {
+    return view('logiciels.snake');
 });
