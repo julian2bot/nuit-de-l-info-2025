@@ -12,4 +12,9 @@ class Score extends Model
         'ref',
         'nbpoint',
     ];
+
+        public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -45,3 +45,11 @@ Route::get('/me', function () {
 Route::post('/score', [ScoreController::class, 'store'])
     ->middleware('auth')
     ->name('score.store');
+
+Route::post('/score/load', [ScoreController::class, 'load'])
+    ->name('score.load');
+
+
+Route::get('/logiciel/score', function () {
+    return view('score.dashboard');
+})->name("score.dashboard");
