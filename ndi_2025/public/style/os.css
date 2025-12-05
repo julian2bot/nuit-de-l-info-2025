@@ -198,7 +198,6 @@ iframe.bugged {
     display: flex;
     align-items: center;
     font-weight: bold;
-    cursor: pointer;
     transition: background 0.2s;
 }
 

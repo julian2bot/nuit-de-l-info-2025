@@ -114,8 +114,6 @@ function showBluescreen() {
 }
 
 // ----------------------------
-//       LINUX BOOT FUNCTION
-// ----------------------------
 //    WINDOWS 11 UPGRADE DIALOG
 // ----------------------------
 function showUpgradeDialog() {
@@ -135,11 +133,6 @@ function showUpgradeDialog() {
                 <p><strong>Votre application ne répond pas.</strong></p>
                 <p>Cela peut être dû à une version obsolète de Windows.</p>
                 <p>Pour une meilleure expérience, nous vous recommandons de mettre à niveau vers <strong>Windows 11</strong>.</p>
-                <div class="upgrade-features">
-                    <p>✨ Plus de stabilité</p>
-                    <p>🚀 Meilleures performances</p>
-                    <p>🔒 Sécurité renforcée</p>
-                </div>
             </div>
             <div class="upgrade-footer">
                 <button class="upgrade-btn-secondary" onclick="this.parentElement.parentElement.parentElement.remove()">Me le rappeler plus tard</button>
@@ -421,6 +414,24 @@ class Application {
     createWindow() {
         const cfg = this.config;
 
+        // Check if Discord already exists - only for Discord app
+        if (cfg.title === "Discorde") {
+            const existing = document.getElementById("Discorde_id");
+            if (existing) {
+                console.log("Discord already open, restoring window");
+                existing.parentElement.style.display = "block";
+                topZ++;
+                existing.parentElement.style.zIndex = topZ;
+
+                // Find the existing taskbar item and make it active
+                const existingTaskItem = document.getElementById("Discorde_taskid");
+                if (existingTaskItem) {
+                    existingTaskItem.classList.add("active");
+                }
+                return;
+            }
+        }
+
         // Créer la fenêtre
         this.el = document.createElement("div");
         this.el.className = "window";
@@ -480,6 +491,7 @@ class Application {
         // Iframe
         const iframe = document.createElement("iframe");
         iframe.src = cfg.link || "/";
+        iframe.setAttribute("id", title.textContent+"_id");
         this.el.appendChild(iframe);
 
         // Bugged mode
@@ -496,7 +508,7 @@ class Application {
                 if (pageTitle) {
                     title.textContent = pageTitle;
                     if (cfg.bugged) {
-                        title.textContent = pageTitle += " (Ne répond pas)";
+                        title.textContent += " (Ne répond pas)";
                     }
                 }
             } catch (error) {
@@ -510,16 +522,27 @@ class Application {
 
         this.el.addEventListener("mousedown", () => this.bringToFront());
         this.initDrag(header);
-
-        this.bringToFront();
     }
 
     createTaskbarItem() {
         const container = document.querySelector("#taskbar > .items-container");
         if (!container) return;
 
+        // Check if taskbar item already exists for this app (mainly for Discord)
+        const taskId = this.config.title + "_taskid";
+        const existingTaskItem = document.getElementById(taskId);
+
+        if (existingTaskItem) {
+            // Reuse existing taskbar item (for Discord reopening)
+            this.taskbarItem = existingTaskItem;
+            this.taskbarItem.classList.add("active");
+            return;
+        }
+
+        // Create new taskbar item
         this.taskbarItem = document.createElement("div");
         this.taskbarItem.className = "taskbar-item active";
+        this.taskbarItem.id = taskId;
         this.taskbarItem.textContent = this.config.title || "Application";
         this.taskbarItem.addEventListener("click", () => {
             if (this.el.style.display === "none") {
@@ -531,6 +554,13 @@ class Application {
     }
 
     close() {
+        // Special handling for Discord - just hide it
+        if (this.config.title === "Discorde") {
+            this.el.style.display = "none";
+            return;
+        }
+
+        // Normal close for other apps
         this.el.remove();
         if (this.taskbarItem) {
             this.taskbarItem.remove();
@@ -566,6 +596,7 @@ class Application {
             this.el.style.top = this.prev.t;
         }
     }
+
     initDrag(header) {
         let isDragging = false;
         let startX, startY;
@@ -632,7 +663,11 @@ class Application {
 //        FONCTION GLOBALE
 // ----------------------------
 function openLogiciel(json) {
-    appOpenCount++;
+    // console.log(json)
+    if (json.title != "Discorde") {
+        appOpenCount++;
+    }
+
 
     // Skip crashes in Linux mode
     if (isLinuxMode) {
@@ -649,6 +684,15 @@ function openLogiciel(json) {
     // 3rd and 4th apps are frozen
     if (appOpenCount >= 3) {
         json = { ...json, bugged: true };
+        if (json.title != "Discorde") {
+            var discord = document.getElementById("Discorde_id");
+            if (discord) {
+            discord.contentWindow.postMessage({
+                action: "reveal",
+                messageId: "linux_"+appOpenCount,
+                contactId: 1
+            }, "*")};
+        }
     }
 
     new Application(json);

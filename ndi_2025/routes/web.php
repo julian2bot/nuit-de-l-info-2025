@@ -32,9 +32,34 @@ Route::get('/editeur-texte', function () {
     return view('editeur_texte');
 })->name("editeurTexte");
 
+Route::get('/editeur-texte-mdp', function () {
+    return view('editeur_texte_mdp');
+})->name("editeurTexte_mdp");
+
+
+Route::get('/editeur-texte-secret', function () {
+    return view('editeur_texte_secret');
+})->name("editeur_texte_secret");
+
+
+Route::get('/lecteur-audio', function () {
+    return view('lecteur_audio');
+})->name("lecteur_audio");
+
+
+Route::get('/photo-nous', function () {
+    return view('photo_nous');
+})->name("photo_nous");
+
+
+
+Route::get('/credit', function () {
+    return view('credit');
+})->name("credit");
+
 Route::get('/logiciels/snake', function () {
     return view('logiciels.snake');
-});
+})->name("snake");;
 Route::get('/discorde', function () {
     return view('discorde');
 })->name('discorde');
@@ -48,7 +73,6 @@ Route::get('/me', function () {
     return Auth::user();
 })->name("eee");
 
-
 Route::post('/score', [ScoreController::class, 'store'])
     ->middleware('auth')
     ->name('score.store');
@@ -59,6 +83,8 @@ Route::post('/score/load', [ScoreController::class, 'load'])
 
 Route::get('/logiciels/score', function () {
     return view('score.dashboard');
+  })->name("score.dashboard");
+
 })->name("score.dashboard");
 
 Route::get('/logiciels/nird/nird', function () {

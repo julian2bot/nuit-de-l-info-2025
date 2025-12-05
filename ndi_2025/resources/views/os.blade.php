@@ -11,7 +11,7 @@
 
 <body>
     <div id="notifbar-discorde"></div>
-    
+
     <div class="desktop" id="desktopArea">
         <div class="icon" id="browser" data-name="Internet Browser">
             <span class="icon-img">🌐</span>
@@ -41,6 +41,7 @@
         <div class="icon" id="poduim" data-name="poduim app">
             <span class="icon-img">🥉</span>
             <span class="icon-label">Podium</span>
+
         </div>
         
         <div class="icon" id="nird_site" data-name="nird site">
@@ -77,7 +78,7 @@
 
     <div class="taskbar" id="taskbar">
         <div class="items-container">
-            <div class="start-btn" onclick="alert('Start Menu functionality coming soon!')">
+            <div class="start-btn">
                 <span class="start-icon">🪟</span> Fenetre
             </div>
         </div>
@@ -194,6 +195,29 @@
             }
         });
     }
- </script>
+
+
+
+    function onIframeAction(data) {
+        console.log("Données reçues depuis l'iframe :", data);
+
+        if(data.type === "notif") {
+            // alert("Notification depuis l'iframe : " + data.content.message);
+            addNotif(data);
+        }
+        if(data.type === "appReady") {
+            var discord = document.getElementById("Discorde_id");
+            discord.contentWindow.postMessage({
+                action: "windows"
+            }, "*");
+        }
+    }
+
+    // Rendre la fonction accessible globalement pour l'iframe
+    window.onIframeAction = onIframeAction;
+
+    
+
+</script>
 </body>
 </html>

@@ -85,6 +85,27 @@
     color: #dcdfe4;
 }
 
+.discorde-link-preview {
+    margin-top: 6px;
+    padding: 8px;
+    border-radius: 8px;
+    background: #2e2e2e;
+    border-left: 4px solid #7289da;
+}
+
+.discorde-link-preview .preview-title {
+    font-size: 0.75rem;
+    color: #ccc;
+    margin-bottom: 4px;
+}
+
+.discorde-link-preview .preview-url {
+    color: #77aaff;
+    word-break: break-all;
+    text-decoration: underline;
+}
+
+
 
 /* ================================
    envoie de msg

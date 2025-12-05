@@ -222,39 +222,91 @@
         </div>
     </div>
 
+    <script src="/js/os/score.js"></script>
     <script>
-        // --- 1. The Virtual File System Data ---
         const fileSystem = {
             "Documents": {
                 type: "folder",
                 children: [
-                    { name: "Work Projects", type: "folder", children: [
-                        { name: "Quarterly Report.docx", type: "file", ext: "docx" },
-                        { name: "Budget.xlsx", type: "file", ext: "xlsx" }
-                    ]},
                     { name: "Personal", type: "folder", children: [
-                        { name: "Vacation.jpg", type: "file", ext: "img" }
+                        { name: "mot_de_passe.txt", type: "file", ext: "txt", link: "/editeur-texte-mdp", nb_points: 100 }
                     ]},
-                    { name: "Resume.pdf", type: "file", ext: "pdf" },
-                    { name: "Notes.txt", type: "file", ext: "txt" }
+                    { name : "PRIVÉ", type:'folder', children: [
+        { name: "Shortcut to Chrome", type: "file", ext: "exe" },
+
+        {
+            name: "New Folder",
+            type: "folder",
+            children: [
+
+                { name: "dossier_pas_louche", type: "folder", children: [] },
+
+                { name: "le_vrai_dossier", type: "folder", children: [
+                    { name: "ou_pas_finalement", type: "folder", children: [] }
+                ]},
+
+                { name: "pls_ouvre_pas", type: "folder", children: [
+                    { name: "trop_tard", type: "folder", children: [
+                        { name: "encore_pire", type: "folder", children: [] }
+                    ]}
+                ]},
+
+                { name: "ratio", type: "folder", children: [] },
+
+                { name: "skibidi_folder", type: "folder", children: [
+                    { name: "ohio_lvl1", type: "folder", children: [
+                        { name: "ohio_lvl2", type: "folder", children: [
+                            { name: "ohio_lvl3", type: "folder", children: [] }
+                        ]}
+                    ]}
+                ]},
+
+                { name: "brain_time", type: "folder", children: [
+                    { name: "more_brain", type: "folder", children: [
+                        { name: "even_more_brain", type: "folder", children: [
+                            { name: "ultimate_brain", type: "folder", children: [] }
+                        ]}
+                    ]}
+                ]},
+
+                { name: "exploration_interdite", type: "folder", children: [
+                    { name: "encore_plus_interdit", type: "folder", children: [
+                        { name: "bon_tu_l_auras_voulu", type: "folder", children: [
+                            { name: "fin_du_game", type: "folder", children: [
+                                { name: "message_final.txt", type: "file", ext: "txt", link: "/editeur-texte-secret", nb_points: 200 }
+                            ]}
+                        ]}
+                    ]}
+                ]}
+
+            ]
+        }
+    ]
+}
                 ]
             },
-            "Desktop": {
+            "Bureau": {
                 type: "folder",
                 children: [
                     { name: "Shortcut to Chrome", type: "file", ext: "exe" },
                     { name: "New Folder", type: "folder", children: [] }
                 ]
             },
-            "Downloads": { type: "folder", children: [] },
+            "Downloads": { type: "folder", children: [
+                { name: "InstallLinuxNIRD.exe", type: "file", ext: "exe", action: () => window.parent.bootLinux() }
+            ]},
             "Pictures": {
                 type: "folder",
                 children: [
-                    { name: "Cat.png", type: "file", ext: "img" },
-                    { name: "Dog.png", type: "file", ext: "img" }
+                    { name: "photo-de-nous.png", type: "file", ext: "img", link: "/images/photo_nous.png", nb_points: 100 },
+                    { name: "push-magique.png", type: "file", ext: "img", link: "/images/pushMagique.png", nb_points: 50 },
+                    { name: "sauccisonGEANNNNT.jpg", type: "file", ext: "img", link: "/images/sauccisonGEANNNNT.jpg", nb_points: 50 },
+                    { name: "travail.png", type: "file", ext: "img", link: "/images/travail.png", nb_points: 50 },
                 ]
             },
-            "Music": { type: "folder", children: [] }
+            "Music": { type: "folder", children: [
+                { name: "banger.mp3", type: "file", ext: "mp4", link: "/lecteur-audio", nb_points: 100 }
+            ] }
         };
 
         // --- 2. State Management ---
@@ -289,8 +341,33 @@
                 // Double click to open folder
                 if (item.type === "folder") {
                     el.ondblclick = () => enterFolder(item);
+                } else if (item.link) {
+                    if (item.nb_points) {
+                         el.ondblclick = () => {
+                            window.parent.openLogiciel({
+                                width: 700,
+                                height: 400,
+                                fullScreen: false,
+                                title: item.name,
+                                link: item.link,
+                                reduire: true,
+                                resizable: true
+                            });
+                           sendScore('easterEgg', item.name, item.nb_points);
+                         };
+                    } else {
+                        el.ondblclick = () => window.parent.openLogiciel({
+                            width: 700,
+                            height: 400,
+                            fullScreen: false,
+                            title: item.name,
+                            link: item.link,
+                            reduire: true,
+                            resizable: true
+                        });
+                    }
                 } else {
-                    el.ondblclick = () => alert(`Opening file: ${item.name}`);
+                    el.ondblclick = item.action;
                 }
 
                 // Determine Icon
@@ -298,8 +375,9 @@
                 if (item.type === "folder") icon = "📁";
                 else if (item.ext === "img") icon = "🖼️";
                 else if (item.ext === "exe") icon = "💾";
+                else if (item.ext === "mp4") icon = "🎵";
 
-                el.innerHTML = `
+               el.innerHTML = `
                     <div class="icon ${item.type === 'folder' ? 'folder-icon' : 'file-icon'}">${icon}</div>
                     <div class="file-name">${item.name}</div>
                 `;

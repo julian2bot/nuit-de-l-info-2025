@@ -1,7 +1,7 @@
 c'est un test
 
 <a href="{{ route('trucMachine') }}">trucMachine</a>
-
+<a href="{{ route('threejs') }}">threejs</a>
 <script src="{{ asset('js/tkt.js')}}"></script>
 
 <link rel="stylesheet" href="{{ asset('style/style.css')}}">

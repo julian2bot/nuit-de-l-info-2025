@@ -1,3 +1,7 @@
+import * as THREE from "https://esm.sh/three@0.180.0";
+import { OrbitControls } from "https://esm.sh/three@0.180.0/examples/jsm/controls/OrbitControls.js";
+import { GLTFLoader } from "https://esm.sh/three@0.180.0/examples/jsm/loaders/GLTFLoader.js";
+
 class Snake {
     static EMPTY = 0;
     static APPLE = 1;
@@ -14,7 +18,7 @@ class Snake {
         this.maxScore = maxScore;
 
         this.canvas = document.getElementById('game');
-        this.ctx = this.canvas.getContext('2d');
+        // this.ctx = this.canvas.getContext('2d');
         this.nexDir = '';
     }
 
@@ -450,5 +454,298 @@ class Snake {
                     break;
             }
         });
+    }
+}
+
+
+export default class Snake3D extends Snake{
+    constructor(ticks, onDeathFunction, maxScore) {
+        super(ticks, onDeathFunction, maxScore);
+
+        this.body3d = [];
+        this.loaded = false;
+
+        
+
+        // LOAD MODELS
+        this.loader = new GLTFLoader();
+        this.head3d = null;
+        this.body3d = [];
+        this.apple3d = null;
+        this.bombes = null;
+        this.plateaus = null;
+        this.bombes3d = [];
+        // this.animate();
+    }
+    
+
+    initPlateau() {
+        const geometry = new THREE.BoxGeometry(1, 0.1, 1);
+        const material = new THREE.MeshStandardMaterial({ color: 0x0077ff });
+
+        this.cases = [];
+
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                const cube = new THREE.Mesh(geometry, material);
+                cube.position.set(x, 0, y);
+                this.scene.add(cube);
+                this.cases.push(cube);
+            }
+        }
+    }
+
+        setTupLevel(){
+        super.setTupLevel();
+
+        this.scene = new THREE.Scene();
+
+
+        // Créer la caméra
+        this.camera = new THREE.PerspectiveCamera(
+            60,
+            this.canvas.clientWidth / this.canvas.clientHeight,
+            0.1,
+            1000
+        );
+
+        // 1. Calculer le centre du plateau
+        const centerX = (this.width - 1) / 2;
+        const centerZ = (this.height - 1) / 2;
+        const center = new THREE.Vector3(centerX, 0, centerZ);
+
+        // 2. Créer un objet pivot au centre du plateau
+        const pivot = new THREE.Object3D();
+        pivot.position.copy(center);
+        this.scene.add(pivot);
+
+        // 3. Placer la caméra par rapport au pivot
+        const cameraHeight = Math.max(this.width, this.height);
+        this.camera.position.set(6.99, 6.000,6.999); // un peu en arrière
+        pivot.add(this.camera); // la caméra est maintenant enfant du pivot
+
+        // 4. Pour que la caméra regarde toujours le centre
+        this.camera.lookAt(pivot.position);
+        
+        //this.addCameraControls();
+        this.scene.rotation.y = Math.PI / 20;
+        
+        // Désactiver les contrôles pour garder la vue fixe
+        let canvas = this.canvas;
+        this.renderer = new THREE.WebGLRenderer({ canvas });
+        this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+        this.controls.enabled = false;  // Désactiver les contrôles pour vue fixe
+
+        // Lumière ambiante + directionnelle
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        this.scene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+        directionalLight.position.set(this.width/2, 20, this.height/2);
+        this.scene.add(directionalLight);
+
+        // Fond de scène blanc
+        this.scene.background = new THREE.Color(0xf0f0f0);
+
+        this.initPlateau();
+
+        if(!this.loaded)
+            this.loadModels();
+    }
+
+    reset() {
+        // 1. Stop l'intervalle et remet les valeurs logiques à zéro
+        super.reset(); // Réinitialise plateau, score, position, niveau, etc.
+
+        // 2. Vider les objets 3D existants
+        if (this.body3d) {
+            this.body3d.forEach(seg => this.scene.remove(seg));
+            this.body3d = [];
+        }
+
+        if (this.bombes3d) {
+            this.bombes3d.forEach(b => this.scene.remove(b.mesh));
+            this.bombes3d = [];
+        }
+
+        // 3. Réinitialiser la tête et la pomme si elles existent
+        if (this.head3d) {
+            this.scene.remove(this.head3d);
+            this.head3d.position.set(this.body[0][0], 0.5, this.body[0][1]);
+            this.scene.add(this.head3d);
+        }
+
+        if (this.plateaus) {
+            // Retirer l'ancien modèle s’il existe
+            this.scene.remove(this.plateaus);
+
+            // Repositionner et ajouter à la scène
+            this.plateaus.position.set((this.width - 1)/2, 0, (this.height - 1)/2);
+            this.scene.add(this.plateaus);
+        }
+
+        if (this.apple3d) {
+            // Trouver la position de la nouvelle pomme
+            for (let y = 0; y < this.plateau.length; y++) {
+                for (let x = 0; x < this.plateau[0].length; x++) {
+                    if (this.plateau[y][x] === Snake.APPLE) {
+                        this.apple3d.position.set(x, 0.5, y);
+                    }
+                }
+            }
+            this.scene.add(this.apple3d);
+        }
+
+        // 4. Réinitialiser la caméra et les contrôles si nécessaire
+        if (this.controls) {
+            this.controls.reset();
+        }
+
+        // 5. Repositionner les cubes du plateau
+        if (this.cases) {
+            for (let y = 0; y < this.height; y++) {
+                for (let x = 0; x < this.width; x++) {
+                    const idx = y * this.width + x;
+                    const cube = this.cases[idx];
+                    cube.position.set(x, 0, y);
+                }
+            }
+        }
+
+        // 6. Render initial
+        this.render();
+    }
+
+    addCameraControls() {
+    document.addEventListener('keydown', (event) => {
+        const step = 1;
+        const centerX = (this.width - 1) / 2;
+        const centerZ = (this.height - 1) / 2;
+
+        switch(event.key) {
+            case 'ArrowUp': this.camera.position.z -= step; break;
+            case 'ArrowDown': this.camera.position.z += step; break;
+            case 'ArrowLeft': this.camera.position.x -= step; break;
+            case 'ArrowRight': this.camera.position.x += step; break;
+            case 'w': this.camera.position.y += step; break;
+            case 's': this.camera.position.y -= step; break;
+        }
+            console.log(this.camera.position.y,this.camera.position.z,this.camera.position.y);
+            this.camera.lookAt(centerX, 0, centerZ);
+        });
+    }
+
+    
+    loadModels() {
+        // HEAD
+        this.loader.load("../model/tete.glb", gltf => {
+            this.head3d = gltf.scene;
+            this.head3d.scale.set(0.2,0.2,0.2);
+            this.scene.add(this.head3d);
+        });
+
+        this.loader.load("/model/carton.glb", gltf => {
+            
+          this.bodyTemplate = gltf.scene;
+          this.bodyTemplate.scale.set(0.5,0.5,0.5);
+          
+        });
+
+        // APPLE
+        this.loader.load("/model/point.glb", gltf => {
+            this.apple3d = gltf.scene;
+            this.apple3d.scale.set(1,1,1);
+            this.scene.add(this.apple3d);
+        });
+
+        // Bombes
+        this.loader.load("/model/bombes.glb", gltf => {
+            this.bombes = gltf.scene;
+            this.bombes.scale.set(2,2,2);
+        });
+
+
+        // Plateau
+        this.loader.load("/model/plateaus.glb", gltf => {
+          this.plateaus = gltf.scene;
+            this.plateaus.scale.set(3,3,3);
+          this.scene.add(this.plateaus);
+          
+        });
+
+
+        this.loaded = true;
+    }
+
+    render() {
+        if (!this.head3d || !this.bodyTemplate) return;
+
+        // Ajouter de nouveaux segments si besoin
+        while (this.body3d.length < this.body.length - 1) {
+            const segment = this.bodyTemplate.clone(true);
+            segment.scale.set(0.2, 0.2, 0.2);
+            this.scene.add(segment);
+            this.body3d.push(segment);
+        }
+
+        // Positionner la tête
+        const [hx, hy] = this.body[0];
+        this.head3d.position.set(hx, 0.5, hy);
+
+        // Positionner le corps
+        for (let i = 1; i < this.body.length; i++) {
+            const [x, y] = this.body[i];
+            this.body3d[i - 1].position.set(x, 0.5, y);
+        }
+
+        // Positionner la pomme
+        if (this.apple3d) {
+            for (let y = 0; y < this.plateau.length; y++) {
+                for (let x = 0; x < this.plateau[0].length; x++) {
+                    if (this.plateau[y][x] === Snake.APPLE) {
+                        this.apple3d.position.set(x, 0.5, y);
+                    }
+                }
+            }
+        }
+        if (this.bombes) {
+            // Supprimer les bombes disparues
+            this.bombes3d = this.bombes3d.filter(b => {
+                const val = this.plateau[b.y][b.x];
+                if (![Snake.BOMB, Snake.BOMB1, Snake.BOMB2].includes(val)) {
+                    this.scene.remove(b.mesh);
+                    return false;
+                }
+                return true;
+            });
+
+                // Ajouter les nouvelles bombes
+                for (let y = 0; y < this.plateau.length; y++) {
+                    for (let x = 0; x < this.plateau[0].length; x++) {
+                        const val = this.plateau[y][x];
+                        if ([Snake.BOMB, Snake.BOMB1, Snake.BOMB2].includes(val)) {
+                            const exists = this.bombes3d.some(b => b.x === x && b.y === y);
+                            if (!exists) {
+                                const bomb = this.bombes.clone(true);
+                                bomb.position.set(x, 0.5, y);
+                                this.scene.add(bomb);
+                                this.bombes3d.push({ mesh: bomb, x, y });
+                            }
+                        }
+                    }
+                }
+            }
+    }
+
+    animate = () => {
+        requestAnimationFrame(this.animate);
+        this.controls.update();
+        this.renderer.render(this.scene, this.camera);
+    }
+
+    play(){
+        super.play();
+        this.animate();
     }
 }

@@ -12,7 +12,8 @@
 .notifDiscorde {
     position: relative;
     padding: 10px 15px;
-    max-width: 200px;
+    max-width: 15vw;
+    width: 12vw;
     max-height: fit-content;
     color: white;
     border-radius: 10px;
@@ -25,8 +26,11 @@
     flex-direction: column;
     gap: 5px;
 
-    background-color: black;
-    animation: hide-alert 5s forwards;
+    background-color: rgba(0, 0, 0, 0.69);
+    animation: hide-alert 8s forwards;
+}
+.notifDiscorde:hover{
+    cursor: pointer;
 }
 
 .notifDiscorde *{
@@ -47,7 +51,7 @@
 }
 
 .notifDiscorde::after {
-    animation: shrink-alert 5s linear forwards;
+    animation: shrink-alert 8s linear forwards;
 }
 
 @keyframes shrink-alert {
