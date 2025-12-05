@@ -121,7 +121,7 @@ iframe.bugged {
 .desktop {
     width: 100vw;
     height: calc(100vh - 40px);
-    background-image: url("/images/NIRD_wallpaper.png");
+    background-image: url("/images/FENETRE_wallpaper.png");
     background-repeat: no-repeat;
     background-size: cover;
     display: flex;

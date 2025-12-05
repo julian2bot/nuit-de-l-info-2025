@@ -2,6 +2,8 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>NIRD - OS pas fou</title>
     <link rel="stylesheet" href="{{ asset('style/os.css')}}">
     <link rel="stylesheet" href="{{ asset('style/discordNotif.css')}}">
@@ -36,16 +38,16 @@
             <span class="icon-label">Snake</span>
         </div>
 
-        <div class="icon" id="buggedSnake" data-name="Bugged snake app">
-            <span class="icon-img">🐍</span>
-            <span class="icon-label">Windows Snake</span>
+        <div class="icon" id="poduim" data-name="poduim app">
+            <span class="icon-img">🥉</span>
+            <span class="icon-label">Poduim</span>
         </div>
     </div>
 
     <div class="taskbar" id="taskbar">
         <div class="items-container">
             <div class="start-btn" onclick="alert('Start Menu functionality coming soon!')">
-                <span class="start-icon">🪟</span> Start
+                <span class="start-icon">🪟</span> Fenetre
             </div>
         </div>
         <div class="tray">
@@ -56,6 +58,8 @@
     <script src="{{ asset('js/apps/apps.js')}}"></script>
     <script src="{{ asset('js/os/application.js')}}"></script>
     <script src="{{ asset('js/os/notifDiscorde.js')}}"></script>
+    <script src="{{ asset('js/os/score.js')}}"></script>
+
 
 <script>
     function updateClock() {
