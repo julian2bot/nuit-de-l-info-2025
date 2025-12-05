@@ -300,10 +300,12 @@
             "Pictures": {
                 type: "folder",
                 children: [
-                    { name: "photo-de-nous.png", type: "file", ext: "img", link: "/images/photo_nous.png", nb_points: 100 },
+                    { name: "photo-de-nous.png", type: "file", ext: "img", link: "/images/photo_nous.jpg", nb_points: 100 },
                     { name: "push-magique.png", type: "file", ext: "img", link: "/images/pushMagique.png", nb_points: 50 },
                     { name: "sauccisonGEANNNNT.jpg", type: "file", ext: "img", link: "/images/sauccisonGEANNNNT.jpg", nb_points: 50 },
                     { name: "travail.png", type: "file", ext: "img", link: "/images/travail.png", nb_points: 50 },
+                    { name: "chris.png", type: "file", ext: "img", link: "/images/chris.png", nb_points: 50 },
+                    { name: "chris.png", type: "file", ext: "img", link: "/images/chris.png", nb_points: 50 },
                 ]
             },
             "Music": { type: "folder", children: [

@@ -27,7 +27,8 @@
             @csrf
             <input type="text" name="name" placeholder="Pseudo" required>
             <input type="password" name="password" placeholder="Mot de passe" required>
-            <button type="submit"> Continuer </button>
+            <button type="submit"> Conticnuer </button>
+            <a href={{ route('os') }} type="submit"> Continuer sans se connecter </a>
         </form>
     </div>
 
