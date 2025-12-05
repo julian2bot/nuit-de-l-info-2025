@@ -1,4 +1,7 @@
-const csrf_token = document.querySelector('meta[name="csrf-token"]').content;
+const tokenElement = document.querySelector('meta[name="csrf-token"]');
+const csrf_token = tokenElement ? tokenElement.content : null;
+
+if (!csrf_token) console.warn("⚠️ CSRF token not found in page!");
 
 function sendScore(type, ref, nbpoint) {
     fetch("/score", {
