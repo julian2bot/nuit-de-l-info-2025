@@ -299,10 +299,13 @@
                 type: "folder",
                 children: [
                     { name: "photo-de-nous.png", type: "file", ext: "img", link: "/images/photo_nous.png", nb_points: 100 },
+                    { name: "push-magique.png", type: "file", ext: "img", link: "/images/pushMagique.png", nb_points: 50 },
+                    { name: "sauccisonGEANNNNT.jpg", type: "file", ext: "img", link: "/images/sauccisonGEANNNNT.jpg", nb_points: 50 },
+                    { name: "travail.png", type: "file", ext: "img", link: "/images/travail.png", nb_points: 50 },
                 ]
             },
             "Music": { type: "folder", children: [
-                { name: "banger.mp4", type: "file", ext: "mp4", link: "/lecteur-audio", nb_points: 100 }
+                { name: "banger.mp3", type: "file", ext: "mp4", link: "/lecteur-audio", nb_points: 100 }
             ] }
         };
 
