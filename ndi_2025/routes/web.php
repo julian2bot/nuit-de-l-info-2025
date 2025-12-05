@@ -85,8 +85,6 @@ Route::get('/logiciels/score', function () {
     return view('score.dashboard');
   })->name("score.dashboard");
 
-})->name("score.dashboard");
-
 Route::get('/logiciels/nird/nird', function () {
     return view('logiciels.nird.nird');
 })->name("logiciels.nird.nird");
