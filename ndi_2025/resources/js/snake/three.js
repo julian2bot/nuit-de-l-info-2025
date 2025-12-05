@@ -239,149 +239,8 @@ class Snake {
     }
 
 
-    render3d() {
-      // Exemple cube
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-      const myCanvas = document.getElementById('canva2');
-      const renderer = new THREE.WebGLRenderer({ canvas: myCanvas });
-      const center = new THREE.Vector3(0, 0, 0);
-
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      document.body.appendChild(renderer.domElement);
-
-      function alload(){
-          loader.load( '/model/boite.glb', function ( gltf ) {
-
-            tetesnake = gltf.scene;
-            backsnake=gltf.scene;
-            scene.add( tetesnake );
-
-          }, undefined, function ( error ) {
-
-            console.error( error );
-
-          } );
-
-          loader.load( '/model/fruit.glb', function ( gltf ) {
-            fruit=gltf.scene;
-            fruit.scale.set(0.5, 0.5, 0.5);
-            fruit.position.x =1;
-            scene.add( fruit );
-
-          }, undefined, function ( error ) {
-
-            console.error( error );
-
-          } );
-
-      };
-
-
-      window.addEventListener('resize', () => {
-          // Mise à jour de la taille du renderer
-          renderer.setSize(window.innerWidth, window.innerHeight);
-
-          // Mise à jour de l'aspect de la caméra
-          camera.aspect = window.innerWidth / window.innerHeight;
-          camera.updateProjectionMatrix();
-      });
-
-      // OrbitControls
-      const controls = new OrbitControls(camera, renderer.domElement);
-
-      let tetesnake = null;
-      let backsnake = null;
-      let fruit = null;
-      let cube = null;
-      let cases = {};
-      let listecube = [];
-
-
-      function deplacement3d(){
-        
-      };
-
-
-      function wtf(){
-        for (let y = 0; y < this.height; y++) {
-            for (let x = 0; x < this.width; x++) {
-                const val = this.plateau[y][x];
-                if (val === Snake.APPLE) fruit.posi = '#ff4d4d';
-                else if (val === Snake.HEAD) ctx.fillStyle = '#0b6623';
-                else if (val === Snake.BODY) ctx.fillStyle = '#26a269';
-                else if (val === Snake.TAIL) ctx.fillStyle = '#1b7a4a';
-
-                ctx.fillRect(x * this.cellW, y * this.cellH, this.cellW, this.cellH);
-                ctx.strokeStyle = '#e6e6e6';
-                ctx.strokeRect(x * this.cellW, y * this.cellH, this.cellW, this.cellH);
-            }
-        }
-      }
-
-
-      function dessineplateau(){
-
-        console.log();
-        console.log();
-
-        let x,y =0;
-        const geometry = new THREE.BoxGeometry();
-        const material = new THREE.MeshStandardMaterial({ color: 0x0077ff });
-        
-
-        for (let index = 0; index < snake.getPlateau().length; index++) {
-          if(index!=0){
-            y+=1;
-          }
-          x=0;
-          for (let index2 = 0; index2 < snake.getPlateau()[0].length; index2++) {
-              x+=1;
-              cube = new THREE.Mesh(geometry, material);
-              cube.position.set(x, 0, y);
-              cases.cube =cube;
-              cases.objet =[];
-              listecube.push(cases);
-              scene.add(cases.cube);
-          }
-
-        }
-
-
-
-
-
-      }
-
-      const light = new THREE.DirectionalLight(0xffffff, 1);
-      light.position.set(5,5,5);
-      scene.add(light);
-
-      camera.position.set(0, 10, 0);
-      camera.lookAt(center);
-
-      const loader = new GLTFLoader();
-
-      alload();
-      dessineplateau();
-
-
-      function animate(){
-          requestAnimationFrame(animate);
-          controls.update();
-          renderer.render(scene, camera);
-      }
-      animate();
-
-
-      
-
-
-
-
-
-    }
-
+    render3d() {}
+     
 }
 
 
@@ -389,8 +248,120 @@ class Snake {
 
 
 
+
+class Snake3D {
+    constructor(width, height) {
+        this.width = width;
+        this.height = height;
+        this.body3d = [];
+
+        this.scene = new THREE.Scene();
+        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        this.renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canva2') });
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+
+
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+
+        this.camera.position.set(width/2, 10, height/2);
+        this.camera.lookAt(new THREE.Vector3(width/2, 0, height/2));
+
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(5,5,5);
+        this.scene.add(light);
+
+        // LOAD MODELS
+        this.loader = new GLTFLoader();
+        this.head3d = null;
+        this.body3d = [];
+        this.apple3d = null;
+
+        this.initPlateau();
+        this.loadModels();
+
+        this.animate();
+    }
+
+    initPlateau() {
+        const geometry = new THREE.BoxGeometry(1, 0.1, 1);
+        const material = new THREE.MeshStandardMaterial({ color: 0x0077ff });
+
+        this.cases = [];
+
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                const cube = new THREE.Mesh(geometry, material);
+                cube.position.set(x, 0, y);
+                this.scene.add(cube);
+                this.cases.push(cube);
+            }
+        }
+    }
+
+    loadModels() {
+        // HEAD
+        this.loader.load("/model/boite.glb", gltf => {
+            this.head3d = gltf.scene;
+            this.scene.add(this.head3d);
+        });
+
+        this.loader.load("/model/corp.glb", gltf => {
+          this.bodyTemplate = gltf.scene;
+        });
+
+        // APPLE
+        this.loader.load("/model/fruit.glb", gltf => {
+            this.apple3d = gltf.scene;
+            this.apple3d.scale.set(0.5,0.5,0.5);
+            this.scene.add(this.apple3d);
+        });
+    }
+
+    update(plateau, body) {
+        if (!this.head3d || !this.bodyTemplate) return;
+        
+        
+        if (this.apple3d) {
+            for (let y=0; y<plateau.length; y++) {
+                for (let x=0; x<plateau[0].length; x++) {
+                    if (plateau[y][x] === Snake.APPLE) {
+                        this.apple3d.position.set(x, 0.5, y);
+                    }
+                }
+            }
+        }
+
+        while (this.body3d.length < body.length - 1) {
+          const segment = this.bodyTemplate.clone(true);
+          segment.scale.set(0.2, 0.2, 0.2);
+          this.scene.add(segment);
+          this.body3d.push(segment);
+        }
+
+        if (this.head3d) {
+            const [hx, hy] = body[0];
+            this.head3d.position.set(hx, 0.5, hy);
+        }
+        for (let i = 1; i < body.length; i++) {
+            const [x, y] = body[i];
+            this.body3d[i - 1].position.set(x, 0.5, y);
+        }
+    }
+
+    animate = () => {
+        requestAnimationFrame(this.animate);
+        this.controls.update();
+        this.renderer.render(this.scene, this.camera);
+    }
+}
+
+
 console.log("Snake start !");
-const snake = new Snake(10, 10, 500);
+const snake = new Snake(10, 10, 150);
+const snake3d = new Snake3D(10, 10);
+
+snake.render3d = function() {
+    snake3d.update(this.plateau, this.BODY);
+};
+
 snake.play();
-
-
