@@ -499,36 +499,36 @@ export default class Snake3D extends Snake{
         super.setTupLevel();
 
         this.scene = new THREE.Scene();
-        // let canvas = document.getElementById('canva2');
 
-        // le decalage
-        const offsetX = 13; 
-        const offsetZ = 13;  
 
-        // a faire centre
-        const centerX = (this.width - 1) / 2;
-        const centerZ = (this.height - 1) / 2;
-
-        const aspect = this.canvas.clientWidth / this.canvas.clientHeight;
-
-        // Créer caméra perspective
-        // fov = 60° (champ de vision vertical)
+        // Créer la caméra
         this.camera = new THREE.PerspectiveCamera(
-            60,       // fov
-            aspect, 
-            0.1,      // near
-            1000      // far
+            60,
+            this.canvas.clientWidth / this.canvas.clientHeight,
+            0.1,
+            1000
         );
 
-        // Positionner la caméra au-dessus du plateau avec décalage
-        const cameraHeight = 11;
-        this.camera.position.set(centerX + offsetX, cameraHeight, centerZ + offsetZ);
+        // 1. Calculer le centre du plateau
+        const centerX = (this.width - 1) / 2;
+        const centerZ = (this.height - 1) / 2;
+        const center = new THREE.Vector3(centerX, 0, centerZ);
 
-        // Pointer la caméra vers le centre du plateau
-        //this.camera.lookAt(centerX, 0, centerZ);
+        // 2. Créer un objet pivot au centre du plateau
+        const pivot = new THREE.Object3D();
+        pivot.position.copy(center);
+        this.scene.add(pivot);
 
-        // Appliquer rotation éventuelle de la scène
-        this.scene.rotation.y = Math.PI / 4;
+        // 3. Placer la caméra par rapport au pivot
+        const cameraHeight = Math.max(this.width, this.height);
+        this.camera.position.set(6.99, 6.000,6.999); // un peu en arrière
+        pivot.add(this.camera); // la caméra est maintenant enfant du pivot
+
+        // 4. Pour que la caméra regarde toujours le centre
+        this.camera.lookAt(pivot.position);
+        
+        //this.addCameraControls();
+        this.scene.rotation.y = Math.PI / 20;
         
         // Désactiver les contrôles pour garder la vue fixe
         let canvas = this.canvas;
@@ -552,6 +552,25 @@ export default class Snake3D extends Snake{
 
         if(!this.loaded)
             this.loadModels();
+    }
+
+    addCameraControls() {
+    document.addEventListener('keydown', (event) => {
+        const step = 1;
+        const centerX = (this.width - 1) / 2;
+        const centerZ = (this.height - 1) / 2;
+
+        switch(event.key) {
+            case 'ArrowUp': this.camera.position.z -= step; break;
+            case 'ArrowDown': this.camera.position.z += step; break;
+            case 'ArrowLeft': this.camera.position.x -= step; break;
+            case 'ArrowRight': this.camera.position.x += step; break;
+            case 'w': this.camera.position.y += step; break;
+            case 's': this.camera.position.y -= step; break;
+        }
+            console.log(this.camera.position.y,this.camera.position.z,this.camera.position.y);
+            this.camera.lookAt(centerX, 0, centerZ);
+        });
     }
 
     
