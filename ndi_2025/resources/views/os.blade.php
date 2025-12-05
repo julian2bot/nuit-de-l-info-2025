@@ -34,17 +34,12 @@
             <span class="icon-img">🐍</span>
             <span class="icon-label">Snake</span>
         </div>
-
-        <div class="icon" id="buggedSnake" data-name="Bugged snake app">
-            <span class="icon-img">🐍</span>
-            <span class="icon-label">Windows Snake</span>
-        </div>
     </div>
 
     <div class="taskbar" id="taskbar">
         <div class="items-container">
             <div class="start-btn" onclick="alert('Start Menu functionality coming soon!')">
-                <span class="start-icon">🪟</span> Start
+                <span class="start-icon">🪟</span> Fenetre
             </div>
         </div>
         <div class="tray">
