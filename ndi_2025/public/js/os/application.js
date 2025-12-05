@@ -80,6 +80,7 @@ class Application {
         if (cfg.bugged) {
             iframe.classList.add("bugged");
             this.el.classList.add("bugged");
+            title.textContent += " (Ne répond pas)";
         }
 
         iframe.onload = () => {
@@ -87,6 +88,9 @@ class Application {
                 const pageTitle = iframe.contentDocument.title;
                 if (pageTitle) {
                     title.textContent = pageTitle;
+                    if (cfg.bugged) {
+                        title.textContent = pageTitle += " (Ne répond pas)";
+                    }
                 }
             } catch (error) {
                 console.warn(
