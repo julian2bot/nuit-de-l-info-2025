@@ -43,7 +43,7 @@
             <span class="icon-label">Podium</span>
 
         </div>
-        
+
         <div class="icon" id="nird_site" data-name="nird site">
             <span class="icon-img">🌐</span>
             <span class="icon-label">Site de la NIRD</span>
@@ -90,7 +90,6 @@
     <script src="{{ asset('js/apps/apps.js')}}"></script>
     <script src="{{ asset('js/os/application.js')}}"></script>
     <script src="{{ asset('js/os/notifDiscorde.js')}}"></script>
-    <script src="{{ asset('js/os/score.js')}}"></script>
 
 
 <script>
@@ -216,8 +215,10 @@
     // Rendre la fonction accessible globalement pour l'iframe
     window.onIframeAction = onIframeAction;
 
-    
+
 
 </script>
 </body>
 </html>
+    <script src="{{ asset('js/os/score.js')}}"></script>
+

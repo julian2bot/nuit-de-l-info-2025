@@ -1,4 +1,4 @@
-const csrf_token =  document.querySelector('meta[name="csrf-token"]').content;
+const csrf_token = document.querySelector('meta[name="csrf-token"]').content;
 
 function sendScore(type, ref, nbpoint) {
     fetch("/score", {
