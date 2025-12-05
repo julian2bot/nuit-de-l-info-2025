@@ -555,27 +555,39 @@ class Snake3D extends Snake{
     
     loadModels() {
         // HEAD
-        this.loader.load("../model/boite.glb", gltf => {
+        this.loader.load("../model/tete.glb", gltf => {
             this.head3d = gltf.scene;
-            this.head3d.scale.set(0.5,0.5,0.5);
+            this.head3d.scale.set(0.2,0.2,0.2);
             this.scene.add(this.head3d);
         });
 
-        this.loader.load("/model/corp.glb", gltf => {
+        this.loader.load("/model/carton.glb", gltf => {
+            
           this.bodyTemplate = gltf.scene;
+          this.bodyTemplate.scale.set(0.5,0.5,0.5);
+          
         });
 
         // APPLE
-        this.loader.load("/model/fruit.glb", gltf => {
+        this.loader.load("/model/point.glb", gltf => {
             this.apple3d = gltf.scene;
-            this.apple3d.scale.set(0.5,0.5,0.5);
+            this.apple3d.scale.set(1,1,1);
             this.scene.add(this.apple3d);
         });
 
         // Bombes
-        this.loader.load("/model/bombes.gltf", gltf => {
+        this.loader.load("/model/bombes.glb", gltf => {
             this.bombes = gltf.scene;
-            this.bombes.scale.set(0.5,0.5,0.5);
+            this.bombes.scale.set(2,2,2);
+        });
+
+
+        // Plateau
+        this.loader.load("/model/plateau.glb", gltf => {
+          this.plateau = gltf.scene;
+            this.plateau.scale.set(0.3,0.3,0.3);
+          this.scene.add(this.plateau);
+          
         });
 
 
