@@ -135,11 +135,6 @@ function showUpgradeDialog() {
                 <p><strong>Votre application ne répond pas.</strong></p>
                 <p>Cela peut être dû à une version obsolète de Windows.</p>
                 <p>Pour une meilleure expérience, nous vous recommandons de mettre à niveau vers <strong>Windows 11</strong>.</p>
-                <div class="upgrade-features">
-                    <p>✨ Plus de stabilité</p>
-                    <p>🚀 Meilleures performances</p>
-                    <p>🔒 Sécurité renforcée</p>
-                </div>
             </div>
             <div class="upgrade-footer">
                 <button class="upgrade-btn-secondary" onclick="this.parentElement.parentElement.parentElement.remove()">Me le rappeler plus tard</button>
