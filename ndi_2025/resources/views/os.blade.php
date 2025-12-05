@@ -34,7 +34,7 @@
         </div>
 
         <div class="icon" id="snake" data-name="Snake app">
-            <span class="icon-img">🐍</span>
+            <span class="icon-img">📦</span>
             <span class="icon-label">Snake</span>
         </div>
 
