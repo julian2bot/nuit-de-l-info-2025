@@ -44,5 +44,13 @@ const apps = {
         link: "/editeur-texte",
         reduire: true,
         resizable: true
+    },
+    snake: {
+        width: 900,
+        height: 600,
+        title: "Snake",
+        link: "/logiciels/snake",
+        reduire: true,
+        resizable: true
     }
 };
