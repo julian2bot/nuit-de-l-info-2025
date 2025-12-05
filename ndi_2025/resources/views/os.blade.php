@@ -11,7 +11,7 @@
 
 <body>
     <div id="notifbar-discorde"></div>
-    
+
     <div class="desktop" id="desktopArea">
         <div class="icon" id="browser" data-name="Internet Browser">
             <span class="icon-img">🌐</span>
@@ -40,7 +40,7 @@
 
         <div class="icon" id="poduim" data-name="poduim app">
             <span class="icon-img">🥉</span>
-            <span class="icon-label">Poduim</span>
+            <span class="icon-label">Podium</span>
         </div>
     </div>
 

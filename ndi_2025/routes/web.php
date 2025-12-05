@@ -32,6 +32,26 @@ Route::get('/editeur-texte', function () {
     return view('editeur_texte');
 })->name("editeurTexte");
 
+Route::get('/editeur-texte-mdp', function () {
+    return view('editeur_texte_mdp');
+})->name("editeurTexte_mdp");
+
+
+Route::get('/lecteur-audio', function () {
+    return view('lecteur_audio');
+})->name("lecteur_audio");
+
+
+Route::get('/photo-nous', function () {
+    return view('photo_nous');
+})->name("photo_nous");
+
+
+
+Route::get('/credit', function () {
+    return view('credit');
+})->name("credit");
+
 Route::get('/logiciels/snake', function () {
     return view('logiciels.snake');
 });
