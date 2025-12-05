@@ -1,13 +1,13 @@
 <link rel="stylesheet" href="{{ asset('style/snake.css')}}">
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <main>
     <div id="header">
-        <div id="level">
+        
+        <div id="lesScore">
+            <div id="level">
             <p>Level :</p>
             <p id="levelValue">0</p>
         </div>
-
-        <div id="lesScore">
             <div id="score">
                 <p>Score :</p>
                 <p id="scoreValue">0</p>
@@ -21,7 +21,7 @@
 
     </div>
     <div id="gameDiv">
-        <canvas id="game" width="300" height="300"></canvas>
+        <canvas id="game" width="500" height="500"></canvas>
         <div id="centeredContainer">
             <button id="start">Start</button>
             <div id="deadContainer">
@@ -85,7 +85,7 @@
             pauseContainer.style.display = "none";
             if(score>maxScore){
                 maxScore = score;
-                // TODO CHANGE SCORE BD
+                sendScore("snake", "level", maxScore);
             }
         }
     });

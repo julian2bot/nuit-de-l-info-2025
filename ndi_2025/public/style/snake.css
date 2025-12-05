@@ -7,6 +7,12 @@ body {
 
 #header {
     color: white;
+    gap: 2px;
+}
+
+#header p{
+    padding: 0;
+    margin: 0;
 }
 
 #lesScore {
@@ -27,21 +33,20 @@ body {
     align-items: center;
     justify-content: center;
     position: relative;
-    width: 350px;
-    height: 350px;
-    background-color: red;
+    width: 500px;
+    height: 500px;
     flex-direction: column;
 }
 
 #pause{
     position: absolute;
-    bottom: 0;
+    top:75px;
     display: none;
 }
 
 #centeredContainer {
-    width: 300px;
-    height: 300px;
+    width: 500px;
+    height: 500px;
     position: absolute;
     display: flex;
     align-items: center;
@@ -80,4 +85,25 @@ canvas {
     background: #eee;
     display: block;
 
+}
+
+button{
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    padding: 2px 16px;
+    height: 32px;
+    min-width: 60px;
+    min-height: 32px;
+    border: none;
+    color: #fff;
+    background-color: #4f545c;
+    transition: background-color .17s ease,color .17s ease;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
 }
