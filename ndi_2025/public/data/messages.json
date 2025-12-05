@@ -4,7 +4,7 @@
         "linux_2": { "from": "Toi", "text": "Yep" },
         "linux_crash": { "from": "Fan2Linux", "text": "Hey, c'est moi où ton programme à crash ? tu devrais penser à arrêter d'utiliser ces logiciels fermés et passer sur l'open source !" },
         "linux_3": { "from": "Fan2Linux", "text": "Tout ces programmes sous licences bloat ton pc, ils font de l'obsolescence programmée sur ton dos" },
-        "linux_link": { "from": "Fan2Linux", "text": "Hey regardes ce site, ça t'aidera à t'orienter vers l'open-source : https://nird.forge.apps.education.fr/ " },
+        "linux_4": { "from": "Fan2Linux", "text": "Hey regardes ce site, ça t'aidera à t'orienter vers l'open-source : https://nird.forge.apps.education.fr/ " },
 
         "recond_1": { "from": "JeanMichelRoot", "text": "Groooos, j'ai trouvé un super plan pour des pc reconditionnés !" },
         "recond_2": { "from": "JeanMichelRoot", "text": "Tu devrais vraiment check https://www.kiatoo.com/ , ça arrangera vraiment ton empreinte carbonne" },
