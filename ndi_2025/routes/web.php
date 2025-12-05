@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ScoreController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -47,7 +48,14 @@ Route::get('/me', function () {
     return Auth::user();
 })->name("eee");
 
+Route::post('/score', [ScoreController::class, 'store'])
+    ->middleware('auth')
+    ->name('score.store');
 
-Route::get('/3d/three', function () {
-    return view('3d.three');
-})->name("threejs");
+Route::post('/score/load', [ScoreController::class, 'load'])
+    ->name('score.load');
+
+
+Route::get('/logiciels/score', function () {
+    return view('score.dashboard');
+})->name("score.dashboard");

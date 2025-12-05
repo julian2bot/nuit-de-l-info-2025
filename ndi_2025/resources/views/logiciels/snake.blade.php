@@ -36,9 +36,6 @@
         </div>
         <button id="pause" onclick="pause()">Pause</button>
     </div>
-
-    <div id="buttons">
-    </div>
 </main>
 
 

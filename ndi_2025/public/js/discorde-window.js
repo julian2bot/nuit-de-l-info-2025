@@ -18,4 +18,6 @@ await fetch("../data/philo.json")
     }
 );
 
-window.app = new DiscordeApp(content, JSON, PHILO);
+export const app = new DiscordeApp(content, JSON, PHILO);
+
+console.log(globalThis.app);
