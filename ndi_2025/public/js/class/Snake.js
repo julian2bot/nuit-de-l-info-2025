@@ -585,9 +585,9 @@ export default class Snake3D extends Snake{
 
 
         // Plateau
-        this.loader.load("/model/plateau.glb", gltf => {
+        this.loader.load("/model/plateaus.glb", gltf => {
           this.plateaus = gltf.scene;
-            this.plateaus.scale.set(0.3,0.3,0.3);
+            this.plateaus.scale.set(3,3,3);
           this.scene.add(this.plateaus);
           
         });
