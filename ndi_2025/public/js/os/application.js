@@ -1,4 +1,3 @@
-
 let topZ = 10;
 // ----------------------------
 //       CLASS APPLICATION
@@ -73,6 +72,19 @@ class Application {
         iframe.src = cfg.link || "/";
         this.el.appendChild(iframe);
 
+        iframe.onload = () => {
+            try {
+                const pageTitle = iframe.contentDocument.title;
+                if (pageTitle) {
+                    title.textContent = pageTitle;
+                }
+            } catch (error) {
+                console.warn(
+                    "Cannot read title: Blocked by Cross-Origin Policy",
+                );
+            }
+        };
+
         document.body.appendChild(this.el);
 
         this.el.addEventListener("mousedown", () => this.bringToFront());
@@ -95,11 +107,11 @@ class Application {
                 w: this.el.style.width,
                 h: this.el.style.height,
                 l: this.el.style.left,
-                t: this.el.style.top
+                t: this.el.style.top,
             };
 
             this.el.style.width = "100vw";
-            this.el.style.height = "100vh";
+            this.el.style.height = "calc(100vh - 40px)";
             this.el.style.left = "0";
             this.el.style.top = "0";
         } else {
@@ -109,29 +121,52 @@ class Application {
             this.el.style.top = this.prev.t;
         }
     }
+initDrag(header) {
+    let isDragging = false;
+    let startX, startY;
+    let offsetX, offsetY;
+    const dragThreshold = 5; // seuil en pixels pour considérer comme drag
 
-    initDrag(header) {
-        let isDragging = false;
-        let offsetX, offsetY;
+    header.addEventListener("mousedown", (e) => {
+        startX = e.clientX;
+        startY = e.clientY;
+        offsetX = e.clientX - this.el.offsetLeft;
+        offsetY = e.clientY - this.el.offsetTop;
+        header.style.cursor = "grabbing";
 
-        header.addEventListener("mousedown", e => {
-            isDragging = true;
-            offsetX = e.clientX - this.el.offsetLeft;
-            offsetY = e.clientY - this.el.offsetTop;
-            header.style.cursor = "grabbing";
-        });
+        const onMouseMove = (e) => {
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
 
-        document.addEventListener("mousemove", e => {
-            if (!isDragging) return;
-            this.el.style.left = (e.clientX - offsetX) + "px";
-            this.el.style.top = (e.clientY - offsetY) + "px";
-        });
+            if (!isDragging && Math.sqrt(dx*dx + dy*dy) > dragThreshold) {
+                // Commence le drag
+                isDragging = true;
+            }
 
-        document.addEventListener("mouseup", () => {
-            isDragging = false;
+            if (isDragging) {
+                this.el.style.left = e.clientX - offsetX + "px";
+                this.el.style.top = e.clientY - offsetY + "px";
+            }
+        };
+
+        const onMouseUp = (e) => {
+            document.removeEventListener("mousemove", onMouseMove);
+            document.removeEventListener("mouseup", onMouseUp);
             header.style.cursor = "grab";
-        });
-    }
+
+            // Si pas de drag, c'est juste un click => bringToFront
+            if (!isDragging) {
+                this.bringToFront();
+            }
+
+            isDragging = false;
+        };
+
+        document.addEventListener("mousemove", onMouseMove);
+        document.addEventListener("mouseup", onMouseUp);
+    });
+}
+
 
 
     bringToFront() {
@@ -139,7 +174,6 @@ class Application {
         this.el.style.zIndex = topZ;
     }
 }
-
 
 // ----------------------------
 //        FONCTION GLOBALE
@@ -152,5 +186,3 @@ function openLogiciel(json) {
 //   LANCER AUTOMATIQUEMENT
 // ----------------------------
 openLogiciel(apps.notepad);
-openLogiciel(apps.browser);
-openLogiciel(apps.snake);

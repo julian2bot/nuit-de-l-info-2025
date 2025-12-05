@@ -1,0 +1,140 @@
+/* ================================
+   GLOBAL CONTAINER
+================================ */
+.discorde-root {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background: #2b2d31;       /* fond Discord-like */
+    color: #f2f3f5;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ================================
+   CONTACT LIST (sidebar)
+================================ */
+.discorde-contact {
+    width: 200px;
+    background: #1e1f22;
+    border-right: 1px solid #18191c;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.discorde-contact-item {
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #2b2d31;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.discorde-contact-item:hover {
+    background: #3a3c40;
+}
+
+.discorde-contact-item h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.discorde-contact-item p {
+    margin: 4px 0 0 0;
+    font-size: 13px;
+    color: #b5bac1;
+}
+
+/* ================================
+   CHAT ZONE
+================================ */
+.discorde-chat {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 15px;
+    /* overflow-y: auto; */
+}
+
+.discorde-chat-msg {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow-y: scroll;
+}
+
+.discorde-chat-item {
+    margin-bottom: 16px;
+    background: #313338;
+    padding: 12px;
+    border-radius: 6px;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+}
+
+.discorde-chat-item h3 {
+    margin: 0 0 6px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #f2f3f5;
+}
+
+.discorde-chat-item p {
+    margin: 0;
+    font-size: 14px;
+    color: #dcdfe4;
+}
+
+
+/* ================================
+   envoie de msg
+================================ */
+
+.discorde-chat-inputbar {
+    display: flex;
+    border-top: 1px solid #111;
+    padding: 10px;
+    background: #2c2f33;
+}
+
+.discorde-chat-input {
+    flex: 1;
+    padding: 10px;
+    background: #202225;
+    border: none;
+    color: white;
+    border-radius: 5px;
+}
+
+.discorde-chat-input:focus {
+    outline: none;
+}
+
+#discorde-send-btn {
+    margin-left: 10px;
+    padding: 10px 15px;
+    background: #5865f2;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+/* ================================
+   SCROLLBARS (clean)
+================================ */
+.discorde-contact::-webkit-scrollbar,
+.discorde-chat::-webkit-scrollbar {
+    width: 6px;
+}
+
+.discorde-contact::-webkit-scrollbar-thumb,
+.discorde-chat::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 3px;
+}
+
+.discorde-contact::-webkit-scrollbar-track,
+.discorde-chat::-webkit-scrollbar-track {
+    background: #222;
+}
+

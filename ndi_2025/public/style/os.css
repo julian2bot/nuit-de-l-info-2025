@@ -83,7 +83,6 @@ iframe {
     border: none;
 }
 
-
 .window {
     position: absolute;
     background: #f0f0f0;
@@ -108,4 +107,116 @@ iframe {
 
 .window.resizable:hover {
     border-color: #777;
+}
+
+.desktop {
+    width: 100vw;
+    height: calc(100vh - 40px);
+    background-image: url("/images/NIRD_wallpaper.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* --- Icons --- */
+.icon {
+    width: 80px;
+    height: 90px;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: default;
+    transition: background-color 0.1s;
+}
+
+.icon:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* State for when icon is clicked once */
+.icon.selected {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.icon-img {
+    font-size: 40px;
+    margin-bottom: 5px;
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+.icon-label {
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    text-shadow: 1px 1px 2px black;
+    padding: 2px 4px;
+}
+
+/* --- Taskbar --- */
+.taskbar {
+    height: 40px;
+    width: 100vw;
+    background-color: #1c1c1c;
+    border-top: 1px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    bottom: 0;
+    z-index: 100;
+}
+
+.start-btn {
+    background: #0078d7;
+    color: white;
+    height: 100%;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.start-btn:hover {
+    background: #008bf0;
+}
+
+.start-icon {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+.tray {
+    color: white;
+    padding-right: 15px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.marquee-selection {
+    position: absolute;
+    background: rgba(0, 120, 215, 0.3);
+    border: 1px solid rgba(0, 120, 215, 0.7);
+    pointer-events: none;
+    z-index: 9999;
+}
+
+.icon.selected {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
 }

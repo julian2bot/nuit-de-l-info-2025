@@ -8,22 +8,40 @@ const apps = {
         link: "/truc/machine",
         reduire: true,
         resizable: true
-
     },
     browser: {
         width: 800,
         height: 500,
         title: "Navigateur",
-        link: "/truc",
+        fullScreen: false,
+        link: "https://metasearx.com",
         reduire: true,
         resizable: true
-
     },
-    discord: {
+    discorde: {
         width: 900,
         height: 600,
-        title: "Discord Web",
-        link: "https://discord.com",
+        title: "Discorde",
+        fullScreen: false,
+        link: "/discorde",
+        reduire: true,
+        resizable: true
+    },
+    filesystem: {
+        width: 800,
+        height: 500,
+        title: "Explorateur de fichier",
+        fullScreen: false,
+        link: "/explorateur-fichier",
+        reduire: true,
+        resizable: true
+    },
+    notepad: {
+        width: 800,
+        height: 500,
+        title: "Editeur de texte",
+        fullScreen: false,
+        link: "/editeur-texte",
         reduire: true,
         resizable: true
     },
