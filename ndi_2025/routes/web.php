@@ -57,6 +57,6 @@ Route::post('/score/load', [ScoreController::class, 'load'])
     ->name('score.load');
 
 
-Route::get('/logiciel/score', function () {
+Route::get('/logiciels/score', function () {
     return view('score.dashboard');
 })->name("score.dashboard");
