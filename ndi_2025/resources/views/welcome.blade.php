@@ -3,6 +3,6 @@
 const btn = document.getElementById("btn");
 btn.addEventListener("click", () => {
     // Appel direct au parent
-    window.parent.onIframeAction({"truc":"fsfsd"}); // todo a definir pour l'os 
+    window.parent.onIframeAction({"type":"notif", 'message': "bugevsyfsfsbhvfds"}); // todo a definir pour l'os
 });
 </script>

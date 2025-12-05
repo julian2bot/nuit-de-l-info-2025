@@ -12,7 +12,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'password',
-    ];
+     ];
 
     protected $hidden = [
         'password',
@@ -21,4 +21,10 @@ class User extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
     ];
+
+
+    public function scores()
+    {
+        return $this->hasMany(Score::class);
+    }
 }
