@@ -2,7 +2,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <main>
     <div id="header">
-        
+
         <div id="lesScore">
             <div id="level">
             <p>Level :</p>
@@ -12,7 +12,7 @@
                 <p>Score :</p>
                 <p id="scoreValue">0</p>
             </div>
-    
+
             <div id="maxScore">
                 <p>Meilleur Score :</p>
                 <p id="scoreMaxValue">0</p>
@@ -40,6 +40,7 @@
 
 
 <!-- <script type="module" src="{{ asset('js/class/Snake.js')}}"></script> -->
+<script src="{{ asset('js/os/score.js')}}"></script>
 
 <script type="module">
     import Snake3D from "{{ asset('js/class/Snake.js') }}";
@@ -47,16 +48,16 @@
 
         let maxScore = 0;
         const snake = new Snake3D(500, death, maxScore);
-    
+
         let startButton = document.getElementById("start");
         let pauseButton = document.getElementById("pause");
         let deadContainer = document.getElementById("deadContainer");
         let pauseContainer = document.getElementById("pauseContainer");
-    
+
         startButton.addEventListener('click', () => start());
         pauseButton.addEventListener('click', () => pause());
         document.getElementById('restart').addEventListener('click', () => start());
-    
+
         function start(){
             startButton.style.display = "none";
             pauseButton.style.display = "inherit";
@@ -64,7 +65,7 @@
             pauseContainer.style.display = "none";
             snake.start();
         }
-    
+
         function pause(){
             pauseButton.style.display = "inherit";
             startButton.style.display = "none";
@@ -77,7 +78,7 @@
             }
             snake.pause();
         }
-    
+
         function death(score){
             startButton.style.display = "none";
             pauseButton.style.display = "none";
