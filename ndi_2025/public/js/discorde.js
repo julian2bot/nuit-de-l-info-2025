@@ -2,19 +2,17 @@ export default class DiscordeApp {
     constructor(container, historyJson, philoJson) {
         this.container = container;
 
-        // Données globales issues du JSON (histoire préfaite)
+        // Données
         this.historyMessages = historyJson.messages;
         this.contactHistory = historyJson.contactMessages;
 
         this.philo = philoJson.rep_philo;
 
-        // Messages locaux utilisateur (stockés dans localStorage)
+        // Messages locaux
         this.localMessages = JSON.parse(localStorage.getItem("discorde_user_messages") || "{}");
-
-        // Messages révélés stockés localement
         this.revealedMessages = JSON.parse(localStorage.getItem("discorde_revealed_messages") || "{}");
 
-        // Fusion avec contactHistory
+        // historique
         for (const contactId in this.revealedMessages) {
             if (!this.contactHistory[contactId]) this.contactHistory[contactId] = [];
             this.contactHistory[contactId] = [
@@ -32,10 +30,8 @@ export default class DiscordeApp {
             { id: 4, name: "JohnIA validay 😘" }
         ];
 
-        // Contact sélectionné
         this.activeContact = 1;
 
-        // Interface
         this.renderTemplate();
         this.renderContacts();
         this.renderMessages();
@@ -77,10 +73,8 @@ export default class DiscordeApp {
     getAllMessagesForContact(contactId) {
         const idList = this.contactHistory[contactId] || [];
 
-        // Messages de l’histoire → résolus depuis le JSON
         const storyMessages = idList.map(id => this.historyMessages[id]).filter(Boolean);
 
-        // Messages locaux → stockés dans localStorage
         const userMessages = this.localMessages[contactId] || [];
 
         return [...storyMessages, ...userMessages];
@@ -90,6 +84,7 @@ export default class DiscordeApp {
     //       AFFICHAGE UI
     // ========================
     renderContacts() {
+        console.log(this.activeContact)
         this.contactList.innerHTML = "";
 
         this.contacts.forEach(contact => {
