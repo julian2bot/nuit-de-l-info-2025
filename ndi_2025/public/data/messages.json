@@ -1,9 +1,14 @@
 {
     "messages": {
-        "start_1": { "from": "Fan2Linux", "text": "Salut t'es chaud ?" },
-        "start_2": { "from": "Toi", "text": "Toujours prêt." },
+        "linux_1": { "from": "Fan2Linux", "text": "Salut t'es chaud ?" },
+        "linux_2": { "from": "Toi", "text": "Yep" },
+        "linux_crash": { "from": "Fan2Linux", "text": "Hey, c'est moi où ton programme à crash ? tu devrais penser à arrêter d'utiliser ces logiciels fermés et passer sur l'open source !" },
+        "linux_3": { "from": "Fan2Linux", "text": "Tout ces programmes sous licences bloat ton pc, ils font de l'obsolescence programmée sur ton dos" },
+        "linux_link": { "from": "Fan2Linux", "text": "Hey regardes ce site, ça t'aidera à t'orienter vers l'open-source : https://nird.forge.apps.education.fr/ " },
 
-        "linux_1": { "from": "JeanMichelRoot", "text": "J’ai recompilé mon kernel hier" },
+        "recond_1": { "from": "JeanMichelRoot", "text": "Groooos, j'ai trouvé un super plan pour des pc reconditionnés !" },
+        "recond_2": { "from": "JeanMichelRoot", "text": "Tu devrais vraiment check https://www.kiatoo.com/ , ça arrangera vraiment ton empreinte carbonne" },
+        "recond_3": { "from": "Toi", "text": "Vas-y je checkerais, je saurai où aller pour offrir un cadeau à Noel !" },
 
         "emma_1": { "from": "Emma", "text": "Hey <3" },
         "emma_2": { "from": "Toi", "text": "Coucou :3" },
@@ -12,13 +17,24 @@
         "emma_5": { "from": "Emma", "text": "En vrai..." },
         "emma_6": { "from": "Emma", "text": "Feur" },
 
-        "ia_1": { "from": "JohnIA validay", "text": "Viens parler avec moi jeune brebis égarée"}
+        "ia_1": { "from": "JohnIA validay 😘", "text": "Viens parler avec moi jeune brebis égarée"},
+
+        "windows_1": { "from": "fenêtre enjoyer", "text": "Je viens de tester Fenêtre 12 en beta !!!"},
+        "windows_2": { "from": "fenêtre enjoyer", "text": "J'ai juste du donner mes info persos sur 4 générations, mais tkt"},
+        "windows_3": { "from": "fenêtre enjoyer", "text": "Euh par contre c'est quoi toutes ces pubs que je me tape 😭"},
+        "windows_4": {"from": "fenêtre enjoyer", "text": "Pourquoi mon PC à redémarré tout seul ??"},
+        "windows_5": {"from": "fenêtre enjoyer", "text": "Pourquoi Edging s'ouvre tout seul quand je clique sur un lien Chrame ?"},
+        "windows_6": {"from": "fenêtre enjoyer", "text": "Frrrrr, j'ai payé 300 balles la licence et j'ai des pubs...."},
+        "windows_7": {"from": "fenêtre enjoyer", "text": "Naaan mais ptn...."},
+        "windows_8": {"from": "fenêtre enjoyer", "text": "ils me demandent de payer un abonnement pour qu'ils arrettent de prendre mais données 😭"},
+        "windows_9": {"from": "fenêtre enjoyer", "text": "Je crois que je vais finir par passer sur du open source car là c'est terrible.... j'ai entendu parlé de la NIRD"}
     },
 
     "contactMessages": {
-        "1": ["start_1", "start_2"],
-        "2": ["linux_1"],
+        "1": ["linux_1", "linux_2"],
+        "2": ["recond_1", "recond_2", "recond_3"],
         "3": ["emma_1", "emma_2", "emma_3", "emma_4"],
-        "4": ["ia_1"]
+        "4": ["ia_1"],
+        "5": ["windows_1", "windows_2", "windows_3"]
     }
 }

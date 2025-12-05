@@ -28,7 +28,8 @@ export default class DiscordeApp {
             { id: 1, name: "Fan2Linux" },
             { id: 2, name: "JeanMichelRoot" },
             { id: 3, name: "Emma" },
-            { id: 4, name: "JohnIA validay" }
+            { id: 5, name: "Fenêtre enjoyer" },
+            { id: 4, name: "JohnIA validay 😘" }
         ];
 
         // Contact sélectionné
@@ -109,24 +110,54 @@ export default class DiscordeApp {
         });
     }
 
+    renderMessageText(text) {
+        if (!text || typeof text !== "string") {
+            return "<i>(message vide)</i>";
+        }
+
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        const urls = text.match(urlRegex);
+
+        let html = text.replace(urlRegex, `<a href="$1" target="_blank">$1</a>`);
+
+        if (!urls) return html;
+
+        const previews = urls
+            .map(url => `
+                <div class="discorde-link-preview">
+                    <div class="preview-title">Aperçu du lien</div>
+                    <a class="preview-url" href="${url}" target="_blank">${url}</a>
+                </div>
+            `)
+            .join("");
+
+        return html + previews;
+    }
+
+
+
     renderMessages() {
         const msgs = this.getAllMessagesForContact(this.activeContact);
+
         this.chatList.innerHTML = msgs
             .map(m => `
-            <div class="discorde-chat-item">
-                <span class="from">${m.from}</span>
-                <p>${m.text}</p>
-            </div>
+                <div class="discorde-chat-item">
+                    <span class="from">${m.from}</span>
+                    <p>${this.renderMessageText(m.text)}</p>
+                </div>
             `)
             .join("");
 
         this.chatList.scrollTop = this.chatList.scrollHeight;
     }
 
+
     // ========================
     //   ENVOI D’UN MESSAGE
     // ========================
     sendMessage() {
+        if (this.activeContact == 3) {alert("Cet utilisateur vous à bloqué"); return;}
+
         const text = this.inputField.value.trim();
         if (!text) return;
 
@@ -140,7 +171,7 @@ export default class DiscordeApp {
         if (this.activeContact !== 4) {
             this.addLocalMessage(this.activeContact, {
                 from: this.contacts.find(c => c.id === this.activeContact).name,
-                text: "j'aime le saucisson"
+                text: "Att... jpp te répondre maintenant."
             }); 
         }
         else {
@@ -201,6 +232,21 @@ export default class DiscordeApp {
             localStorage.setItem("discorde_revealed_messages", JSON.stringify(this.revealedMessages));
         }
 
+        
+        const contactName = this.contacts.find(c => c.id === contactId)?.name || "???";
+        const messageText = msg.text;
+
+        if (window.parent?.onIframeAction) {
+            window.parent.onIframeAction({
+                type: "notif",
+                content: {
+                    id: contactId,
+                    user: contactName,
+                    message: messageText
+                }
+            });
+        }
+
         if (contactId === this.activeContact) this.renderMessages();
     }
 
@@ -250,6 +296,45 @@ export default class DiscordeApp {
         // Ajout le préfixe d'humeur
         return prefixeHumeur + reponseFinale;
     }
+
+
+
+    startWindowsAutoMessages() {
+        const contactId = 5;
+        console.log("windussy");
+
+        const windowsQueue = [
+            "windows_4",
+            "windows_5",
+            "windows_6",
+            "windows_7",
+            "windows_8",
+            "windows_9"
+        ];
+
+        let index = 0;
+
+        const sendNext = () => {
+            if (index >= windowsQueue.length) return;
+
+            const msgId = windowsQueue[index];
+
+            this.revealMessage(msgId, contactId);
+
+            index++;
+
+            const delay = Math.random() * 30000 + 6000;
+            setTimeout(sendNext, delay);
+        };
+
+        const initialDelay = Math.random() * 24000 + 2000;
+        setTimeout(sendNext, initialDelay);
+    }
+
+
+
+    
+
     
 
 }

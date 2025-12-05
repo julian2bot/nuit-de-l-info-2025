@@ -163,6 +163,29 @@
             }
         });
     }
- </script>
+
+
+
+    function onIframeAction(data) {
+        console.log("Données reçues depuis l'iframe :", data);
+
+        if(data.type === "notif") {
+            // alert("Notification depuis l'iframe : " + data.content.message);
+            addNotif(data);
+        }
+        if(data.type === "appReady") {
+            var discord = document.getElementById("Discorde_id");
+            discord.contentWindow.postMessage({
+                action: "windows"
+            }, "*");
+        }
+    }
+
+    // Rendre la fonction accessible globalement pour l'iframe
+    window.onIframeAction = onIframeAction;
+
+    
+
+</script>
 </body>
 </html>
