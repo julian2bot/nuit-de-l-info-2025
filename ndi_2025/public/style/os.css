@@ -83,6 +83,15 @@ iframe {
     border: none;
 }
 
+iframe.bugged {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.window.bugged {
+    cursor: wait;
+}
+
 .window {
     position: absolute;
     background: #f0f0f0;

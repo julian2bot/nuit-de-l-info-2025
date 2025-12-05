@@ -76,6 +76,12 @@ class Application {
         iframe.src = cfg.link || "/";
         this.el.appendChild(iframe);
 
+        // Bugged mode
+        if (cfg.bugged) {
+            iframe.classList.add("bugged");
+            this.el.classList.add("bugged");
+        }
+
         iframe.onload = () => {
             try {
                 const pageTitle = iframe.contentDocument.title;
