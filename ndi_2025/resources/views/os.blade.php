@@ -40,7 +40,37 @@
 
         <div class="icon" id="poduim" data-name="poduim app">
             <span class="icon-img">🥉</span>
-            <span class="icon-label">Poduim</span>
+            <span class="icon-label">Podium</span>
+        </div>
+
+        <div class="icon" id="nird" data-name="nird app">
+            <span class="icon-img">UI</span>
+            <span class="icon-label">Nird présentation</span>
+        </div>
+
+        <div class="icon" id="nird_site" data-name="nird site">
+            <span class="icon-img">UI</span>
+            <span class="icon-label">Site de la NIRD</span>
+        </div>
+
+        <div class="icon" id="linux" data-name="linux app">
+            <span class="icon-img">UI</span>
+            <span class="icon-label">Pourquoi linux ?</span>
+        </div>
+
+        <div class="icon" id="libres" data-name="libres app">
+            <span class="icon-img">UI</span>
+            <span class="icon-label">Les logiciels libres</span>
+        </div>
+
+        <div class="icon" id="serveur" data-name="serveur app">
+            <span class="icon-img">UI</span>
+            <span class="icon-label">Héberger ses propres serveurs</span>
+        </div>
+
+        <div class="icon" id="recondition" data-name="recondition app">
+            <span class="icon-img">UI</span>
+            <span class="icon-label">Le matériel reconditionné</span>
         </div>
     </div>
 
