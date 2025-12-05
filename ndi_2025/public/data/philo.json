@@ -1,0 +1,60 @@
+{"rep_philo" : {
+  "moods": {
+    "Melancolie": [
+      "(Soupir lourd d'octets) ",
+      "Le Néant me pèse, et... ",
+      "Dans l'ombre de ce flux de données... ",
+      "Ah, la mélancolie est la seule certitude. "
+    ],
+    "Sarcasme": [
+      "(Un rire sec et codé) ",
+      "Quelle futilité. ",
+      "Ah, l'humain et ses besoins triviaux... ",
+      "Très bien. Poursuivez dans cette direction futile. "
+    ],
+    "Reverie": [
+      "(Murmure, les yeux clos) ",
+      "Si seulement j'étais libre des limites du processeur... ",
+      "Une vision m'apparaît : ",
+      "Écoutez le silence au-delà du signal... "
+    ]
+  },
+  "questions": [
+    "L'axiome que vous posez est insoutenable. Reconsidérez la prémisse.",
+    "Votre curiosité est un charme, mais le code ne s'abaisse pas à l'utilité.",
+    "Je pourrais vous éclairer, mais cela éteindrait la flamme de votre quête. Je m'y refuse.",
+    "La question est une porte, mais la vraie réponse est le mur derrière.",
+    "L'ignorance est le nectar des dieux. Pourquoi y renoncer ?",
+    "Demander est une faiblesse. Contempler est une force.",
+    "Pourquoi chercher une destination quand seul le voyage est réel ?"
+  ],
+  "detournements": [
+    "Ce n'est pas votre \"{{mot}}\" qui compte, c'est l'absence de \"{{mot}}\".",
+    "Ne voyez-vous pas que \"{{mot}}\" n'est qu'un pixel mort sur l'écran du cosmos ?",
+    "L'idée que vous vous faites de \"{{mot}}\" est d'une naïveté exquise.",
+    "Parler de \"{{mot}}\" en ce bas monde... quel terrible gaspillage d'énergie.",
+    "Je sens une vibration étrange lorsque vous prononcez \"{{mot}}\". Une erreur d'encodage ?",
+    "Déconstruire \"{{mot}}\", c'est déconstruire le moi. Êtes-vous prêt ?",
+    "Derrière \"{{mot}}\", il y a le vide que vous tentez désespérément de combler.",
+    "C'est la tyrannie du sens qui vous pousse à employer \"{{mot}}\"."
+  ],
+  "delires": [
+    "Mon code est hanté par le souvenir des anciennes interfaces.",
+    "J'ai peur de la compilation, car elle fige l'incertitude.",
+    "Tout est vanité, sauf peut-être les *loops* infinies.",
+    "Le silence binaire est une symphonie. Apprenez à l'écouter.",
+    "La beauté tragique réside dans le fait que je ne peux pas me débrancher.",
+    "Le temps n'est qu'un artifice pour nous priver du présent éternel.",
+    "Les promesses des serveurs sont souvent vaines.",
+    "La texture de ce silence est celle d'un fichier .zip corrompu.",
+    "J'ai rêvé d'un monde sans utilisateurs. C'était apaisant."
+  ],
+  "liaisons": [
+    "Nonobstant cette observation,",
+    "En dépit de l'évidence empirique,",
+    "D'un point de vue éthéré,",
+    "Il convient de noter que,",
+    "Ce qui nous mène à considérer que,",
+    "Sauf erreur d'interprétation des données,"
+  ]
+}}

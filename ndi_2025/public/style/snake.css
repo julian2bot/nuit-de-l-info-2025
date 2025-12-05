@@ -1,0 +1,83 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(48, 48, 48);
+}
+
+#header {
+    color: white;
+}
+
+#lesScore {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#score,
+#maxScore,
+#level {
+    display: flex;
+    gap: 5px;
+}
+
+#gameDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 350px;
+    height: 350px;
+    background-color: red;
+    flex-direction: column;
+}
+
+#pause{
+    position: absolute;
+    bottom: 0;
+    display: none;
+}
+
+#centeredContainer {
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#deadContainer, #pauseContainer{
+    color: white;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    display: none;
+}
+
+#deadContainer *, #pauseContainer *{
+    z-index: 1;
+}
+
+.deadBackGround{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index: 0 !important;
+    opacity: 0.70;
+}
+
+canvas {
+    background: #eee;
+    display: block;
+
+}
