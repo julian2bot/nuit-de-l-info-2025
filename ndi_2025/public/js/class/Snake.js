@@ -1,7 +1,6 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-
+import * as THREE from "https://esm.sh/three@0.180.0";
+import { OrbitControls } from "https://esm.sh/three@0.180.0/examples/jsm/controls/OrbitControls.js";
+import { GLTFLoader } from "https://esm.sh/three@0.180.0/examples/jsm/loaders/GLTFLoader.js";
 
 class Snake {
     static EMPTY = 0;
@@ -465,20 +464,7 @@ class Snake3D extends Snake{
 
         this.body3d = [];
 
-        this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        this.renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canva2') });
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-
-
-        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-
-        this.camera.position.set(this.width/2, 10, this.height/2);
-        this.camera.lookAt(new THREE.Vector3(this.width/2, 0, this.height/2));
-
-        const light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(5,5,5);
-        this.scene.add(light);
+        
 
         // LOAD MODELS
         this.loader = new GLTFLoader();
@@ -508,11 +494,47 @@ class Snake3D extends Snake{
         }
     }
 
-    setTupLevel(){
+        setTupLevel(){
         super.setTupLevel();
+
+        this.scene = new THREE.Scene();
+        let canvas = document.getElementById('canva2');
+
+        // Configuration caméra orthographique pour vue top-down
+        this.camera = new THREE.OrthographicCamera(
+            0,              // left
+            this.width,     // right
+            0,              // top
+            this.height,    // bottom
+            0.1,
+            1000
+        );
+
+        // Positionner la caméra directement au-dessus, regardant vers le bas
+        this.camera.position.set(this.width/2, 50, this.height/2);
+        this.camera.lookAt(this.width/2, 0, this.height/2);
+        
+        // Désactiver les contrôles pour garder la vue fixe
+        this.renderer = new THREE.WebGLRenderer({ canvas });
+        this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+        this.controls.enabled = false;  // Désactiver les contrôles pour vue fixe
+
+        // Lumière ambiante + directionnelle
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        this.scene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+        directionalLight.position.set(this.width/2, 20, this.height/2);
+        this.scene.add(directionalLight);
+
+        // Fond de scène blanc
+        this.scene.background = new THREE.Color(0xf0f0f0);
+
         this.initPlateau();
     }
 
+    
     loadModels() {
         // HEAD
         this.loader.load("/model/boite.glb", gltf => {
@@ -532,36 +554,39 @@ class Snake3D extends Snake{
         });
     }
 
-    render() {
-        if (!this.head3d || !this.bodyTemplate) return;
+    // render() {
+    //     super.render();
+    //     console.log("debut");
+    //     if (!this.head3d || !this.bodyTemplate) return;
         
+    //     console.log("debut1");
         
-        if (this.apple3d) {
-            for (let y=0; y<this.plateau.length; y++) {
-                for (let x=0; x<this.plateau[0].length; x++) {
-                    if (this.plateau[y][x] === Snake.APPLE) {
-                        this.apple3d.position.set(x, 0.5, y);
-                    }
-                }
-            }
-        }
+    //     if (this.apple3d) {
+    //         for (let y=0; y<this.plateau.length; y++) {
+    //             for (let x=0; x<this.plateau[0].length; x++) {
+    //                 if (this.plateau[y][x] === Snake.APPLE) {
+    //                     this.apple3d.position.set(x, 0.5, y);
+    //                 }
+    //             }
+    //         }
+    //     }
 
-        while (this.body3d.length < this.body.length - 1) {
-          const segment = this.bodyTemplate.clone(true);
-          segment.scale.set(0.2, 0.2, 0.2);
-          this.scene.add(segment);
-          this.body3d.push(segment);
-        }
+    //     while (this.body3d.length < this.body.length - 1) {
+    //       const segment = this.bodyTemplate.clone(true);
+    //       segment.scale.set(0.2, 0.2, 0.2);
+    //       this.scene.add(segment);
+    //       this.body3d.push(segment);
+    //     }
 
-        if (this.head3d) {
-            const [hx, hy] = this.body[0];
-            this.head3d.position.set(hx, 0.5, hy);
-        }
-        for (let i = 1; i < this.body.length; i++) {
-            const [x, y] = this.body[i];
-            this.body3d[i - 1].position.set(x, 0.5, y);
-        }
-    }
+    //     if (this.head3d) {
+    //         const [hx, hy] = this.body[0];
+    //         this.head3d.position.set(hx, 0.5, hy);
+    //     }
+    //     for (let i = 1; i < this.body.length; i++) {
+    //         const [x, y] = this.body[i];
+    //         this.body3d[i - 1].position.set(x, 0.5, y);
+    //     }
+    // }
 
     animate = () => {
         requestAnimationFrame(this.animate);
@@ -576,15 +601,15 @@ class Snake3D extends Snake{
 }
 
 
-    // console.log("Snake start !");
-    // const snake = new Snake(500);
-    // const snake3d = new Snake3D(10, 10);
-    const snake3d = new Snake3D(500,gg);
-    snake3d.start();
-    // snake.render3d = function() {
-    //     snake3d.update(this.plateau, this.BODY);
-    // };
+// console.log("Snake start !");
+// const snake = new Snake(500);
+// const snake3d = new Snake3D(10, 10);
+const snake3d = new Snake3D(500,gg);
+snake3d.start();
+// snake.render3d = function() {
+//     snake3d.update(this.plateau, this.BODY);
+// };
 
-    function gg(){
+function gg(){
 
-    }
+}

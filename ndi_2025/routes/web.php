@@ -33,7 +33,7 @@ Route::get('/editeur-texte', function () {
 
 Route::get('/logiciels/snake', function () {
     return view('logiciels.snake');
-});
+})->name("snake");;
 Route::get('/discorde', function () {
     return view('discorde');
 })->name('discorde');

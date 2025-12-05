@@ -5,7 +5,7 @@
 
 <canvas id="game" width="300" height="300"></canvas>
 <canvas id="canva2" width="300" height="300"></canvas>
-@vite('resources/snake/three.js')
+<script src="{{ asset('js/class/Snake.js')}}"></script>
 
 </body>
 
