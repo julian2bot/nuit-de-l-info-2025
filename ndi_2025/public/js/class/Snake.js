@@ -8,8 +8,10 @@ class Snake {
     static BOMB1 = 6;
     static BOMB2 = 7;
 
-    constructor(tickrate) {
+    constructor(tickrate, onDeathFunction, maxScore) {
         this.tick = tickrate;
+        this.onDeathFunction = onDeathFunction;
+        this.maxScore = maxScore;
 
         this.canvas = document.getElementById('game');
         this.ctx = this.canvas.getContext('2d');
@@ -75,6 +77,9 @@ class Snake {
         }
         this.plateau[this.posY][this.posX] = Snake.HEAD;
         this.addItem()
+
+        this.renderLevel();
+        this.renderScore();
     }
 
     reset(){
@@ -186,6 +191,8 @@ class Snake {
 
         this.score += 1*this.level;
 
+        this.renderScore();
+
         if(this.body.length == this.width*this.height - 1){
             this.level += 1;
             this.setTupLevel();
@@ -246,7 +253,6 @@ class Snake {
     }
 
     move(){
-        console.log("dende");
         this.unDisplaySnake();
 
         let max = this.body.length -1;
@@ -303,6 +309,7 @@ class Snake {
 
     die(){
         this.stop();
+        this.onDeathFunction(this.maxScore);
     }
 
     getScore(){
@@ -331,6 +338,15 @@ class Snake {
     start(){
         this.reset();
         this.play();
+    }
+
+    pause(){
+        if(this.intervalId === null){
+            this.play();
+        }
+        else{
+            this.stop();
+        }
     }
 
     // GAME MANAGEMENT
@@ -370,6 +386,38 @@ class Snake {
                 ctx.strokeStyle = '#e6e6e6';
                 ctx.strokeRect(x * this.cellW, y * this.cellH, this.cellW, this.cellH);
             }
+        }
+    }
+
+    renderScore(){
+        if(this.scoreP == null){
+            this.scoreP = document.getElementById("scoreValue");
+        }
+        if(this.scoreP){
+            this.scoreP.innerHTML = this.score;
+        }
+
+        this.renderMaxScore();
+    }
+
+    renderMaxScore(){
+        if(this.score>this.maxScore){
+            this.maxScore = this.score;
+            if(this.maxScoreP == null){
+                this.maxScoreP = document.getElementById("scoreMaxValue");
+            }
+            if(this.maxScoreP){
+                this.maxScoreP.innerHTML = this.maxScore;
+            }
+        }
+    }
+
+    renderLevel(){
+        if(this.levelP == null){
+            this.levelP = document.getElementById("levelValue");
+        }
+        if(this.levelP){
+            this.levelP.innerHTML = this.level;
         }
     }
 

@@ -153,3 +153,4 @@ function openLogiciel(json) {
 // ----------------------------
 openLogiciel(apps.notepad);
 openLogiciel(apps.browser);
+openLogiciel(apps.snake);

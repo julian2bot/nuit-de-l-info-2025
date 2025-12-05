@@ -26,6 +26,13 @@ const apps = {
         link: "https://discord.com",
         reduire: true,
         resizable: true
-
+    },
+    snake: {
+        width: 900,
+        height: 600,
+        title: "Snake",
+        link: "/truc/testSnake",
+        reduire: true,
+        resizable: true
     }
 };
