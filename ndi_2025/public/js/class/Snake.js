@@ -503,32 +503,34 @@ class Snake3D extends Snake{
         this.scene = new THREE.Scene();
         let canvas = document.getElementById('canva2');
 
-            
-        // Centre du plateau
+        // le decalage
+        const offsetX = 13; 
+        const offsetZ = 13;  
+
+        // a faire centre
         const centerX = (this.width - 1) / 2;
         const centerZ = (this.height - 1) / 2;
 
-        // Taille du frustum
         const aspect = canvas.clientWidth / canvas.clientHeight;
-        const maxDim = Math.max(this.width+6, this.height+6);
-        const frustumSize = maxDim * 1.2;
 
-        // Créer caméra orthographique
-        this.camera = new THREE.OrthographicCamera(
-            -frustumSize / 2 * aspect, frustumSize / 2 * aspect, // left, right
-            frustumSize / 2, -frustumSize / 2,                 // top, bottom
-            0.1, 1000
+        // Créer caméra perspective
+        // fov = 60° (champ de vision vertical)
+        this.camera = new THREE.PerspectiveCamera(
+            60,       // fov
+            aspect, 
+            0.1,      // near
+            1000      // far
         );
 
-        // Positionner la caméra au-dessus du plateau
-        const cameraHeight = 100; 
-        this.camera.position.set(centerX, cameraHeight, centerZ);
+        // Positionner la caméra au-dessus du plateau avec décalage
+        const cameraHeight = 11;
+        this.camera.position.set(centerX + offsetX, cameraHeight, centerZ + offsetZ);
 
-        // Regarder le centre du plateau
-        this.camera.lookAt(centerX, 0, centerZ * -1);
-        this.camera.updateProjectionMatrix();
+        // Pointer la caméra vers le centre du plateau
+        //this.camera.lookAt(centerX, 0, centerZ);
 
-        this.scene.rotation.y = Math.PI/4;
+        // Appliquer rotation éventuelle de la scène
+        this.scene.rotation.y = Math.PI / 4;
         
         // Désactiver les contrôles pour garder la vue fixe
         this.renderer = new THREE.WebGLRenderer({ canvas });
