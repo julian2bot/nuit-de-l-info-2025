@@ -1,2 +1,0 @@
-
-import './snake/three.js';
