@@ -118,6 +118,14 @@ const apps = {
         link: "/logiciels/nird/recondition",
         reduire: true,
         resizable: true
+    },
+    credit:{
+        width: 900,
+        height: 600,
+        title: "Crédits",
+        link: "/credit",
+        reduire: true,
+        resizable: true
     }
 
 };

@@ -49,6 +49,11 @@
             <span class="icon-label">Site de la NIRD</span>
         </div>
 
+        <div class="icon" id="credit" data-name="credit app">
+            <span class="icon-img">📝</span>
+            <span class="icon-label">Crédits</span>
+        </div>
+
         <div class="icon linux" id="nird" data-name="nird app">
             <span class="icon-img">📝</span>
             <span class="icon-label">Nird présentation</span>
@@ -74,6 +79,7 @@
             <span class="icon-img">📝</span>
             <span class="icon-label">Le matériel reconditionné</span>
         </div>
+
     </div>
 
     <div class="taskbar" id="taskbar">
