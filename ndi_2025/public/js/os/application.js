@@ -232,3 +232,4 @@ function openLogiciel(json) {
 //   LANCER AUTOMATIQUEMENT
 // ----------------------------
 openLogiciel(apps.notepad);
+// openLogiciel(apps.machin);

@@ -1,6 +1,6 @@
 
 const apps = {
-    notepad: {
+    machin: {
         width: 500,
         height: 400,
         fullScreen: false,

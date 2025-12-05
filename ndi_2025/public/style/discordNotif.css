@@ -1,0 +1,63 @@
+#notifbar-discorde {
+    position:fixed;
+    bottom: 45px;
+    right: 15px;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    overflow-x: hidden;
+    z-index: 9999;
+}
+
+.notifDiscorde {
+    position: relative;
+    padding: 10px 15px;
+    max-width: 200px;
+    max-height: fit-content;
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    opacity: 1;
+    transform: translateX(0);
+    animation-fill-mode: forwards;
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    background-color: black;
+    animation: hide-alert 5s forwards;
+}
+
+.notifDiscorde *{
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.notifDiscorde::after {
+    content: "";
+    position: absolute;
+    height: 5px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.notifDiscorde::after {
+    animation: shrink-alert 5s linear forwards;
+}
+
+@keyframes shrink-alert {
+    0% { width: 100%; opacity: 1; transform: translateX(0); }
+    100% { width: 0%; opacity: 0; transform: translateX(120%); }
+}
+
+@keyframes hide-alert {
+    0%   { opacity: 1; transform: translateX(0); max-height: 200px; margin-bottom: 10px; padding: 10px 15px; }
+    80%  { opacity: 1; transform: translateX(0); max-height: 200px; margin-bottom: 10px; padding: 10px 15px;}
+    90% { transform: translateX(120%); max-height: 0; max-height: 200px; margin-bottom: 10px; padding: 10px 15px;}
+    100% { opacity: 0; transform: translateX(120%); max-height: 0; margin-bottom: 0; padding: 0; }
+} 
