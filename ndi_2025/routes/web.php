@@ -59,7 +59,7 @@ Route::get('/credit', function () {
 
 Route::get('/logiciels/snake', function () {
     return view('logiciels.snake');
-});
+})->name("snake");;
 Route::get('/discorde', function () {
     return view('discorde');
 })->name('discorde');
@@ -72,7 +72,6 @@ Route::get('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout
 Route::get('/me', function () {
     return Auth::user();
 })->name("eee");
-
 
 Route::post('/score', [ScoreController::class, 'store'])
     ->middleware('auth')
