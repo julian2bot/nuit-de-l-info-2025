@@ -84,20 +84,33 @@ function showBluescreen() {
             color: white;
             border: 2px solid white;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background 0.2s;
         }
         #bsod-restart {
-            overflow: hidden;
-            white-space: nowrap;
+            position: relative;
+            transition: transform 0.1s ease;
+        }
+        #bsod-linux:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
         .bsod-buttons {
             display: flex;
             gap: 20px;
             margin-top: 30px;
+            min-height: 150px;
+            align-items: center;
         }
     `;
     document.head.appendChild(style);
     document.body.appendChild(bsod);
+
+    // Make restart button dodge the mouse
+    const restartBtn = document.getElementById('bsod-restart');
+    restartBtn.addEventListener('mouseover', function() {
+        const randomX = (Math.random() - 0.5) * 400;
+        const randomY = (Math.random() - 0.5) * 300;
+        this.style.transform = `translate(${randomX}px, ${randomY}px)`;
+    });
 }
 
 // ----------------------------
