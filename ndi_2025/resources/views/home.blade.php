@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Lock Screen - ndi 2025 js.remove </title>
     <link rel="stylesheet" href="{{ asset('style/auth.css') }}">
     <script src="{{ asset('js/os/auth.js')}}"></script>
