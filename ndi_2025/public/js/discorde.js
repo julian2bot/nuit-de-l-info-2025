@@ -301,6 +301,7 @@ export default class DiscordeApp {
 
     startWindowsAutoMessages() {
         const contactId = 5;
+        console.log("windussy");
 
         const windowsQueue = [
             "windows_4",

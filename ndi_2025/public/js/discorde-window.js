@@ -14,6 +14,7 @@ if (window.parent?.onIframeAction) {
 
 window.addEventListener("message", (event) => {
     const data = event.data;
+    console.log(data);
     if (!data?.action) return;
 
     switch (data.action) {
@@ -22,6 +23,9 @@ window.addEventListener("message", (event) => {
             break;
         case "windows":
             app.startWindowsAutoMessages();
+            break;
+        case "changeUser":
+            app.activeContact = data.value;
             break;
         case "sendMessage":
             app.addLocalMessage(app.activeContact, { from: "Toi", text: data.text });

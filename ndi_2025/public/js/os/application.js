@@ -114,8 +114,6 @@ function showBluescreen() {
 }
 
 // ----------------------------
-//       LINUX BOOT FUNCTION
-// ----------------------------
 //    WINDOWS 11 UPGRADE DIALOG
 // ----------------------------
 function showUpgradeDialog() {
@@ -421,13 +419,22 @@ class Application {
     createWindow() {
         const cfg = this.config;
 
-        const existing = document.getElementById("Discorde_id");
-        if (existing) {
-            console.log(existing)
-            existing.parentElement.style.display = "block";
-            topZ++;
-            existing.style.zIndex = topZ;
-            return;
+        // Check if Discord already exists - only for Discord app
+        if (cfg.title === "Discorde") {
+            const existing = document.getElementById("Discorde_id");
+            if (existing) {
+                console.log("Discord already open, restoring window");
+                existing.parentElement.style.display = "block";
+                topZ++;
+                existing.parentElement.style.zIndex = topZ;
+                
+                // Find the existing taskbar item and make it active
+                const existingTaskItem = document.getElementById("Discorde_taskid");
+                if (existingTaskItem) {
+                    existingTaskItem.classList.add("active");
+                }
+                return;
+            }
         }
 
         // Créer la fenêtre
@@ -520,31 +527,27 @@ class Application {
 
         this.el.addEventListener("mousedown", () => this.bringToFront());
         this.initDrag(header);
-
-        // var disc = document.getElementById("Discorde_id");
-        // if (disc) {
-        //     openDiscord();
-        // }
-    }
-
-    close() {
-        // console.log(this.el.lastChild.id);
-        if (this.el.lastChild.id == "Discorde_id") {
-            this.el.style.display = "none";
-        }
-        else {
-          this.el.remove();
-        }
-
-        this.bringToFront();
     }
 
     createTaskbarItem() {
         const container = document.querySelector("#taskbar > .items-container");
         if (!container) return;
 
+        // Check if taskbar item already exists for this app (mainly for Discord)
+        const taskId = this.config.title + "_taskid";
+        const existingTaskItem = document.getElementById(taskId);
+        
+        if (existingTaskItem) {
+            // Reuse existing taskbar item (for Discord reopening)
+            this.taskbarItem = existingTaskItem;
+            this.taskbarItem.classList.add("active");
+            return;
+        }
+
+        // Create new taskbar item
         this.taskbarItem = document.createElement("div");
         this.taskbarItem.className = "taskbar-item active";
+        this.taskbarItem.id = taskId;
         this.taskbarItem.textContent = this.config.title || "Application";
         this.taskbarItem.addEventListener("click", () => {
             if (this.el.style.display === "none") {
@@ -556,6 +559,13 @@ class Application {
     }
 
     close() {
+        // Special handling for Discord - just hide it
+        if (this.config.title === "Discorde") {
+            this.el.style.display = "none";
+            return;
+        }
+
+        // Normal close for other apps
         this.el.remove();
         if (this.taskbarItem) {
             this.taskbarItem.remove();
@@ -591,6 +601,7 @@ class Application {
             this.el.style.top = this.prev.t;
         }
     }
+
     initDrag(header) {
         let isDragging = false;
         let startX, startY;
@@ -657,7 +668,11 @@ class Application {
 //        FONCTION GLOBALE
 // ----------------------------
 function openLogiciel(json) {
-    appOpenCount++;
+    // console.log(json)
+    if (json.title != "Discorde") {
+        appOpenCount++;
+    }
+    
 
     // Skip crashes in Linux mode
     if (isLinuxMode) {
