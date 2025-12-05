@@ -422,7 +422,7 @@ class Application {
                 existing.parentElement.style.display = "block";
                 topZ++;
                 existing.parentElement.style.zIndex = topZ;
-                
+
                 // Find the existing taskbar item and make it active
                 const existingTaskItem = document.getElementById("Discorde_taskid");
                 if (existingTaskItem) {
@@ -508,7 +508,7 @@ class Application {
                 if (pageTitle) {
                     title.textContent = pageTitle;
                     if (cfg.bugged) {
-                        title.textContent = pageTitle += " (Ne répond pas)";
+                        title.textContent += " (Ne répond pas)";
                     }
                 }
             } catch (error) {
@@ -531,7 +531,7 @@ class Application {
         // Check if taskbar item already exists for this app (mainly for Discord)
         const taskId = this.config.title + "_taskid";
         const existingTaskItem = document.getElementById(taskId);
-        
+
         if (existingTaskItem) {
             // Reuse existing taskbar item (for Discord reopening)
             this.taskbarItem = existingTaskItem;
@@ -667,7 +667,7 @@ function openLogiciel(json) {
     if (json.title != "Discorde") {
         appOpenCount++;
     }
-    
+
 
     // Skip crashes in Linux mode
     if (isLinuxMode) {
