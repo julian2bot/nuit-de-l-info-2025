@@ -18,7 +18,7 @@ class Snake {
         this.maxScore = maxScore;
 
         this.canvas = document.getElementById('game');
-        this.ctx = this.canvas.getContext('2d');
+        // this.ctx = this.canvas.getContext('2d');
         this.nexDir = '';
     }
 
@@ -458,11 +458,12 @@ class Snake {
 }
 
 
-class Snake3D extends Snake{
-    constructor(ticks, onDeathFunction) {
-        super(ticks, onDeathFunction);
+export default class Snake3D extends Snake{
+    constructor(ticks, onDeathFunction, maxScore) {
+        super(ticks, onDeathFunction, maxScore);
 
         this.body3d = [];
+        this.loaded = false;
 
         
 
@@ -474,9 +475,6 @@ class Snake3D extends Snake{
         this.bombes = null;
         this.plateaus = null;
         this.bombes3d = [];
-
-        this.loadModels();
-
         // this.animate();
     }
     
@@ -501,7 +499,7 @@ class Snake3D extends Snake{
         super.setTupLevel();
 
         this.scene = new THREE.Scene();
-        let canvas = document.getElementById('canva2');
+        // let canvas = document.getElementById('canva2');
 
         // le decalage
         const offsetX = 13; 
@@ -511,7 +509,7 @@ class Snake3D extends Snake{
         const centerX = (this.width - 1) / 2;
         const centerZ = (this.height - 1) / 2;
 
-        const aspect = canvas.clientWidth / canvas.clientHeight;
+        const aspect = this.canvas.clientWidth / this.canvas.clientHeight;
 
         // Créer caméra perspective
         // fov = 60° (champ de vision vertical)
@@ -533,6 +531,7 @@ class Snake3D extends Snake{
         this.scene.rotation.y = Math.PI / 4;
         
         // Désactiver les contrôles pour garder la vue fixe
+        let canvas = this.canvas;
         this.renderer = new THREE.WebGLRenderer({ canvas });
         this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -550,6 +549,9 @@ class Snake3D extends Snake{
         this.scene.background = new THREE.Color(0xf0f0f0);
 
         this.initPlateau();
+
+        if(!this.loaded)
+            this.loadModels();
     }
 
     
@@ -591,7 +593,7 @@ class Snake3D extends Snake{
         });
 
 
-
+        this.loaded = true;
     }
 
     render() {
@@ -664,19 +666,4 @@ class Snake3D extends Snake{
         super.play();
         this.animate();
     }
-}
-
-
-
-// console.log("Snake start !");
-// const snake = new Snake(500);
-// const snake3d = new Snake3D(10, 10);
-const snake3d = new Snake3D(500,gg);
-snake3d.start();
-// snake.render3d = function() {
-//     snake3d.update(this.plateau, this.BODY);
-// };
-
-function gg(){
-
 }
