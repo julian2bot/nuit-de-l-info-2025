@@ -398,6 +398,12 @@ function switchToLinuxDesktop() {
     if (taskbar) {
         taskbar.style.background = "#333";
     }
+
+    // Afficher les icônes Linux
+    document.querySelectorAll(".icon.linux").forEach((icon) => {
+        icon.style.display = "flex";
+    });
+
 }
 
 // ----------------------------
