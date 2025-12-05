@@ -46,7 +46,7 @@
 
     <div class="taskbar" id="taskbar">
         <div class="items-container">
-            <div class="start-btn" onclick="alert('Start Menu functionality coming soon!')">
+            <div class="start-btn">
                 <span class="start-icon">🪟</span> Fenetre
             </div>
         </div>
