@@ -223,38 +223,34 @@
     </div>
 
     <script>
-        // --- 1. The Virtual File System Data ---
         const fileSystem = {
             "Documents": {
                 type: "folder",
                 children: [
-                    { name: "Work Projects", type: "folder", children: [
-                        { name: "Quarterly Report.docx", type: "file", ext: "docx" },
-                        { name: "Budget.xlsx", type: "file", ext: "xlsx" }
-                    ]},
                     { name: "Personal", type: "folder", children: [
-                        { name: "Vacation.jpg", type: "file", ext: "img" }
+                        { name: "mot_de_passe.txt", type: "file", ext: "txt", link: "/editeur-texte-mdp" }
                     ]},
-                    { name: "Resume.pdf", type: "file", ext: "pdf" },
-                    { name: "Notes.txt", type: "file", ext: "txt" }
                 ]
             },
-            "Desktop": {
+            "Bureau": {
                 type: "folder",
                 children: [
                     { name: "Shortcut to Chrome", type: "file", ext: "exe" },
                     { name: "New Folder", type: "folder", children: [] }
                 ]
             },
-            "Downloads": { type: "folder", children: [] },
+            "Downloads": { type: "folder", children: [
+                { name: "InstallLinuxNIRD.exe", type: "file", ext: "exe", action: () => window.parent.bootLinux() }
+            ]},
             "Pictures": {
                 type: "folder",
                 children: [
-                    { name: "Cat.png", type: "file", ext: "img" },
-                    { name: "Dog.png", type: "file", ext: "img" }
+                    { name: "photo-de-nous.png", type: "file", ext: "img", link: "/images/photo_nous.png" },
                 ]
             },
-            "Music": { type: "folder", children: [] }
+            "Music": { type: "folder", children: [
+                { name: "banger.mp4", type: "file", ext: "mp4", link: "/lecteur-audio" }
+            ] }
         };
 
         // --- 2. State Management ---
@@ -289,8 +285,18 @@
                 // Double click to open folder
                 if (item.type === "folder") {
                     el.ondblclick = () => enterFolder(item);
+                } else if (item.link) {
+                    el.ondblclick = () => window.parent.openLogiciel({
+                        width: 700,
+                        height: 400,
+                        fullScreen: false,
+                        title: item.name,
+                        link: item.link,
+                        reduire: true,
+                        resizable: true
+                    });
                 } else {
-                    el.ondblclick = () => alert(`Opening file: ${item.name}`);
+                    el.ondblclick = item.action;
                 }
 
                 // Determine Icon
@@ -298,8 +304,9 @@
                 if (item.type === "folder") icon = "📁";
                 else if (item.ext === "img") icon = "🖼️";
                 else if (item.ext === "exe") icon = "💾";
+                else if (item.ext === "mp4") icon = "🎵";
 
-                el.innerHTML = `
+               el.innerHTML = `
                     <div class="icon ${item.type === 'folder' ? 'folder-icon' : 'file-icon'}">${icon}</div>
                     <div class="file-name">${item.name}</div>
                 `;
